@@ -1,0 +1,131 @@
+.footer {
+  background-color: #f5ebff;
+  color: #5e2b97;
+  padding-top: 2rem;
+  font-family: Arial, sans-serif;
+  margin-top: 10px;
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 5rem;
+}
+
+.footer-section-1 {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Adresa */
+.footer-logo-img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+/* Stilizacija adresa */
+.footer-address p {
+  margin: 1rem 0;
+  font-size: 20px;
+}
+
+/* Mapa sekcija */
+.footer-map {
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+/* Korisne informacije - lista linkova */
+
+.footer-section-2 {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-section-2 ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section-2 ul li {
+  margin-bottom: 15px;
+}
+
+.footer-section-2 ul li a {
+  text-decoration: none;
+  color: #5e2b97;
+  transition: color 0.3s ease;
+  font-size: 20px;
+}
+
+.footer-section-2 ul li a:hover {
+  color: #8e44ad;
+}
+
+.footer-section-4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-map a {
+  color: #5e2b97;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-map a:hover {
+  color: #8e44ad;
+}
+
+/* Kontaktne informacije */
+
+.footer-section-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-socials .social-link {
+  color: #5e2b97;
+}
+
+.footer-socials .social-link:hover {
+  color: #8e44ad;
+}
+
+/* Donji deo footera */
+.footer-bottom {
+  text-align: center;
+
+  justify-content: center;
+  padding: 5px;
+}
+
+.footer-bottom hr {
+  border: 0;
+  border-top: 1px solid #5e2b97;
+}
+
+.footer-bottom p {
+  font-size: 16px;
+  color: #6a0dad;
+}

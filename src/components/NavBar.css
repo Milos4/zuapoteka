@@ -1,0 +1,40 @@
+.navbar {
+  background-color: #f5ebff;
+  color: #5e2b97;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.left .logo {
+  width: 100px;
+}
+.navbar a {
+  text-decoration: none;
+  color: #6a0dad;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #8e44ad;
+
+  background-color: #fff;
+  border-radius: 10px;
+  transform: scale(1.05);
+}
+
+.center a,
+.right a {
+  margin: 0 15px;
+  font-weight: 500;
+}
+
+.cart span {
+  font-weight: bold;
+  margin-left: 5px;
+  color: #6a0dad;
+}

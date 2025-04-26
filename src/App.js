@@ -19,7 +19,7 @@ import TermsOfUsePage from "./pages/TermsOfUsePage";
 import ContactPage from "./pages/ContactPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import FAQPage from "./pages/FAQPage";
-
+////
 
 function App() {
   return (

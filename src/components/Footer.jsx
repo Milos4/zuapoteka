@@ -3,7 +3,6 @@ import "./Footer.css";
 import logo from "../assets/logo.png";
 import { FaInstagram, FaFacebook, FaMap } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Map from "./Map";
 
 const Footer = () => {
   return (
@@ -30,22 +29,22 @@ const Footer = () => {
           <h3>Korisne informacije</h3>
           <ul>
             <li>
-              <Link to="/about">O nama</Link>
+              <Link to="/o-nama">O nama</Link>
             </li>
             <li>
-              <Link to="/terms">Osnovni podaci</Link>
+              <Link to="/koristnicka-podrska">Korisnicka podrška</Link>
             </li>
             <li>
-              <Link to="/terms">Uslovi korišćenja</Link>
+              <Link to="/uslovi-koristenja">Uslovi korišćenja</Link>
             </li>
             <li>
-              <Link to="/privacy">Politika privatnosti</Link>
+              <Link to="/info-dostava">Informacije o dostavi</Link>
             </li>
             <li>
-              <Link to="/claims">Reklamacije</Link>
+              <Link to="/reklamacije">Reklamacije</Link>
             </li>
             <li>
-              <Link to="/faq">Pitanja za shop</Link>
+              <Link to="/pitanja">Pitanja za shop</Link>
             </li>
           </ul>
         </div>

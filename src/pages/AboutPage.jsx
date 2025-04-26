@@ -2,14 +2,13 @@ import React from "react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 
-const HomePage = () => {
+const AboutPage = () => {
   return (
     <div>
       <Navbar />
-      {/* Ovde možeš dodati druge sekcije kao featured products itd. */}
       <Footer />
     </div>
   );
 };
 
-export default HomePage;
+export default AboutPage;

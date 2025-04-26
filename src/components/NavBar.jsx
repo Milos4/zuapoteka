@@ -19,18 +19,18 @@ const NavBar = () => {
       </div>
 
       <div className="center">
-        <Link to="/">Početna</Link>
-        <Link to="/shop">Shop</Link>
-        <Link to="/about">O nama</Link>
-        <Link to="/contact">Kontakt</Link>
+        <Link to="/pocetna">Početna</Link>
+        <Link to="/prodavnica">Prodavnica</Link>
+        <Link to="/o-nama">O nama</Link>
+        <Link to="/kontakt">Kontakt</Link>
       </div>
 
       <div className="right">
-        <Link to="/cart" className="cart">
+        <Link to="/korpa" className="cart">
           <FaShoppingCart size={20} />
           <span className="cart-count">{cartCount}</span>
         </Link>
-        <Link to="/login" className="user-icon">
+        <Link to="/prijava" className="user-icon">
           <FaUser size={20} />
         </Link>
       </div>

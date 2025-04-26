@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import logo from "../assets/logo.png";
+import logo from "../assets/Logo1.png";
 import { FaInstagram, FaFacebook, FaMap } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

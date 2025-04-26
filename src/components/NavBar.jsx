@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
-import logo from '../assets/logo.png';
+import logo from '../assets/Logo1.png';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 

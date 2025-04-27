@@ -3,6 +3,8 @@ import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 
 import BannerSlider from '../components/BannerSlider'; 
+import PharmacyCategories from "../components/PharmacyCategories";
+import PharmacySpecialOffers from "../components/PharmacySpecialOffers";
 
 const banners = [
   {
@@ -27,7 +29,8 @@ const HomePage = () => {
     <div style={{ backgroundColor: '#FAF1E6' }}>
       <Navbar />
       <BannerSlider banners={banners} />
-
+<PharmacyCategories />
+<PharmacySpecialOffers />
       {/* Ovde možeš dodati druge sekcije kao featured products itd. */}
       <Footer />
     </div>

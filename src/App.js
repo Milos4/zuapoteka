@@ -21,6 +21,8 @@ import TermsOfUsePage from "./pages/TermsOfUsePage";
 import ContactPage from "./pages/ContactPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import FAQPage from "./pages/FAQPage";
+import ProductDetailsPage from "./pages/ProductDeatilsPage";
+
 ////
 
 function App() {
@@ -38,7 +40,7 @@ function App() {
       <Route path="/pitanja" element={<FAQPage />} />
 
       <Route path="/korpa" element={<CartProductsPage />} />
-      <Route path="/prodavnica" element={<ShopPage />} />
+      <Route path="/prodavnica1" element={<ShopPage />} />
       <Route path="/informacije-dostave" element={<OrderingProcessPage />} />
 
 
@@ -47,6 +49,8 @@ function App() {
       <Route path="/istorija" element={<OrderHistoryPage />} />
       <Route path="/favoriti" element={<FavoritesPage />} />
       <Route path="/zaboravljenja-sifra" element={<ForgottenPasswordPage />} />
+      <Route path="/prodavnica" element={<ProductDetailsPage />} />
+
 
 
 

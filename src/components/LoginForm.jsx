@@ -10,7 +10,7 @@ const LoginForm = () => {
       {/* Left: Image */}
       <div className="login-image">
         <img 
-          src="https://sexy-costume.com/cdn/shop/files/sexy-doctor-and-nurse-costume-white-s-624.webp?v=1738214111&width=800"
+          src="https://images.pexels.com/photos/66869/green-leaf-natural-wallpaper-royalty-free-66869.jpeg"
           alt="Placeholder"
         />
       </div>

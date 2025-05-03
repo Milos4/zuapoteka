@@ -1,8 +1,11 @@
 :root {
   --tamnoZelena: #006835;
+  --zelena: #99BC85;
+  --svijetloZelena: #E4EFE7;
+  --skoroBijela: #FDFAF6;
+  --bez: #FAF1E6;
 
-    --zelena: #99BC85;
-    --svijetloZelena: #E4EFE7;
-    --skoroBijela: #FDFAF6;
-    --bez: #FAF1E6;
-  }
+  --gradientZelena: linear-gradient(90deg, #99BC85 0%, #006835 100%);
+  --siva: #ccc;
+  --crna: #222;
+}

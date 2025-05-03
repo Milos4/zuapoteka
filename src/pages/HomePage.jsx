@@ -6,6 +6,7 @@ import PharmacyCategories from "../components/PharmacyCategories";
 import SpecialOffers from "../components/SpecialOffers/SpecialOffers";
 import ComboOffer from "../components/SpecialOffers/ComboOffer";
 import BigComboProduct from "../components/SpecialOffers/BigComboOffer";
+import MiniProduct from "../components/MiniProduct";
 const banners = [
   {
     image: 'https://cdn.pixabay.com/photo/2021/10/11/17/54/technology-6701504_1280.jpg',
@@ -55,6 +56,7 @@ const HomePage = () => {
   comboPrice={4999}
   regularPrice={6999}
 />
+<MiniProduct />
       {/* Ovde možeš dodati druge sekcije kao featured products itd. */}
       <Footer />
     </div>

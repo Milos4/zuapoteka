@@ -1,0 +1,201 @@
+:root {
+  --beige: #fdf7ed;
+  --green-light: #d8e8d1;
+  --green-dark: #7a9f6e;
+  --icon-color: #5a6d5a;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------- Grid ------------------- */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* ------------------- Kartica proizvoda ------------------- */
+.product-card {
+  width: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--beige);
+  box-shadow: 0 4px 16px var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px var(--shadow);
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--beige) 100%);
+}
+
+/* ------------------- Slika ------------------- */
+.image-box {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+}
+
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-box:hover img {
+  transform: scale(1.05);
+}
+
+/* ------------------- Overlay sa ikonicama ------------------- */
+.actions-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.image-box:hover .actions-overlay {
+  opacity: 1;
+}
+
+/* ------------------- Ikonice ------------------- */
+.action-btn {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px var(--shadow);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-btn > svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--icon-color);
+  fill: none;
+  transition: stroke 0.3s ease, fill 0.3s ease;
+}
+
+.action-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Hover varijacije po ikonicama */
+.eye-btn:hover {
+  background: #e0f2f1;
+}
+
+.cart-btn:hover {
+  background: #fff8e1;
+}
+
+.heart-btn:hover {
+  background: #ffebee;
+}
+
+.action-btn:hover > svg {
+  stroke: var(--green-dark);
+}
+
+/* Poseban efekat za srce (nema više crte!) */
+.heart-btn:hover svg {
+  stroke: #e53935;
+  fill: rgba(229, 57, 53, 0.1);
+}
+
+/* ------------------- Badgeovi ------------------- */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 50px;
+  font-size: 11px;
+  z-index: 3;
+}
+
+.badge.discount {
+  background-color: #c62828;
+}
+.badge.new {
+  background-color: #2e7d32;
+}
+.badge.gift {
+  background-color: #5d4037;
+}
+
+/* ------------------- Tekst ------------------- */
+.product-card h3 {
+  font-size: 16px;
+  margin: 12px 0 4px;
+  color: #333;
+  padding: 0 12px;
+  font-weight: 600;
+}
+
+.product-card p {
+  font-size: 13px;
+  margin: 0 0 8px;
+  color: #666;
+  padding: 0 12px;
+  line-height: 1.4;
+}
+
+/* ------------------- Cijene ------------------- */
+.price-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 12px;
+  margin-top: 4px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+}
+
+.new-price {
+  color: var(--green-dark);
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* ------------------- Brojač u korpi ------------------- */
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-counter {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #c62828;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}

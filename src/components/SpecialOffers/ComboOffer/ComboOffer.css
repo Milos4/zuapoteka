@@ -1,0 +1,177 @@
+.combo-offer-card {
+  width: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  margin: 15px;
+}
+
+.combo-offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.combo-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background: linear-gradient(90deg, #56ab2f, #a8e063);
+  color: white;
+  font-weight: bold;
+}
+
+.combo-badge {
+  font-size: 14px;
+}
+
+.combo-savings {
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.combo-images-container {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.combo-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #56ab2f;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  position: absolute;
+}
+
+.combo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.first-product {
+  top: 20px;
+  left: 30px;
+  transform: translateX(-10%);
+}
+
+.second-product {
+  bottom: 20px;
+  right: 30px;
+  transform: translateX(10%);
+}
+
+.plus-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  font-weight: bold;
+  color: #56ab2f;
+  z-index: 2;
+  background: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.combo-actions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.combo-offer-card:hover .combo-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-btn:hover {
+  transform: scale(1.15);
+}
+
+.eye-btn:hover {
+  background: #e0f2f1;
+}
+
+.cart-btn:hover {
+  background: #fff8e1;
+}
+
+.heart-btn:hover {
+  background: #ffebee;
+}
+
+.combo-details {
+  padding: 15px;
+  text-align: center;
+}
+
+.combo-title {
+  font-size: 16px;
+  margin: 0 0 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.combo-description {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.combo-prices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.regular-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+}
+
+.combo-price {
+  color: #56ab2f;
+  font-weight: bold;
+  font-size: 18px;
+}

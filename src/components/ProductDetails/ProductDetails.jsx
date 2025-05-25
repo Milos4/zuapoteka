@@ -13,7 +13,7 @@ const ProductDetails = ({ product }) => {
     <div className="product-details-wrapper">
       {/* Leva strana – Slika proizvoda */}
       <div className="product-image-container">
-        <img src={product.imageUrl || 'https://via.placeholder.com/220'} alt={product.name} />
+        <img src={product.imageUrl || 'https://via.placeholder.com/400'} alt={product.name} />
       </div>
 
       {/* Srednji deo – Informacije o proizvodu */}
@@ -25,7 +25,7 @@ const ProductDetails = ({ product }) => {
         </div>
         <div className="description">{product.description}</div>
         <img
-          src={product.brandImageUrl || 'https://via.placeholder.com/100x40?text=Brend'}
+          src={product.brandImageUrl || 'https://logos-world.net/wp-content/uploads/2020/04/LOreal-Logo.png'}
           alt={product.brand}
           className="brand-logo"
         />
@@ -33,36 +33,41 @@ const ProductDetails = ({ product }) => {
 
       {/* Desna strana – Cena, popust i kupovina */}
       <div className="product-purchase">
-        <div className="price-info">
-          <div className="original-price">{product.price.toFixed(2)} RSD</div>
-
-          {product.discount > 0 && (
+        <div className="price-container">
+          {product.discount > 0 ? (
             <>
-              <div className="discounted-price">{discountedPrice} RSD</div>
+              <div className="price-rows">
+                <div className="original-price crossed">{product.price.toFixed(2)} RSD</div>
+                <div className="discounted-price">{discountedPrice} RSD</div>
+              </div>
               <div className="discount-circle">-{product.discount}%</div>
             </>
+          ) : (
+            <div className="original-price">{product.price.toFixed(2)} RSD</div>
           )}
         </div>
 
-        {product.stockQuantity ? (
-          <>
-            <div className="quantity-selector">
-              <button className="quantity-button" onClick={handleDecrease}>−</button>
-              <input
-                type="number"
-                value={quantity}
-                min="1"
-                className="quantity-input"
-                readOnly
-              />
-              <button className="quantity-button" onClick={handleIncrease}>+</button>
-            </div>
+        <div className="purchase-controls">
+          {product.stockQuantity ? (
+            <>
+              <div className="quantity-selector">
+                <button className="quantity-button-1" onClick={handleDecrease}>−</button>
+                <input
+                  type="number"
+                  value={quantity}
+                  min="1"
+                  className="quantity-input"
+                  readOnly
+                />
+                <button className="quantity-button-2" onClick={handleIncrease}>+</button>
+              </div>
 
-            <button className="add-to-cart">Dodaj u korpu</button>
-          </>
-        ) : (
-          <div className="out-of-stock">Nema na stanju</div>
-        )}
+              <button className="add-to-cart">Dodaj u korpu</button>
+            </>
+          ) : (
+            <div className="out-of-stock">Nema na stanju</div>
+          )}
+        </div>
       </div>
     </div>
   );

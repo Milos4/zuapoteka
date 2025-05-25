@@ -14,7 +14,8 @@ const sampleProduct = new Product({
   discount: 10,
   price: 999.99,
   stockQuantity: true,
-  imageUrl: "https://via.placeholder.com/400x300.png?text=Proizvod",
+  imageUrl: "https://images.pexels.com/photos/66869/green-leaf-natural-wallpaper-royalty-free-66869.jpeg",
+  brandImageUrl:"https://logos-world.net/wp-content/uploads/2020/04/LOreal-Logo.png"
 });
 
 const ProductPage = () => {

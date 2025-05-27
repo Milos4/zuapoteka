@@ -1,6 +1,6 @@
 .footer {
-  background-color:  var(--zelena);;
-  color:  var(--bez);
+  background-color: var(--zelena);
+  color: var(--bez);
   padding-top: 2rem;
   font-family: Arial, sans-serif;
   margin-top: 10px;
@@ -59,13 +59,13 @@
 
 .footer-section-2 ul li a {
   text-decoration: none;
-  color:  var(--bez);
+  color: var(--bez);
   transition: color 0.3s ease;
   font-size: 20px;
 }
 
 .footer-section-2 ul li a:hover {
-  color:  var(--tamnoZelena);
+  color: var(--tamnoZelena);
   transform: scale(1.05);
 }
 
@@ -82,16 +82,16 @@
 }
 
 .footer-map a {
-  color:   var(--bez);
-  transform: scale(1.05);;
+  color: var(--bez);
+  transform: scale(1.05);
   text-decoration: none;
   font-weight: bold;
 }
 
 .footer-map a:hover {
-  color:  var(--tamnoZelena);
+  color: var(--tamnoZelena);
 
-  transform: scale(1.05)
+  transform: scale(1.05);
 }
 
 /* Kontaktne informacije */
@@ -127,7 +127,6 @@
 .footer-bottom hr {
   border: 0;
   border-top: 1px solid var(--bez);
-  ;
 }
 
 .footer-bottom p {

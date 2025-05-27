@@ -1,61 +1,105 @@
-import React, { useRef } from 'react';
-import './TermsOfUse.css'; // Pretpostavljamo da imate odgovarajući CSS
+import React from "react";
+import "./TermsOfUse.css";
 
 const sections = [
-  { id: 'uvod', title: '1. Uvod' ,contetn: "Opšti uslovi Korištenjem Web Shop aplikacije (u daljem tekstu: aplikacija) saglasni ste sa uslovima i odredbama navedenim u ovom dokumentu. Molimo vas da ih pažljivo pročitate. Sve cijene prikazane u aplikaciji su izražene u konvertibilnim markama (BAM) i uključuju PDV. ZU Apoteke 'B Pharm' ulažu maksimalan trud da svi proizvodi budu prikazani sa tačnim nazivima, specifikacijama, fotografijama i cijenama. Ipak, ne možemo garantovati potpunu tačnost svih informacija. Zadržavamo pravo izmjene cijena i ponude bez prethodne najave. Prikazani artikli ne garantuju dostupnost na lageru u svakom trenutku. Porudžbine se obrađuju i šalju u roku od dva radna dana (vikendi i praznici nisu uključeni), u zavisnosti od raspoloživosti artikala. Ukoliko ne budemo u mogućnosti da isporučimo vašu narudžbu u navedenom roku, bićete blagovremeno obaviješteni, uz mogućnost da otkažete porudžbinu ili sačekate ponovnu dostupnost. Takođe ćemo vam predložiti zamjenski proizvod, ukoliko postoji."},
-  { id: 'tacnost-informacija', title: '2. Tačnost informacija' },
-  { id: 'privatnost', title: '3. Povjerljivost i privatnost' },
-  { id: 'sigurnost', title: '4. Sigurnost i kolačići' },
-  { id: 'kupovina', title: '5. Kako se kupuje preko aplikacije?' },
-  { id: 'autorska-prava', title: '6. Autorsko pravo, ime Web shop, logo i oznake' },
-  { id: 'boje-proizvoda', title: '7. Informacija o boji proizvoda' },
-  { id: 'cijene', title: '8. Cijene proizvoda' },
-  { id: 'povrat', title: '9. Povrat proizvoda' },
-  { id: 'reklamacije', title: '10. Reklamacija' },
-  { id: 'isporuka', title: '11. Isporuka' },
-  { id: 'troskovi-isporuke', title: '12. Troškovi isporuke' },
-  { id: 'zakonitost', title: '13. Zakonitost' },
-  { id: 'izmjene', title: '14. Izmjene' },
-  { id: 'pitanja', title: '15. Dodatna pitanja?' },
+  { id: "usage", title: "Opšti uslovi korišćenja" },
+  { id: "privacy", title: "Politika privatnosti" },
+  { id: "cookies", title: "Politika kolačića" },
+  { id: "orders", title: "Obrada narudžbi" },
+  { id: "restrictions", title: "Ograničenja" },
 ];
 
-const TermsOfUse = () => {
-  const sectionRefs = useRef({});
-
+export default function TermsOfUse() {
   const scrollToSection = (id) => {
-    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className="terms-container">
-      <aside className="terms-sidebar">
+      <nav className="terms-sidebar">
         <ul>
           {sections.map((section) => (
-            <li key={section.id}>
-              <button onClick={() => scrollToSection(section.id)}>
-                {section.title}
-              </button>
+            <li key={section.id} onClick={() => scrollToSection(section.id)}>
+              {section.title}
             </li>
           ))}
         </ul>
-      </aside>
-      <main className="terms-content">
-        {sections.map((section) => (
-          <section
-            key={section.id}
-            id={section.id}
-            ref={(el) => (sectionRefs.current[section.id] = el)}
-          >
-            <h2>{section.title}</h2>
-            <p>
-              {/* Ovdje unesite odgovarajući tekst za svaku sekciju */}
-              {section.contetn}
-            </p>
-          </section>
-        ))}
-      </main>
+      </nav>
+      <div className="terms-content">
+        <section id="usage">
+          <h2>Opšti uslovi korišćenja</h2>
+          <p>
+            Korišćenjem sajta prihvatate uslove i pravila navedena u ovom
+            dokumentu. Molimo vas da ih pažljivo pročitate.
+          </p>
+        </section>
+
+        <section id="privacy">
+          <h2>Politika privatnosti</h2>
+          <p>
+            Vaši lični podaci se obrađuju u skladu sa zakonima o zaštiti
+            podataka. Ne delimo informacije trećim stranama bez vašeg pristanka.
+          </p>
+        </section>
+
+        <section id="cookies">
+          <h2>Politika kolačića</h2>
+          <p>
+            Na sajtu koristimo kolačiće kako bismo poboljšali korisničko
+            iskustvo. Možete ih onemogućiti u podešavanjima vašeg pretraživača.
+          </p>
+        </section>
+
+        <section id="orders">
+          <h2>Obrada narudžbi</h2>
+          <p>
+            Sve porudžbine se obrađuju u najkraćem mogućem roku. Zadržavamo
+            pravo na izmenu cena i dostupnosti proizvoda bez prethodne najave.
+            Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
+            vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez
+            recepta je u skladu sa važećim zakonima. Ne vršimo isporuku
+            proizvoda van teritorije Srbije. Prodaja lekova bez recepta je u
+            skladu sa važećim zakonima. Ne vršimo isporuku proizvoda van
+            teritorije Srbije. Prodaja lekova bez recepta je u skladu sa važećim
+            zakonima. Ne vršimo isporuku proizvoda van teritorije Srbije.
+          </p>
+        </section>
+
+        <section id="restrictions">
+          <h2>Ograničenja</h2>
+          <p>
+            Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
+            vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez
+            recepta je u skladu sa važećim zakonima. Ne vršimo isporuku
+            proizvoda van teritorije Srbije. Prodaja lekova bez recepta je u
+            skladu sa važećim zakonima. Ne vršimo isporuku proizvoda van
+            teritorije Srbije. Prodaja lekova bez recepta je u skladu sa važećim
+            zakonima. Ne vršimo isporuku proizvoda van teritorije Srbije.
+            Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
+            vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez
+            recepta je u skladu sa važećim zakonima. Ne vršimo isporuku
+            proizvoda van teritorije Srbije. Prodaja lekova bez recepta je u
+            skladu sa važećim zakonima. Ne vršimo isporuku proizvoda van
+            teritorije Srbije. Prodaja lekova bez recepta je u skladu sa važećim
+            zakonima. Ne vršimo isporuku proizvoda van teritorije Srbije.
+            Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
+            vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez
+            recepta je u skladu sa važećim zakonima. Ne vršimo isporuku
+            proizvoda van teritorije Srbije. Prodaja lekova bez recepta je u
+            skladu sa važećim zakonima. Ne vršimo isporuku proizvoda van
+            teritorije Srbije. Prodaja lekova bez recepta je u skladu sa važećim
+            zakonima. Ne vršimo isporuku proizvoda van teritorije Srbije.
+            Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
+            vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez
+            recepta je u skladu sa važećim zakonima. Ne vršimo isporuku
+            proizvoda van teritorije Srbije. Prodaja lekova bez recepta je u
+            skladu sa važećim zakonima. Ne vršimo isporuku proizvoda van
+            teritorije Srbije. Prodaja lekova bez recepta je u skladu sa važećim
+            zakonima. Ne vršimo isporuku proizvoda van teritorije Srbije.
+          </p>
+        </section>
+      </div>
     </div>
   );
-};
-
-export default TermsOfUse;
+}

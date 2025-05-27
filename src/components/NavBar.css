@@ -1,5 +1,5 @@
 .navbar {
-  background-color:var(--zelena);
+  background-color: var(--zelena);
   color: #5e2b97;
   display: flex;
   justify-content: space-between;
@@ -15,12 +15,12 @@
   text-decoration: none;
   color: var(--bez);
   padding: 8px 15px;
-  border-radius: 5px;
+  font-size: 120%;
   transition: all 0.3s ease;
 }
 
 .navbar a:hover {
-  color:  var(--tamnoZelena);
+  color: var(--tamnoZelena);
 
   transform: scale(1.05);
 }
@@ -34,7 +34,7 @@
 .cart span {
   font-weight: bold;
   margin-left: 5px;
-  color:  var(--bez);
+  color: var(--bez);
 }
 
 .cart:hover {
@@ -42,5 +42,5 @@
 }
 
 .cart:hover .cart-count {
-  color: var(--tamnoZelena); 
+  color: var(--tamnoZelena);
 }

@@ -1,0 +1,49 @@
+.complaints-container {
+  max-width: 80%;
+  margin: 60px auto;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #2f4f4f;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.complaints-title {
+  font-size: 2.5rem;
+  color: var(--tamnoZelena); /* tamno zelena */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.complaints-section {
+  margin-bottom: 25px;
+}
+
+.complaints-section h2 {
+  font-size: 1.5rem;
+  color: var(--tamnoZelena); /* tamnija zelena */
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--tamnoZelena); /* svetlija zelena */
+  padding-bottom: 4px;
+}
+
+.complaints-section p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.complaints-link {
+  color: var(--zelena);
+  text-decoration: underline;
+}
+
+.complaints-link:hover {
+  color: var(--tamnoZelena);
+}
+
+.complaints-warning {
+  color: #c53030; /* crvena za upozorenje */
+  font-weight: 600;
+}

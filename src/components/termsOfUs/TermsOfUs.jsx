@@ -2,11 +2,11 @@ import React from "react";
 import "./TermsOfUse.css";
 
 const sections = [
-  { id: "usage", title: "Opšti uslovi korišćenja" },
-  { id: "privacy", title: "Politika privatnosti" },
-  { id: "cookies", title: "Politika kolačića" },
-  { id: "orders", title: "Obrada narudžbi" },
-  { id: "restrictions", title: "Ograničenja" },
+  { id: "usage", title: "1. Opšti uslovi" },
+  { id: "privacy", title: "2. Politika privatnosti" },
+  { id: "cookies", title: "3. Politika kolačića" },
+  { id: "orders", title: "4. Obrada narudžbi" },
+  { id: "restrictions", title: "5.Ograničenja" },
 ];
 
 export default function TermsOfUse() {
@@ -28,7 +28,7 @@ export default function TermsOfUse() {
       </nav>
       <div className="terms-content">
         <section id="usage">
-          <h2>Opšti uslovi korišćenja</h2>
+          <h2>1. Opšti uslovi korišćenja</h2>
           <p>
             Korišćenjem sajta prihvatate uslove i pravila navedena u ovom
             dokumentu. Molimo vas da ih pažljivo pročitate.
@@ -36,7 +36,7 @@ export default function TermsOfUse() {
         </section>
 
         <section id="privacy">
-          <h2>Politika privatnosti</h2>
+          <h2>2. Politika privatnosti</h2>
           <p>
             Vaši lični podaci se obrađuju u skladu sa zakonima o zaštiti
             podataka. Ne delimo informacije trećim stranama bez vašeg pristanka.
@@ -44,7 +44,7 @@ export default function TermsOfUse() {
         </section>
 
         <section id="cookies">
-          <h2>Politika kolačića</h2>
+          <h2>3. Politika kolačića</h2>
           <p>
             Na sajtu koristimo kolačiće kako bismo poboljšali korisničko
             iskustvo. Možete ih onemogućiti u podešavanjima vašeg pretraživača.
@@ -52,7 +52,7 @@ export default function TermsOfUse() {
         </section>
 
         <section id="orders">
-          <h2>Obrada narudžbi</h2>
+          <h2>4. Obrada narudžbi</h2>
           <p>
             Sve porudžbine se obrađuju u najkraćem mogućem roku. Zadržavamo
             pravo na izmenu cena i dostupnosti proizvoda bez prethodne najave.
@@ -67,7 +67,7 @@ export default function TermsOfUse() {
         </section>
 
         <section id="restrictions">
-          <h2>Ograničenja</h2>
+          <h2>5. Ograničenja</h2>
           <p>
             Prodaja lekova bez recepta je u skladu sa važećim zakonima. Ne
             vršimo isporuku proizvoda van teritorije Srbije. Prodaja lekova bez

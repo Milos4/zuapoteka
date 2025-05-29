@@ -39,7 +39,24 @@
 .faq-answer {
   margin-top: 10px;
   font-size: 18px;
-  color: black;
+  color: #333;
   line-height: 1.6;
   padding-right: 10px;
+}
+
+.faq-question {
+  font-weight: bold;
+  font-size: 23px;
+  cursor: pointer;
+  color: var(--zelena);
+  transition: 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-icon {
+  font-size: 28px;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
 }

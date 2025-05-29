@@ -1,0 +1,103 @@
+.contact-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 40px 0;
+  font-family: "'Arial', sans-serif";
+}
+
+/* Mapa */
+.map-placeholder {
+  height: 400px;
+  background-color: #e2e2e2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-bottom: 50px;
+}
+
+/* Lokacije */
+.locations {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+.location {
+  flex: 1;
+  background-color: var(--skoroBijela);
+  border: 1px solid var(--tamnoZelena);
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.location:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.location h3 {
+  color: var(--zelena);
+  margin-bottom: 15px;
+  margin-top: 10px;
+  font-size: 25px;
+}
+.location p {
+  font-size: 20px;
+}
+
+/* Forma */
+.contact-form {
+  background-color: var(--skoroBijela);
+  border: 1px solid var(--tamnoZelena);
+  padding: 30px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form h2 {
+  color: var(--zelena);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  color: #333; /* tekst boja */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Fokus efekat */
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--zelena);
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 128, 0, 0.3); /* nežni zeleni sjaj (opciono) */
+}
+
+.contact-form button {
+  padding: 12px;
+  background-color: var(--zelena);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: var(--tamnoZelena);
+}

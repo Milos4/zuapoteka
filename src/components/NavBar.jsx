@@ -1,19 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import './NavBar.css';
-import logo from '../assets/Logo1.png';
-import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import "./NavBar.css";
+import logo from "../assets/Logo1.png";
+import { Link } from "react-router-dom";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 
 const NavBar = () => {
   const [cartCount, setCartCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cart.length);
   }, []);
 
+  useEffect(() => {
+    let prevScrollPos = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      setIsVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      prevScrollPos = currentScrollPos;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isVisible ? "" : "hidden-navbar"}`}>
       <div className="left">
         <img src={logo} alt="Logo" className="logo" />
       </div>

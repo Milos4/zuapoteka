@@ -28,37 +28,43 @@ const faqData = [
 ];
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndexes, setOpenIndexes] = useState([]);
   const contentRefs = useRef([]);
 
   const toggleAnswer = (index) => {
-    setOpenIndex((prev) => (prev === index ? null : index));
+    setOpenIndexes(
+      (prev) =>
+        prev.includes(index)
+          ? prev.filter((i) => i !== index) // zatvori ako je već otvoreno
+          : [...prev, index] // dodaj ako nije
+    );
   };
 
   return (
     <div className="faq-container">
       <h1>Najčešća pitanja u vezi Web prodavnice</h1>
-      {faqData.map((item, index) => (
-        <div className="faq-item" key={index}>
-          <div className="faq-question" onClick={() => toggleAnswer(index)}>
-            {item.question}
-          </div>
-          <div
-            ref={(el) => (contentRefs.current[index] = el)}
-            className={`faq-answer-wrapper ${
-              openIndex === index ? "open" : ""
-            }`}
-            style={{
-              height:
-                openIndex === index
+      {faqData.map((item, index) => {
+        const isOpen = openIndexes.includes(index);
+        return (
+          <div className="faq-item" key={index}>
+            <div className="faq-question" onClick={() => toggleAnswer(index)}>
+              {item.question}
+              <span className="faq-icon">{isOpen ? "−" : "+"}</span>
+            </div>
+            <div
+              ref={(el) => (contentRefs.current[index] = el)}
+              className={`faq-answer-wrapper ${isOpen ? "open" : ""}`}
+              style={{
+                height: isOpen
                   ? `${contentRefs.current[index]?.scrollHeight}px`
                   : "0px",
-            }}
-          >
-            <div className="faq-answer">{item.answer}</div>
+              }}
+            >
+              <div className="faq-answer">{item.answer}</div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

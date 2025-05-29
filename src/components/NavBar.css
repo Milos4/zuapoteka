@@ -1,6 +1,5 @@
 .navbar {
   background-color: var(--zelena);
-  color: #5e2b97;
   display: flex;
   justify-content: space-between;
   align-items: center;

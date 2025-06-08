@@ -19,7 +19,7 @@ const CustomerSupport = () => {
           </a>
         </p>
         <p>📞 062/123-456</p>
-        <p>📍 Apoteka "Zdravlje", Ulica Zmaja od Bosne 45, Sarajevo</p>
+        <p>📍 Apoteka "Higra-Saric", Ulica ...., Bijeljina</p>
       </section>
 
       <section className="complaints-section">
@@ -59,13 +59,11 @@ const CustomerSupport = () => {
           Isporuku vršimo na teritoriji Bosne i Hercegovine putem brze pošte.
         </p>
         <p>
-          Rok isporuke je obično <strong>1 do 3 radna dana</strong>, u
-          zavisnosti od lokacije.
-        </p>
-        <p>
-          Cijena dostave iznosi <strong>10,00 KM</strong> za sve narudžbe do 60
-          KM. Za narudžbe iznad <strong>60,00 KM</strong>, dostava je{" "}
-          <strong>besplatna</strong>.
+          Infomacije o dostavi mozete pročitati na{" "}
+          <a href="/info-dostava" className="complaints-link">
+            Uslovi korištenja
+          </a>
+          .
         </p>
       </section>
 

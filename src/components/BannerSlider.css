@@ -1,64 +1,80 @@
 .banner-slider {
-    position: relative;
-    width: 90%;
-    height: 45vh;
-    margin: 30px auto;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  position: relative;
+  width: 90%;
+  aspect-ratio: 3/1;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .banner-wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    will-change: transform; /* Poboljšava performanse animacije */
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform; /* Poboljšava performanse animacije */
 }
 
 /* Stil za svaku sliku */
 .banner-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    flex-shrink: 0; /* Svaka slika zauzima punu širinu */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Ostali CSS ostaje isti */
 .banner-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: transparent;
-    border: none;
-    color: var(--zelena);
-    font-size: 50px;
-    cursor: pointer;
-    z-index: 3;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: var(--zelena);
+  font-size: 50px;
+  cursor: pointer;
+  z-index: 3;
 }
 
 .banner-button.left {
-    left: 10px;
+  left: 10px;
 }
 
 .banner-button.right {
-    right: 10px;
+  right: 10px;
 }
 
 .banner-button:hover {
-    color: var(--tamnoZelena);
+  color: var(--tamnoZelena);
 }
 
 .banner-wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.8s ease;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
 }
 
 .banner-wrapper.right {
-    transition: transform 0.8s ease;
+  transition: transform 0.8s ease;
 }
 
 .banner-wrapper.left {
-    transition: transform 0.8s ease;
+  transition: transform 0.8s ease;
+}
+
+@media (max-width: 1024px) {
+  .banner-slider {
+    width: 90%;
+    aspect-ratio: 3/1;
+  }
+}
+
+/* Mobilni portret (ekrani uspravno) */
+@media (max-width: 600px) {
+  .banner-slider {
+    width: 90%;
+    aspect-ratio: 4 / 3; /* kvadrat */
+    max-height: none; /* pusti da aspect-ratio diktira visinu */
+  }
 }

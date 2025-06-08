@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './BannerSlider.css';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import "./BannerSlider.css";
 
 const BannerSlider = ({ banners }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,7 +11,7 @@ const BannerSlider = ({ banners }) => {
 
   // Create extended array with banners at the beginning and end for infinite effect
   const extendedBanners = [...banners, ...banners, ...banners];
-  
+
   // Start from the middle set to allow movements in both directions
   const startingIndex = banners.length;
 
@@ -21,28 +21,31 @@ const BannerSlider = ({ banners }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goToSlide = useCallback((newIndex) => {
-    if (isAnimating) return;
-    
-    setIsAnimating(true);
-    setTransitionEnabled(true);
-    setCurrentIndex(newIndex);
-    
-    // Reset position after animation if we've moved to a clone
-    setTimeout(() => {
-      // If we moved to the right clone set
-      if (newIndex >= banners.length * 2) {
-        setTransitionEnabled(false);
-        setCurrentIndex(newIndex - banners.length);
-      }
-      // If we moved to the left clone set
-      else if (newIndex < banners.length) {
-        setTransitionEnabled(false);
-        setCurrentIndex(newIndex + banners.length);
-      }
-      setIsAnimating(false);
-    }, 800);
-  }, [banners.length, isAnimating]);
+  const goToSlide = useCallback(
+    (newIndex) => {
+      if (isAnimating) return;
+
+      setIsAnimating(true);
+      setTransitionEnabled(true);
+      setCurrentIndex(newIndex);
+
+      // Reset position after animation if we've moved to a clone
+      setTimeout(() => {
+        // If we moved to the right clone set
+        if (newIndex >= banners.length * 2) {
+          setTransitionEnabled(false);
+          setCurrentIndex(newIndex - banners.length);
+        }
+        // If we moved to the left clone set
+        else if (newIndex < banners.length) {
+          setTransitionEnabled(false);
+          setCurrentIndex(newIndex + banners.length);
+        }
+        setIsAnimating(false);
+      }, 800);
+    },
+    [banners.length, isAnimating]
+  );
 
   const nextSlide = useCallback(() => {
     goToSlide(currentIndex + 1);
@@ -73,21 +76,20 @@ const BannerSlider = ({ banners }) => {
         className="banner-wrapper"
         onClick={handleClick}
         style={{
-          transform: `translateX(-${(currentIndex * 100) / extendedBanners.length}%)`,
-          transition: transitionEnabled ? 'transform 0.8s ease' : 'none',
-          width: `${extendedBanners.length * 100}%`
+          transform: `translateX(-${
+            (currentIndex * 100) / extendedBanners.length
+          }%)`,
+          transition: transitionEnabled ? "transform 0.8s ease" : "none",
+          width: `${extendedBanners.length * 100}%`,
         }}
       >
         {extendedBanners.map((banner, index) => (
-          <div 
+          <div
             key={index}
             className="banner-slide"
             style={{ width: `${100 / extendedBanners.length}%` }}
           >
-            <img
-              src={banner.image}
-              alt={banner.alt}
-            />
+            <img src={banner.image} alt={banner.alt} />
           </div>
         ))}
       </div>
@@ -95,12 +97,16 @@ const BannerSlider = ({ banners }) => {
         className="banner-button left"
         onClick={prevSlide}
         disabled={isAnimating}
-      >‹</button>
+      >
+        ‹
+      </button>
       <button
         className="banner-button right"
         onClick={nextSlide}
         disabled={isAnimating}
-      >›</button>
+      >
+        ›
+      </button>
     </div>
   );
 };

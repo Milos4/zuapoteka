@@ -63,8 +63,8 @@ const CustomerSupport = () => {
           zavisnosti od lokacije.
         </p>
         <p>
-          Cijena dostave iznosi <strong>6,00 KM</strong> za sve narudžbe do 70
-          KM. Za narudžbe iznad <strong>70,00 KM</strong>, dostava je{" "}
+          Cijena dostave iznosi <strong>10,00 KM</strong> za sve narudžbe do 60
+          KM. Za narudžbe iznad <strong>60,00 KM</strong>, dostava je{" "}
           <strong>besplatna</strong>.
         </p>
       </section>

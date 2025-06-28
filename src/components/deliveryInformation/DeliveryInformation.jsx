@@ -22,9 +22,8 @@ const DeliveryInformation = () => {
       <section className="complaints-section">
         <h2>2. Troškovi dostave</h2>
         <p>
-          Trošak dostave iznosi <strong>250 RSD</strong> za porudžbine ispod
-          3.000 RSD. Za porudžbine iznad 3.000 RSD, dostava je{" "}
-          <strong>besplatna</strong>.
+          Trošak dostave iznosi <strong>10 KM</strong> za porudžbine ispod 60
+          KM. Za porudžbine iznad 60KM, dostava je <strong>besplatna</strong>.
         </p>
       </section>
 

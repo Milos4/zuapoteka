@@ -37,13 +37,13 @@ const ProductDetails = ({ product }) => {
           {product.discount > 0 ? (
             <>
               <div className="price-rows">
-                <div className="original-price crossed">{product.price.toFixed(2)} RSD</div>
-                <div className="discounted-price">{discountedPrice} RSD</div>
+                <div className="original-price crossed">{product.price.toFixed(2)} BAM</div>
+                <div className="discounted-price">{discountedPrice} BAM</div>
               </div>
               <div className="discount-circle">-{product.discount}%</div>
             </>
           ) : (
-            <div className="original-price">{product.price.toFixed(2)} RSD</div>
+            <div className="original-price">{product.price.toFixed(2)} BAM</div>
           )}
         </div>
 

@@ -6,13 +6,13 @@ import Footer from "../components/Footer";
 
 const sampleProduct = new Product({
   productId: "p1",
-  name: "Pametni telefon",
-  brand: "Xiaomi",
-  category: "Elektronika",
-  subCategory: "Mobilni telefoni",
-  description: "Najnoviji Xiaomi model sa odličnim kamerama.",
+  name: "Krema za tijelo",
+  brand: "Loreal",
+  category: "Njega tijela",
+  subCategory: "Kreme",
+  description: "Najnovija Loreal krema sa mirisom lavande.",
   discount: 10,
-  price: 999.99,
+  price: 44.55,
   stockQuantity: true,
   imageUrl: "https://images.pexels.com/photos/66869/green-leaf-natural-wallpaper-royalty-free-66869.jpeg",
   brandImageUrl:"https://logos-world.net/wp-content/uploads/2020/04/LOreal-Logo.png"

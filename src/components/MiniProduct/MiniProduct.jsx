@@ -52,7 +52,7 @@ const MiniProduct = () => {
               <div className={styles.availability}>
                 <span className={styles.checkbox}><CheckIcon size={14} /></span> Na stanju
               </div>
-              <div className={styles.price}>{product.price} RSD</div>
+              <div className={styles.price}>{product.price} BAM</div>
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ const BigComboProduct = ({ product1, product2, comboPrice, regularPrice }) => {
     <div className="big-combo-container">
       <div className="big-combo-header">
         <span className="big-combo-badge">KOMBO PAKET</span>
-        <span className="big-combo-savings">Ušteda {savings} RSD</span>
+        <span className="big-combo-savings">Ušteda {savings} BAM</span>
       </div>
       
       <div className="big-products-diagonal">
@@ -41,10 +41,10 @@ const BigComboProduct = ({ product1, product2, comboPrice, regularPrice }) => {
       
       <div className="big-combo-footer">
         <div className="price-container">
-          <span className="big-regular-price">{regularPrice} RSD</span>
-          <span className="big-combo-price">{comboPrice} RSD</span>
+          <span className="big-regular-price">{regularPrice} BAM</span>
+          <span className="big-combo-price">{comboPrice} BAM</span>
         </div>
-        <p className="big-combo-description">Specijalna ponuda - uštedite {savings} RSD</p>
+        <p className="big-combo-description">Specijalna ponuda - uštedite {savings} BAM</p>
       </div>
     </div>
   );

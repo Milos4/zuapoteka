@@ -44,8 +44,8 @@ const HomePage = () => {
           image: "/putanja/do/slike2.jpg",
           name: "Proizvod 2",
         }}
-        comboPrice={2999}
-        regularPrice={3999}
+        comboPrice={299}
+        regularPrice={399}
       />
       <BigComboProduct
         product1={{
@@ -56,8 +56,8 @@ const HomePage = () => {
           image: "/putanja/do/slike2.jpg",
           name: "Premium Proizvod 2",
         }}
-        comboPrice={4999}
-        regularPrice={6999}
+        comboPrice={49}
+        regularPrice={69}
       />
       <MiniProduct />
       {/* Ovde možeš dodati druge sekcije kao featured products itd. */}

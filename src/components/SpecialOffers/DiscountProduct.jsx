@@ -29,8 +29,8 @@ const DiscountProduct = ({ image, name, description, price, oldPrice }) => {
       <h3>{name}</h3>
       <p>{description}</p>
       <div className="price-box">
-        <span className="old-price">{oldPrice} RSD</span>
-        <span className="new-price">{price} RSD</span>
+        <span className="old-price">{oldPrice} BAM </span>
+        <span className="new-price">{price} BAM</span>
       </div>
     </div>
   );

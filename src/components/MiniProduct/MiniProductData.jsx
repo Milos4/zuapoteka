@@ -2,28 +2,28 @@
 export const products = [
   {
     id: 1,
-    name: 'Vitamin C 1000mg sa produženim oslobađanjem',
+    name: 'Vitamin C 1000mg',
     price: '12.99',
     oldPrice: '15.99',
     type: 'Za lice'
   },
   {
     id: 2,
-    name: 'Krema za lice sa aloe verom',
+    name: 'Krema za lice',
     price: '24.99',
     oldPrice: '29.99',
     type: 'Za lice'
   },
   {
     id: 3,
-    name: 'Omega 3 masne kiseline 1000mg',
+    name: 'Omega 3 masne kiseline',
     price: '32.50',
     oldPrice: '40.00',
     type: 'Za lice'
   },
   {
     id: 4,
-    name: 'Probiotik sa 50 milijardi kultura',
+    name: 'Probiotik ',
     price: '18.99',
     oldPrice: '22.99',
     type: 'Za lice'

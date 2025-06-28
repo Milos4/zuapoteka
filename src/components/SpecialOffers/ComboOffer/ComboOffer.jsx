@@ -11,7 +11,7 @@ const ComboOffer = ({ product1, product2, comboPrice, regularPrice }) => {
     <div className="combo-offer-card">
       <div className="combo-header">
         <span className="combo-badge">1+1 PONUDA</span>
-        <span className="combo-savings">Ušteda {savings} RSD</span>
+        <span className="combo-savings">Ušteda {savings} BAM</span>
       </div>
       
       <div className="combo-images-container">
@@ -41,8 +41,8 @@ const ComboOffer = ({ product1, product2, comboPrice, regularPrice }) => {
         <p className="combo-description">Kupite oba proizvoda zajedno po specijalnoj cijeni</p>
         
         <div className="combo-prices">
-          <span className="regular-price">{regularPrice} RSD</span>
-          <span className="combo-price">{comboPrice} RSD</span>
+          <span className="regular-price">{regularPrice} BAM</span>
+          <span className="combo-price">{comboPrice} BAM</span>
         </div>
       </div>
     </div>

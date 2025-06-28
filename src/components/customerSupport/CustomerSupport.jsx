@@ -19,7 +19,7 @@ const CustomerSupport = () => {
           </a>
         </p>
         <p>📞 062/123-456</p>
-        <p>📍 Apoteka "Zdravlje", Ulica Zmaja od Bosne 45, Sarajevo</p>
+        <p>📍 Apoteka Higra Saric, Bijeljina</p>
       </section>
 
       <section className="complaints-section">

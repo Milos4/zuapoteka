@@ -29,7 +29,7 @@ const RegularProduct = ({ image, name, description, price }) => {
       <h3>{name}</h3>
       <p>{description}</p>
       <div className="price-box">
-        <span className="new-price">{price} RSD</span>
+        <span className="new-price">{price} BAM</span>
       </div>
     </div>
   );

@@ -3,11 +3,19 @@ import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
-
+import img2 from '../assets/products/img2.jpg';
 const sampleProducts = [
-  { id: 1, name: "Biljka Fikus", price: 2500, originalPrice: 3000, onSale: true },
-  { id: 2, name: "Kaktus", price: 1200, originalPrice: 1200, onSale: false },
-  { id: 3, name: "Monstera", price: 3300, originalPrice: 4000, onSale: true },
+  { id: 1, name: "Biljka Fikus", price: 2500, originalPrice: 3000, onSale: true, image: img2 },
+  { id: 2, name: "Kaktus", price: 1200, originalPrice: 12, onSale: false },
+  { id: 3, name: "Monstera", price: 300, originalPrice: 40, onSale: true },
+  { id: 4, name: "Monstera", price: 300, originalPrice: 400, onSale: false },
+  { id: 5, name: "Monstera", price: 300, originalPrice: 40, onSale: true },
+  { id: 6, name: "Monstera", price: 300, originalPrice: 40, onSale: true },
+  { id: 7, name: "Monstera", price: 300, originalPrice: 200, onSale: true },
+  { id: 8, name: "Monstera", price: 300, originalPrice: 1000, onSale: true },
+  { id: 9, name: "Monstera", price: 300, originalPrice: 200, onSale: true },
+  { id: 10, name: "Monstera", price: 300, originalPrice: 100, onSale: true },
+  { id: 11, name: "Monstera", price: 300, originalPrice: 500, onSale: true },
 ];
 
 const CartProductsPage = () => {
@@ -116,7 +124,7 @@ const CartProductsPage = () => {
                         fontSize: "14px",
                       }}
                     >
-                      {item.originalPrice * item.quantity} din
+                      {item.originalPrice * item.quantity} BAM
                     </p>
                   )}
                   <p
@@ -127,7 +135,7 @@ const CartProductsPage = () => {
                       fontSize: item.onSale ? "18px" : "16px",
                     }}
                   >
-                    {item.price * item.quantity} din
+                    {item.price * item.quantity} BAM
                     {item.onSale && (
                       <span
                         style={{
@@ -139,7 +147,7 @@ const CartProductsPage = () => {
                           fontSize: "12px",
                         }}
                       >
-                        Ušteda {(item.originalPrice - item.price) * item.quantity} din
+                        Ušteda {(item.originalPrice - item.price) * item.quantity} BAM
                       </span>
                     )}
                   </p>
@@ -264,7 +272,7 @@ const CartProductsPage = () => {
 
           <div style={{ fontSize: "14px", color: "#444" }}>
             <p>
-              Iznos artikala: <strong>{subtotal} din</strong>
+              Iznos artikala: <strong>{subtotal} BAM</strong>
             </p>
             {cart.some((item) => item.onSale) && (
               <p
@@ -281,16 +289,16 @@ const CartProductsPage = () => {
                     (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
                     0
                   )}{" "}
-                din </strong>
+                BAM </strong>
               </p>
             )}
             
             <p>
-              Poštarina: <strong>0 din</strong>
+              Poštarina: <strong>0 BAM</strong>
             </p>
             <hr />
             <p style={{ fontWeight: "bold", fontSize: "16px" }}>
-              Ukupno: {total} din
+              Ukupno: {total} BAM
             </p>
             
           </div>

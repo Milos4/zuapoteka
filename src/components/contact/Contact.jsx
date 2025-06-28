@@ -32,14 +32,14 @@ const Contact = () => {
       {/* Lokacije */}
       <div className="locations">
         <div className="location">
-          <h3>Apoteka Zdravlje - Centar</h3>
-          <p>Ulica: Kralja Petra I 12, Beograd</p>
+          <h3>Apoteka Higra Saric</h3>
+          <p>Agrotrzni centar Lamela B , Bijeljina Ulica 456</p>
           <p>Telefon: 011/123-456</p>
           <p>Radno vreme: Pon-Pet 08:00 - 20:00</p>
         </div>
         <div className="location">
-          <h3>Apoteka Zdravlje - Novi Beograd</h3>
-          <p>Ulica: Bulevar Zorana Đinđića 88, Beograd</p>
+          <h3>Apoteka Higra Saric - Bijeljina</h3>
+          <p>Ulica: Bulevar Zorana Đinđića 88, Bijeljina</p>
           <p>Telefon: 011/654-321</p>
           <p>Radno vreme: Pon-Pet 08:00 - 21:00</p>
         </div>

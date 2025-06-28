@@ -1,7 +1,7 @@
 .navbar {
   background-color: var(--zelena);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 0.5rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -24,6 +24,27 @@
   transform: scale(1.05);
 }
 
+.search {
+  flex: 0.5;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--bez);
+  font-size: 0.95rem;
+  width: 150%;
+  max-width: 650px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--tamnoZelena); /* ili var(--zelena) ako hoćeš svetliju */
+  box-shadow: 0 0 0 2px rgba(0, 128, 0, 0.2); /* suptilni zeleni glow (opciono) */
+}
+
 .center a,
 .right a {
   margin: 0 15px;
@@ -42,4 +63,59 @@
 
 .cart:hover .cart-count {
   color: var(--tamnoZelena);
+}
+
+.right a {
+  margin: 0 15px; /* umesto 15px, da budu bliže */
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--bez);
+  padding: 5px;
+  user-select: none;
+  font-size: 20px;
+}
+.user-icon:hover {
+  color: var(--tamnoZelena);
+}
+
+.ime {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  color: var(--bez);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 15px;
+  padding: 8px 15px;
+  border-bottom: 1px solid var(--bez);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  color: var(--tamnoZelena);
+}
+
+.dropdown-menu {
+  width: 200px;
+  margin-left: 100px;
 }

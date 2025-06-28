@@ -1,10 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, db } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import login from "../assets/Slika2.jpg";
 import "./LoginForm.css";
-import login from "../assets/login.jpg";
-
-import { Link } from "react-router-dom";
 
 const LoginForm = () => {
+  const [formData, setFormData] = useState({
+    usernameOrEmail: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { usernameOrEmail, password } = formData;
+
+    if (!usernameOrEmail || !password) {
+      alert("Popunite sva polja.");
+      return;
+    }
+
+    try {
+      let emailToUse = usernameOrEmail;
+
+      // Ako nije email, traži username u Firestore-u
+      if (!usernameOrEmail.includes("@")) {
+        const q = query(
+          collection(db, "users"),
+          where("username", "==", usernameOrEmail)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          alert("Korisničko ime nije pronađeno.");
+          return;
+        }
+
+        const userDoc = querySnapshot.docs[0].data();
+        emailToUse = userDoc.email;
+      }
+
+      // Login sa emailom i šifrom
+      await signInWithEmailAndPassword(auth, emailToUse, password);
+
+      alert("Uspešno ste prijavljeni!");
+      navigate("/pocetna"); // ili gde već hoćeš da ideš posle prijave
+    } catch (error) {
+      alert("Greška pri prijavi: " + error.message);
+    }
+  };
+
   return (
     <div className="login-container">
       {/* Left: Image */}
@@ -15,15 +70,17 @@ const LoginForm = () => {
       {/* Right: Form */}
       <div className="login-form">
         <h1>Prijava</h1>
-        <form action="#" method="POST">
+        <form action="#" method="POST" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="form-group">
-            <label htmlFor="username">Korisničko ime</label>
+            <label htmlFor="usernameOrEmail">Korisničko ime ili email</label>
             <input
               type="text"
-              id="username"
-              name="username"
+              id="usernameOrEmail"
+              name="usernameOrEmail"
               autoComplete="off"
+              value={formData.usernameOrEmail}
+              onChange={handleChange}
             />
           </div>
 
@@ -35,6 +92,8 @@ const LoginForm = () => {
               id="password"
               name="password"
               autoComplete="off"
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
 

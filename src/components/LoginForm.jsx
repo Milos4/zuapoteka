@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import login from "../assets/Slika2.jpg";
 import "./LoginForm.css";
 
@@ -49,17 +56,32 @@ const LoginForm = () => {
         const userDoc = querySnapshot.docs[0].data();
         emailToUse = userDoc.email;
       }
-
       // Login sa emailom i šifrom
-      await signInWithEmailAndPassword(auth, emailToUse, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        emailToUse,
+        password
+      );
 
-      alert("Uspešno ste prijavljeni!");
-      navigate("/pocetna"); // ili gde već hoćeš da ideš posle prijave
+      // Nakon prijave, učitaj rolu iz Firestore
+      const userDocRef = doc(db, "users", userCredential.user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        if (userData.role === "admin") {
+          navigate("/admin"); // Ako je admin, idi na admin dashboard
+        } else {
+          navigate("/pocetna"); // Inače idi na početnu
+        }
+      } else {
+        // Ako nema role, idi na početnu
+        navigate("/pocetna");
+      }
     } catch (error) {
       alert("Greška pri prijavi: " + error.message);
     }
   };
-
   return (
     <div className="login-container">
       {/* Left: Image */}

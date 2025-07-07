@@ -83,10 +83,6 @@ const NavBar = () => {
         <Link to="/kontakt">Kontakt</Link>
       </div>
 
-      <div className="search">
-        <input type="text" placeholder="Pretraži..." className="search-input" />
-      </div>
-
       <div
         className="right"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -109,10 +105,10 @@ const NavBar = () => {
             <div
               className="user-icon"
               onClick={() => setDropdownOpen(!dropdownOpen)}
+              style={{ display: "flex", alignItems: "center", padding: "5px" }}
             >
               <div>
                 <FaUser size={20} />
-                <RiArrowDropDownLine size={20} />
               </div>
             </div>
 

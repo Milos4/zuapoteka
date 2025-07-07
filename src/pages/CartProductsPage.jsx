@@ -3,9 +3,16 @@ import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
-import img2 from '../assets/products/img2.jpg';
+import img2 from "../assets/products/img2.jpg";
 const sampleProducts = [
-  { id: 1, name: "Biljka Fikus", price: 2500, originalPrice: 3000, onSale: true, image: img2 },
+  {
+    id: 1,
+    name: "Biljka Fikus",
+    price: 2500,
+    originalPrice: 3000,
+    onSale: true,
+    image: img2,
+  },
   { id: 2, name: "Kaktus", price: 1200, originalPrice: 12, onSale: false },
   { id: 3, name: "Monstera", price: 300, originalPrice: 40, onSale: true },
   { id: 4, name: "Monstera", price: 300, originalPrice: 400, onSale: false },
@@ -40,14 +47,15 @@ const CartProductsPage = () => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  
-  const total = (subtotal ).toFixed(2);
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const total = subtotal.toFixed(2);
 
   return (
     <div style={{ backgroundColor: "var(--bez)", minHeight: "100vh" }}>
-      <Navbar />
-
       <div
         style={{
           display: "flex",
@@ -113,7 +121,9 @@ const CartProductsPage = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <h3 style={{ margin: 0, color: "var(--tamnoZelena)" }}>{item.name}</h3>
+                <h3 style={{ margin: 0, color: "var(--tamnoZelena)" }}>
+                  {item.name}
+                </h3>
                 <div>
                   {item.onSale && (
                     <p
@@ -147,7 +157,8 @@ const CartProductsPage = () => {
                           fontSize: "12px",
                         }}
                       >
-                        Ušteda {(item.originalPrice - item.price) * item.quantity} BAM
+                        Ušteda{" "}
+                        {(item.originalPrice - item.price) * item.quantity} BAM
                       </span>
                     )}
                   </p>
@@ -278,21 +289,24 @@ const CartProductsPage = () => {
               <p
                 style={{
                   color: "var(--crvena)",
-                  
+
                   marginTop: "8px",
                 }}
               >
-                Ušteda:<strong>
-                {cart
-                  .filter((item) => item.onSale)
-                  .reduce(
-                    (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
-                    0
-                  )}{" "}
-                BAM </strong>
+                Ušteda:
+                <strong>
+                  {cart
+                    .filter((item) => item.onSale)
+                    .reduce(
+                      (sum, item) =>
+                        sum + (item.originalPrice - item.price) * item.quantity,
+                      0
+                    )}{" "}
+                  BAM{" "}
+                </strong>
               </p>
             )}
-            
+
             <p>
               Poštarina: <strong>0 BAM</strong>
             </p>
@@ -300,7 +314,6 @@ const CartProductsPage = () => {
             <p style={{ fontWeight: "bold", fontSize: "16px" }}>
               Ukupno: {total} BAM
             </p>
-            
           </div>
 
           <div style={{ marginTop: "20px", textAlign: "center" }}>

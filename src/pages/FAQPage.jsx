@@ -13,7 +13,6 @@ const FAQPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <FAQ />
       <Footer />
     </div>

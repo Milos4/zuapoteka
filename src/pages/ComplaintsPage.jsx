@@ -13,7 +13,6 @@ const ComplaintsPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <Complaints />
       <Footer />
     </div>

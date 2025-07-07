@@ -30,8 +30,14 @@ const banners = [
 
 const HomePage = () => {
   return (
-    <div style={{ backgroundColor: "#FAF1E6" }}>
-      <Navbar />
+    <div
+      style={{
+        fontFamily: "'Arial', sans-serif",
+        color: "#333",
+        lineHeight: 1.6,
+        backgroundColor: "#FAF1E6",
+      }}
+    >
       <BannerSlider banners={banners} />
       <PharmacyCategories />
       <SpecialOffers />

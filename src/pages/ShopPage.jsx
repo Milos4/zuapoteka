@@ -5,7 +5,6 @@ import Footer from "../components/Footer";
 const ShopPage = () => {
   return (
     <div>
-      <Navbar />
       <Footer />
     </div>
   );

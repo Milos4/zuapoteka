@@ -13,7 +13,6 @@ const ContactPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <Contact />
       <Footer />
     </div>

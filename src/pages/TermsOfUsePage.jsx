@@ -13,7 +13,6 @@ const TermsOfUsPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <TermsOfUs />
       <Footer />
     </div>

@@ -13,7 +13,6 @@ const DeliveryInformationPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <DInfo />
       <Footer />
     </div>

@@ -13,7 +13,6 @@ const CustomerSupportPage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <Navbar />
       <CSupport />
       <Footer />
     </div>

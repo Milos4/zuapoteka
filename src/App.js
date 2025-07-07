@@ -2,6 +2,16 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/colors.css";
 
+import NavBar from "./components/NavBar";
+import NavBarAdmin from "./components/admin/NavBarAdmin";
+
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "./firebase";
+import { doc, getDoc } from "firebase/firestore";
+
+import AdminRoute from "./components/admin/AdminRoute";
+
 //Pages
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
@@ -21,14 +31,47 @@ import FavoritesPage from "./pages/FavoritesPage";
 import FAQPage from "./pages/FAQPage";
 import ProductDetailsPage from "./pages/ProductDeatilsPage";
 
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+
 import ScrollToTop from "./components/ScrollToTop";
+
+import { useLocation } from "react-router-dom";
 
 ////
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setRole(data.role || "user");
+        }
+      } else {
+        setRole("");
+      }
+      setLoading(false); // <- ovde završi loading
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const location = useLocation();
+  const hideNavbarRoutes = ["/prijava", "/registracija"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  if (loading) return null;
   return (
     <>
       <ScrollToTop />
+      {!shouldHideNavbar &&
+        (role === "admin" ? <NavBarAdmin /> : <NavBar />)}{" "}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pocetna" element={<HomePage />} />
@@ -54,6 +97,14 @@ function App() {
           element={<ForgottenPasswordPage />}
         />
         <Route path="/prodavnica" element={<ProductDetailsPage />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboardPage />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </>
   );

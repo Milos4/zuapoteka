@@ -131,10 +131,10 @@
 }
 
 .badge.discount {
-  background-color: #c62828;
+   background: linear-gradient(135deg, #c62828 0%, #a21a1a 100%);
 }
 .badge.new {
-  background-color: #2e7d32;
+  background: var(--green-gradient);
 }
 .badge.gift {
   background-color: #5d4037;

@@ -1,0 +1,182 @@
+.triple-banner-slider {
+  position: relative;
+  width: 90%;
+  aspect-ratio: 3/1;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.triple-banner-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transition: transform 0.8s ease; /* Dodato kao u banner-wrapper */
+}
+
+.triple-banner-wrapper.right {
+  transition: transform 0.8s ease;
+}
+
+.triple-banner-wrapper.left {
+  transition: transform 0.8s ease;
+}
+
+.triple-banner-group {
+  display: flex;
+  width: 33.3333%;
+  height: 100%;
+}
+
+.triple-banner-slide {
+  flex: 1;
+  height: 100%;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.triple-banner-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.triple-banner-slide:hover img {
+  transform: scale(1.02);
+}
+
+.triple-banner-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent; /* Dodato kao u banner-button */
+  border: none;
+  color: var(--zelena); /* Dodato kao u banner-button */
+  font-size: 50px;
+  cursor: pointer;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.triple-banner-button.left {
+  left: 10px;
+}
+
+.triple-banner-button.right {
+  right: 10px;
+}
+
+.triple-banner-button:hover {
+  color: var(--tamnoZelena); /* Dodato kao u banner-button */
+}
+
+.triple-banner-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .triple-banner-slider {
+    width: 90%; /* Dodato kao u banner-slider */
+    aspect-ratio: 3/1;
+  }
+  
+  .triple-banner-group {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .triple-banner-slider {
+    width: 90%; /* Dodato kao u banner-slider */
+    aspect-ratio: 4/3;
+    max-height: none; /* Dodato kao u banner-slider */
+  }
+  
+  .triple-banner-group {
+    width: 100%;
+  }
+}
+
+/* Originalni banner-slider CSS ostaje isti */
+.banner-slider {
+  position: relative;
+  width: 90%;
+  aspect-ratio: 3/1;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.banner-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transition: transform 0.8s ease;
+}
+
+.banner-wrapper.right {
+  transition: transform 0.8s ease;
+}
+
+.banner-wrapper.left {
+  transition: transform 0.8s ease;
+}
+
+.banner-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.banner-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: var(--zelena);
+  font-size: 50px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.banner-button.left {
+  left: 10px;
+}
+
+.banner-button.right {
+  right: 10px;
+}
+
+.banner-button:hover {
+  color: var(--tamnoZelena);
+}
+
+@media (max-width: 1024px) {
+  .banner-slider {
+    width: 90%;
+    aspect-ratio: 3/1;
+  }
+}
+
+@media (max-width: 600px) {
+  .banner-slider {
+    width: 90%;
+    aspect-ratio: 4/3;
+    max-height: none;
+  }
+}

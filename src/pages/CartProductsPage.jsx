@@ -3,7 +3,10 @@ import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
-import img2 from "../assets/products/img2.jpg";
+
+import img2 from '../assets/products/img2.jpg';
+import { Link } from "react-router-dom";
+
 const sampleProducts = [
   {
     id: 1,
@@ -317,27 +320,28 @@ const CartProductsPage = () => {
           </div>
 
           <div style={{ marginTop: "20px", textAlign: "center" }}>
-            <button
-              style={{
-                border: "none",
-                background:
-                  "linear-gradient(to right, var(--zelena), var(--tamnoZelena))",
-                color: "white",
-                padding: "12px 32px",
-                borderRadius: "30px",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: "bold",
-                width: "100%",
-                transition: "all 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                },
-              }}
-            >
-              Kupi
-            </button>
+            <Link
+  to="/kupi"
+  style={{
+    textDecoration: "none",
+    border: "none",
+    background:
+      "linear-gradient(to right, var(--zelena), var(--tamnoZelena))",
+    color: "white",
+    padding: "12px 32px",
+    borderRadius: "30px",
+    cursor: "pointer",
+    fontSize: "16px",
+    fontWeight: "bold",
+    display: "inline-block",
+    width: "80%",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+  }}
+>
+  Kupi
+</Link>
+
           </div>
         </div>
       </div>

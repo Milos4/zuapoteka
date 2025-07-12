@@ -1,0 +1,161 @@
+.featuresContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 0 25px;
+}
+
+.featureCard {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(253, 247, 237, 0.97);
+  border-radius: 18px;
+  padding: 30px 25px;
+  text-align: center;
+  border: 1px solid rgba(122, 159, 110, 0.3);
+  box-shadow: 0 8px 25px rgba(122, 159, 110, 0.15);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.featureCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7a9f6e 0%, #5a6d5a 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.featureCard:hover::before {
+  opacity: 1;
+}
+
+.featureCard:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(122, 159, 110, 0.25);
+  background: rgba(253, 247, 237, 1);
+  border-color: rgba(122, 159, 110, 0.5);
+}
+
+.featureIcon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7a9f6e 0%, #5a6d5a 100%);
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 8px 20px rgba(122, 159, 110, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.featureCard:hover .featureIcon {
+  transform: rotate(5deg) scale(1.15);
+  box-shadow: 0 12px 25px rgba(122, 159, 110, 0.4);
+  border-radius: 25px;
+}
+
+.featureIcon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.featureCard h3 {
+  font-size: 1.2rem;
+  color: #5a6d5a;
+  margin-bottom: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+}
+
+.featureCard h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: #7a9f6e;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.featureCard:hover h3::after {
+  width: 60px;
+  opacity: 1;
+}
+
+.featureCard p {
+  font-size: 1rem;
+  color: #5a6d5a;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .featuresContainer {
+    gap: 20px;
+  }
+  .featureCard {
+    min-width: 180px;
+    padding: 25px 20px;
+  }
+  .featureIcon {
+    width: 60px;
+    height: 60px;
+  }
+  .featureIcon svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featureCard {
+    min-width: calc(50% - 15px);
+  }
+}
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Stil za kombinovanu ikonicu katanac + kvačica */
+.lockWithCheck {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.lockIcon {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+}
+
+.checkIcon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  bottom: -4px;
+  right: -6px;
+  color: #7a9f6e;
+  background: white;
+  border-radius: 50%;
+  padding: 2px;
+}

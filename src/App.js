@@ -44,6 +44,8 @@ import UsersPage from "./pages/admin/UsersPage";
 
 
 import ScrollToTop from "./components/ScrollToTop";
+import DeliveryAndPayment from "./pages/DeliveryAndPayment";
+
 
 import { useLocation } from "react-router-dom";
 
@@ -149,7 +151,10 @@ function App() {
   }
 />
 <Route path="/profil" element={<ProfilePage />} />
+        <Route path="/kupi" element={<DeliveryAndPayment />} />
+
 </Routes>
+        
     </>
   );
 }

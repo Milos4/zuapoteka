@@ -6,9 +6,7 @@ import Arrows from '../arrows/Arrows';
 import './special-offers.css';
 
 
-// ... i tako dalje
 
-// ... i tako dalje
 
 const SpecialOffers = () => {
   // Definišemo sve proizvode u nizu

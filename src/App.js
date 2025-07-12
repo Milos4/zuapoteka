@@ -31,7 +31,17 @@ import FavoritesPage from "./pages/FavoritesPage";
 import FAQPage from "./pages/FAQPage";
 import ProductDetailsPage from "./pages/ProductDeatilsPage";
 
+import ProfilePage from "./pages/ProfilePage";
+
+
+//Admin pages
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AddBrandPage from "./pages/admin/AddBrandPage";
+import AddProductPage from "./pages/admin/AddProductPage";
+import AddImagePage from "./pages/admin/AddImagePage";
+import UsersPage from "./pages/admin/UsersPage";
+
+
 
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -105,7 +115,41 @@ function App() {
             </AdminRoute>
           }
         />
-      </Routes>
+
+<Route
+  path="/admin/dodaj-brend"
+  element={
+    <AdminRoute>
+      <AddBrandPage />
+    </AdminRoute>
+  }
+/> 
+<Route
+  path="/admin/dodaj-proizvod"
+  element={
+    <AdminRoute>
+      <AddProductPage />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/dodaj-sliku"
+  element={
+    <AdminRoute>
+      <AddImagePage />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/korisnici"
+  element={
+    <AdminRoute>
+      <UsersPage />
+    </AdminRoute>
+  }
+/>
+<Route path="/profil" element={<ProfilePage />} />
+</Routes>
     </>
   );
 }

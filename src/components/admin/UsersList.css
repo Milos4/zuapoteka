@@ -1,0 +1,77 @@
+/* UsersList.css */
+
+.users-list-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.users-list-container h2 {
+  margin-bottom: 20px;
+  color: var(--tamnoZelena); /* ili neka tvoja zelena */
+}
+
+.users-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.users-list-table thead {
+  background-color: var(--zelena);
+  color: white;
+  text-align: left;
+}
+
+.users-list-table thead th {
+  padding: 12px 15px;
+}
+
+.users-list-table tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
+
+.users-list-table tbody tr:hover {
+  background-color: #f3f9f3;
+}
+
+.users-list-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.users-list-table tbody tr td:first-child {
+  font-weight: bold;
+  color: var(--tamnoZelena);
+}
+
+.ban-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.unban-button {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.ban-button:disabled,
+.unban-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

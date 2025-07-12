@@ -21,6 +21,7 @@ const NavBar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cart.length);
@@ -127,20 +128,33 @@ const NavBar = () => {
                   zIndex: 1000,
                 }}
               >
+                 <div
+    style={{
+      padding: "10px",
+      fontWeight: "bold",
+      borderBottom: "1px solid #ccc",
+      color: "var(--bez)",
+      textAlign: "center",
+      fontSize: "20px"
+    }}
+  >
+    {username || user?.email?.split("@")[0] || "Korisnik"}
+  </div>
                 <Link
-                  to="/profilePage"
+                  to="/profil"
                   className="dropdown-item"
                   onClick={() => setDropdownOpen(false)}
                 >
-                  <SlUser size={20} /> Profil
+                  <SlUser size={20} /> 
+                   <span style={{ marginLeft: "10px" }}>Profil</span>
                 </Link>
                 <Link
-                  to="/favorites"
+                  to="/profil?tab=zelje"
                   className="dropdown-item"
                   onClick={() => setDropdownOpen(false)}
                 >
                   <SlHeart size={20} />
-                  Lista zelja
+                   <span style={{ marginLeft: "10px" }}>Lista želja</span>
                 </Link>
                 <div
                   className="dropdown-item logout-link"
@@ -151,7 +165,8 @@ const NavBar = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <SlLogout />
-                  Odjavi se
+               
+                  <span style={{ marginLeft: "10px" }}>Odjavi se</span>
                 </div>
               </div>
             )}

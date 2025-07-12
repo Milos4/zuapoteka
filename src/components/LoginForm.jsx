@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword ,signOut } from "firebase/auth";
 import {
   doc,
   getDoc,
@@ -69,6 +69,17 @@ const LoginForm = () => {
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
+
+        if (userData.banovan) {
+          // Izloguj korisnika i prikaži poruku
+          await signOut(auth);
+          alert(
+            "Vaš nalog je banovan. Kontaktirajte nas putem kontakt forme ili na email."
+          );
+          return;
+        }
+
+
         if (userData.role === "admin") {
           navigate("/admin"); // Ako je admin, idi na admin dashboard
         } else {

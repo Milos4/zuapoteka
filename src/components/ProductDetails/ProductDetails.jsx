@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './ProductDetails.css';
 
+import defaultBrandLogo from '../../assets/josifpancic.jpg'; // putanja do tvoje slike u assets
+
+
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 

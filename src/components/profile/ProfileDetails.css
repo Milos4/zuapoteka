@@ -1,0 +1,12 @@
+.profile-details {
+  padding: 20px;
+}
+
+.profile-details h2 {
+  color: var(--tamnoZelena);
+  margin-bottom: 10px;
+}
+
+.profile-details p {
+  color: #444;
+}

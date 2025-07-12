@@ -1,0 +1,62 @@
+.profile-container {
+  display: flex;
+  width: 90%;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  align-items: stretch; /* umesto center da se elementi rastegnu */
+  min-height: 400px; /* ista kao i content */
+
+}
+
+
+/* Sidebar */
+.profile-sidebar {
+  width: 350px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: transparent;
+}
+
+/* Dugmad u sidebaru */
+.profile-sidebar button {
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  color: var(--zelena);
+ font-size: 25px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.profile-sidebar button:hover {
+  color: var(--tamnoZelena);
+}
+
+.profile-sidebar button.active {
+  color: var(--tamnoZelena);
+  font-weight: 600;
+  border-left: 3px solid var(--tamnoZelena);
+}
+
+.profile-separator {
+  width: 2px;
+  background-color: var(--tamnoZelena);
+  margin: 20px 10px;
+  border-radius: 1px;
+  height: auto;
+  align-self: stretch; /* da se rastegne po visini roditelja */
+}
+
+/* Glavni sadržaj */
+.profile-content {
+  flex: 1;
+  padding: 30px;
+  min-height: 400px;
+}

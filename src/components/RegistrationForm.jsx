@@ -46,6 +46,7 @@ const RegistrationForm = () => {
         username,
         email,
         role: "korisnik",
+        banovan: false,
       });
 
       alert("Registracija uspešna!");

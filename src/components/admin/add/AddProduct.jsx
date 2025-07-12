@@ -6,6 +6,7 @@ import "./AddProduct.css";
 
 const AddProduct = () => {
   const [form, setForm] = useState({
+     sifra: "",
     naziv: "",
     brandId: "",
     kategorija: "",
@@ -71,6 +72,7 @@ const AddProduct = () => {
       }
 
       const newProduct = {
+        sifra: form.sifra,
         naziv: form.naziv,
         brandId: form.brandId,
         kategorija: form.kategorija,
@@ -94,6 +96,7 @@ const AddProduct = () => {
       alert("Proizvod uspešno dodat!");
 
       setForm({
+        sifra: "",
         naziv: "",
         brandId: "",
         kategorija: "",
@@ -119,6 +122,15 @@ const AddProduct = () => {
     <div className="add-product-container">
       <h2>Dodaj Proizvod</h2>
       <form onSubmit={handleSubmit} className="add-product-form">
+<input
+  type="text"
+  name="sifra"
+  placeholder="Šifra proizvoda"
+  value={form.sifra}
+  onChange={handleChange}
+  required
+/>
+
         <input
           type="text"
           name="naziv"

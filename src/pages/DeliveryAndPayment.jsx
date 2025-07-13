@@ -7,6 +7,7 @@ import { db } from '../firebase';
 import { getAuth } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 
 const DeliveryAndPayment = () => {
@@ -23,18 +24,10 @@ const { cartItems, clearCart } = useCart();
     paymentMethod: 'pickup',
     selectedPharmacy: 'apoteka1'
   });
-
-  // Mock cart data ako nema podataka iz props
-  const mockCartItems = [
-    { id: 1, name: 'Biljka Fikus', price: 2500, quantity: 1, image: '/api/placeholder/80/80' },
-    { id: 2, name: 'Kaktus', price: 1200, quantity: 2, image: '/api/placeholder/80/80' },
-    { id: 3, name: 'Monstera', price: 300, quantity: 1, image: '/api/placeholder/80/80' }
-  ];
-
-  const items = cartItems.length > 0 ? cartItems : mockCartItems;
-  
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = formData.paymentMethod === 'pickup' ? 0 : 220; // Besplatno ako se preuzima u apoteci
+const navigate = useNavigate();
+  const items = cartItems;
+  const subtotal = items.reduce((sum, item) => sum + (item.cijena * item.quantity), 0);
+  const shipping = formData.paymentMethod === 'pickup' ? 0 : (subtotal < 60 ? 10 : 0);
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
@@ -50,13 +43,46 @@ const { cartItems, clearCart } = useCart();
     const user = auth.currentUser;
 
     const deliveryMethod = formData.paymentMethod === 'pickup' ? 'Preuzimanje u apoteci' : 'Dostava na adresu';
-    console.log('Narudžba poslana:', { 
-      formData, 
-      items, 
-      total,
-      deliveryMethod
-    });
-    alert(`Narudžba je uspešno poslana! Način dostave: ${deliveryMethod}`);
+    const shippingCost = formData.paymentMethod === 'pickup' ? 0 : (subtotal < 60 ? 10 : 0);
+    const totalAmount = subtotal + shippingCost;
+
+    const orderId = Math.floor(100000 + Math.random() * 9000000).toString(); // npr. 7-cifren broj
+
+    const orderData = {
+      orderId,
+      items,
+      total: parseFloat(totalAmount.toFixed(2)),
+      shippingCost: parseFloat(shippingCost.toFixed(2)),
+      deliveryMethod,
+      status: "Poručeno",
+      createdAt: serverTimestamp(),
+      userId: user?.uid || null,
+      userInfo: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        email: formData.email,
+        ...(formData.paymentMethod === "delivery"
+          ? {
+              address: formData.address,
+              city: formData.city,
+              postalCode: formData.postalCode,
+            }
+          : {
+              pickupPharmacy: formData.selectedPharmacy,
+            }),
+      },
+    };
+
+    try {
+      await addDoc(collection(db, "orders"), orderData);
+      clearCart();
+      alert(`Narudžbina je uspešno poslata! ID narudžbe: ${orderId}`);
+       navigate('/');
+    } catch (error) {
+      console.error("Greška prilikom slanja narudžbine:", error);
+      alert("Došlo je do greške. Pokušajte ponovo.");
+    }
   };
 
   return (
@@ -231,14 +257,6 @@ const { cartItems, clearCart } = useCart();
           </div>
         </div>
       </div>
-      
-      {/* Popup komponenta */}
-      <Popup 
-        isOpen={isPopupOpen} 
-        onClose={closePopup} 
-        message={popupMessage} 
-      />
-      
       <Footer />
     </div>
   );

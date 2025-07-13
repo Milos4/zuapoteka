@@ -1,39 +1,39 @@
-import React from "react";
+// src/pages/ProductDetailsPage.jsx
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import ProductDetails from "../components/ProductDetails/ProductDetails";
-import Product from "../models/Product";
-import Navbar from "../components/NavBar";
-import Footer from "../components/Footer";
 
-const sampleProduct = new Product({
-  productId: "p1",
-  name: "Krema za tijelo",
-  brand: "Loreal",
-  category: "Njega tijela",
-  subCategory: "Kreme",
-  description: "Najnovija Loreal krema sa mirisom lavande.",
-  discount: 10,
-  price: 44.55,
-  stockQuantity: true,
-  imageUrl:
-    "https://images.pexels.com/photos/66869/green-leaf-natural-wallpaper-royalty-free-66869.jpeg",
-  brandImageUrl:
-    "https://logos-world.net/wp-content/uploads/2020/04/LOreal-Logo.png",
-});
+const ProductDetailsPage = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const ProductPage = () => {
-  return (
-    <div
-      style={{
-        fontFamily: "'Arial', sans-serif",
-        color: "#333",
-        lineHeight: 1.6,
-        backgroundColor: "#FAF1E6",
-      }}
-    >
-      <ProductDetails product={sampleProduct} />;
-      <Footer />
-    </div>
-  );
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setProduct({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.error("Proizvod nije pronađen!");
+        }
+      } catch (error) {
+        console.error("Greška pri dohvatanju proizvoda:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) return <p style={{ textAlign: "center" }}>Učitavanje...</p>;
+  if (!product) return <p style={{ textAlign: "center" }}>Proizvod nije pronađen.</p>;
+
+  return <ProductDetails product={product} />;
 };
 
-export default ProductPage;
+export default ProductDetailsPage;

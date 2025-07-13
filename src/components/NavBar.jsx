@@ -5,27 +5,23 @@ import { doc, getDoc } from "firebase/firestore";
 
 import logo from "../assets/Logo1.png";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaHeart } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { SlLogout, SlHeart, SlUser } from "react-icons/sl";
-import { RiArrowDropDownLine } from "react-icons/ri";
+
+import { useCart } from "../context/CartContext";
 
 import "./NavBar.css";
 
 const NavBar = () => {
-  const [cartCount, setCartCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const { cartItems } = useCart(); // 👈 Uzmi iz CartContext
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  const [isVisible, setIsVisible] = useState(true);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-
-
-  useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartCount(cart.length);
-  }, []);
 
   useEffect(() => {
     let prevScrollPos = window.scrollY;
@@ -94,7 +90,9 @@ const NavBar = () => {
           style={{ display: "flex", alignItems: "center", gap: "5px" }}
         >
           <FaShoppingCart size={20} />
-          <span className="cart-count">{cartCount}</span>
+          {cartCount > 0 && (
+            <span className="cart-count">{cartCount}</span>
+          )}
         </Link>
 
         {user ? (
@@ -108,9 +106,7 @@ const NavBar = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               style={{ display: "flex", alignItems: "center", padding: "5px" }}
             >
-              <div>
-                <FaUser size={20} />
-              </div>
+              <FaUser size={20} />
             </div>
 
             {dropdownOpen && (
@@ -128,44 +124,43 @@ const NavBar = () => {
                   zIndex: 1000,
                 }}
               >
-                 <div
-    style={{
-      padding: "10px",
-      fontWeight: "bold",
-      borderBottom: "1px solid #ccc",
-      color: "var(--bez)",
-      textAlign: "center",
-      fontSize: "20px"
-    }}
-  >
-    {username || user?.email?.split("@")[0] || "Korisnik"}
-  </div>
+                <div
+                  style={{
+                    padding: "10px",
+                    fontWeight: "bold",
+                    borderBottom: "1px solid #ccc",
+                    color: "var(--bez)",
+                    textAlign: "center",
+                    fontSize: "20px",
+                  }}
+                >
+                  {username || user?.email?.split("@")[0] || "Korisnik"}
+                </div>
+
                 <Link
                   to="/profil"
                   className="dropdown-item"
                   onClick={() => setDropdownOpen(false)}
                 >
-                  <SlUser size={20} /> 
-                   <span style={{ marginLeft: "10px" }}>Profil</span>
+                  <SlUser size={20} />
+                  <span style={{ marginLeft: "10px" }}>Profil</span>
                 </Link>
+
                 <Link
                   to="/profil?tab=zelje"
                   className="dropdown-item"
                   onClick={() => setDropdownOpen(false)}
                 >
                   <SlHeart size={20} />
-                   <span style={{ marginLeft: "10px" }}>Lista želja</span>
+                  <span style={{ marginLeft: "10px" }}>Lista želja</span>
                 </Link>
+
                 <div
                   className="dropdown-item logout-link"
-                  onClick={() => {
-                    handleLogout();
-                    setDropdownOpen(false);
-                  }}
+                  onClick={handleLogout}
                   style={{ cursor: "pointer" }}
                 >
                   <SlLogout />
-               
                   <span style={{ marginLeft: "10px" }}>Odjavi se</span>
                 </div>
               </div>

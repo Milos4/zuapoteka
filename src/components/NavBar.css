@@ -119,3 +119,12 @@
   width: 200px;
   margin-left: 100px;
 }
+
+.cart-count {
+
+  color: white;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 50%;
+  font-weight: bold;
+}

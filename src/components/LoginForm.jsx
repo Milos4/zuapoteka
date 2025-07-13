@@ -82,7 +82,8 @@ const LoginForm = () => {
 
         if (userData.role === "admin") {
           navigate("/admin"); // Ako je admin, idi na admin dashboard
-        } else {
+        } else if (userData.role === "radnik") {
+    navigate("/radnik/porudzbine");} else {
           navigate("/pocetna"); // Inače idi na početnu
         }
       } else {

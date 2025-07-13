@@ -1,0 +1,37 @@
+.navbar-worker {
+  background-color: var(--zelena);
+  padding: 0.6rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.worker-left {
+  display: flex;
+  align-items: center;
+}
+
+.worker-left a{
+  color: var(--bez);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.worker-left a:hover {
+  color: var(--tamnoZelena);
+}
+
+.worker-right .logout-link {
+  color: var(--bez);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+
+.worker-right .logout-link:hover {
+  color: var(--tamnoZelena);
+}

@@ -1,0 +1,253 @@
+.orders-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.order-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  margin-bottom: 30px;
+  padding: 20px;
+  width: 100%;
+}
+
+.order-main-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.order-main-table th,
+.order-main-table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  width: 25%;
+}
+
+.status-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background-color: white;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2c3e50;
+  min-width: 140px;
+  transition: border-color 0.3s ease;
+}
+
+.status-select:hover,
+.status-select:focus {
+  border-color: #27ae60;
+  outline: none;
+}
+.items-list{
+    width: 100%;
+}
+.items-list h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #27ae60;
+  font-weight: 700;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items-table th,
+.items-table td {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.items-table th {
+  background-color: #27ae60;
+  color: white;
+  font-weight: 700;
+}
+
+.qty-btn {
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.qty-btn:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+.qty-btn:hover:not(:disabled) {
+  background-color: #1e8449;
+}
+
+.qty-number {
+  font-weight: bold;
+  min-width: 20px;
+  display: inline-block;
+  text-align: center;
+}
+
+.remove-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #c0392b;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-section input[type="text"],
+.filter-section select,
+.filter-section input[type="date"] {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 160px;
+}
+
+.filter-section button {
+  padding: 6px 14px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* Container pretrage - već imaš klase, ali dodaj malo paddinga */
+.orders-container > div:first-of-type {
+  background-color: #f7f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Input i select polja */
+.orders-container input[type="text"],
+.orders-container input[type="date"],
+.orders-container select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  min-width: 160px;
+  box-sizing: border-box;
+}
+
+.orders-container input[type="text"]:focus,
+.orders-container input[type="date"]:focus,
+.orders-container select:focus {
+  outline: none;
+  border-color: #27ae60;
+  box-shadow: 0 0 5px #27ae60;
+}
+
+/* Radio dugmići i labela */
+.orders-container div > label {
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+}
+
+.orders-container div > label input[type="radio"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #27ae60;
+}
+
+/* Dugme Pretraži */
+.orders-container button {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.25s ease;
+  min-width: 110px;
+}
+
+.orders-container button:hover {
+  background-color: #1e8449;
+}
+
+/* Labeli za datume */
+.orders-container label {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Responsive: na manjim ekranima rasporedi vertikalno */
+@media (max-width: 720px) {
+  .orders-container > div:first-of-type {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orders-container input[type="text"],
+  .orders-container input[type="date"],
+  .orders-container select,
+  .orders-container button {
+    min-width: 100%;
+  }
+
+  .orders-container div > label {
+    gap: 10px;
+  }
+}

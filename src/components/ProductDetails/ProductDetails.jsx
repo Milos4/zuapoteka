@@ -1,71 +1,121 @@
-import React, { useState } from 'react';
-import './ProductDetails.css';
+import React, { useState, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc ,setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import "./ProductDetails.css";
+import { useCart } from "../../context/CartContext";
 
-import defaultBrandLogo from '../../assets/josifpancic.jpg'; // putanja do tvoje slike u assets
-
+import HeartIcon from "../Icons/HeartIcon";
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
+  const [brand, setBrand] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const { addToCart } = useCart(); // 👈 koristi context
+
+  const cijena = parseFloat(product.cijena || 0);
+  const popust = parseFloat(product.popustProcenat || 0);
+  const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
+
+  useEffect(() => {
+    const fetchBrand = async () => {
+      if (!product.brandId) return;
+      try {
+        const brandRef = doc(db, "brands", product.brandId);
+        const brandSnap = await getDoc(brandRef);
+        if (brandSnap.exists()) {
+          setBrand(brandSnap.data());
+        } else {
+          console.warn("Brend nije pronađen.");
+        }
+      } catch (error) {
+        console.error("Greška pri dohvatanju brenda:", error);
+      }
+    };
+    fetchBrand();
+  }, [product.brandId]);
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity); // 👈 koristi context da odmah ažurira
+    alert(`Dodano ${quantity} kom u korpu!`);
+  };
+
+  const handleAddToFavorites = async () => {
+    if (!user) {
+      alert("Morate biti prijavljeni da biste dodali u favorite.");
+      return;
+    }
+
+    const favRef = doc(db, "users", user.uid, "favorites", product.id);
+    await setDoc(favRef, { ...product });
+    alert("Dodano u favorite!");
+  };
 
   const handleIncrease = () => setQuantity((q) => q + 1);
   const handleDecrease = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
-  const discountedPrice = (product.price * (1 - product.discount / 100)).toFixed(2);
-
   return (
     <div className="product-details-wrapper">
-      {/* Leva strana – Slika proizvoda */}
       <div className="product-image-container">
-        <img src={product.imageUrl || 'https://via.placeholder.com/400'} alt={product.name} />
+        <img src={product.slikaURL || "https://via.placeholder.com/400"} alt={product.naziv} />
       </div>
 
-      {/* Srednji deo – Informacije o proizvodu */}
       <div className="product-main-info">
-        <h2>{product.name}</h2>
+        <h2>{product.naziv}</h2>
         <div className="category">
-          {product.category}
-          {product.subCategory ? ` → ${product.subCategory}` : ''}
+          {product.kategorija}
+          {product.subkategorije?.length ? ` → ${product.subkategorije.join(", ")}` : ""}
         </div>
-        <div className="description">{product.description}</div>
-        <img
-          src={product.brandImageUrl || 'https://logos-world.net/wp-content/uploads/2020/04/LOreal-Logo.png'}
-          alt={product.brand}
-          className="brand-logo"
-        />
+        <div className="description">{product.opis}</div>
+
+        {brand && (
+          <div className="brand-logo-wrapper">
+            <img src={brand.imageUrl} alt="Brand logo" className="brand-logo-only" />
+          </div>
+        )}
       </div>
 
-      {/* Desna strana – Cena, popust i kupovina */}
       <div className="product-purchase">
         <div className="price-container">
-          {product.discount > 0 ? (
+          {popust > 0 ? (
             <>
               <div className="price-rows">
-                <div className="original-price crossed">{product.price.toFixed(2)} BAM</div>
-                <div className="discounted-price">{discountedPrice} BAM</div>
+                <div className="original-price crossed">{cijena.toFixed(2)} BAM</div>
+                <div className="discounted-price">{novaCijena} BAM</div>
               </div>
-              <div className="discount-circle">-{product.discount}%</div>
+              <div className="discount-circle">-{popust}%</div>
             </>
           ) : (
-            <div className="original-price">{product.price.toFixed(2)} BAM</div>
+            <div className="original-price">{cijena.toFixed(2)} BAM</div>
           )}
+
+          <button
+            className="favorite-icon-btn"
+            onClick={handleAddToFavorites}
+            aria-label="Dodaj u favorite"
+            title="Dodaj u favorite"
+          >
+            <HeartIcon />
+          </button>
         </div>
 
         <div className="purchase-controls">
-          {product.stockQuantity ? (
+          {product.naStanju ? (
             <>
               <div className="quantity-selector">
-                <button className="quantity-button-1" onClick={handleDecrease}>−</button>
-                <input
-                  type="number"
-                  value={quantity}
-                  min="1"
-                  className="quantity-input"
-                  readOnly
-                />
-                <button className="quantity-button-2" onClick={handleIncrease}>+</button>
+                <button className="quantity-button-1" onClick={handleDecrease}>
+                  −
+                </button>
+                <input type="number" value={quantity} min="1" className="quantity-input" readOnly />
+                <button className="quantity-button-2" onClick={handleIncrease}>
+                  +
+                </button>
               </div>
 
-              <button className="add-to-cart">Dodaj u korpu</button>
+              <button className="add-to-cart" onClick={handleAddToCart}>
+                Dodaj u korpu
+              </button>
             </>
           ) : (
             <div className="out-of-stock">Nema na stanju</div>

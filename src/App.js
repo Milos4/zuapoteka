@@ -4,6 +4,8 @@ import "./styles/colors.css";
 
 import NavBar from "./components/NavBar";
 import NavBarAdmin from "./components/admin/NavBarAdmin";
+import NavBarWorker from "./components/worker/NavBarWorker";
+
 
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -11,6 +13,8 @@ import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 import AdminRoute from "./components/admin/AdminRoute";
+import WorkerRoute from "./components/worker/WorkerRoute";
+
 
 //Pages
 import HomePage from "./pages/HomePage";
@@ -33,6 +37,9 @@ import ProductDetailsPage from "./pages/ProductDeatilsPage";
 
 import ProfilePage from "./pages/ProfilePage";
 
+import { CartProvider } from "./context/CartContext";
+
+
 
 //Admin pages
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
@@ -41,6 +48,9 @@ import AddProductPage from "./pages/admin/AddProductPage";
 import AddImagePage from "./pages/admin/AddImagePage";
 import UsersPage from "./pages/admin/UsersPage";
 
+
+// worker pages
+import WorkerOrdersPage from "./pages/worker/Orders";
 
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -81,9 +91,17 @@ function App() {
   if (loading) return null;
   return (
     <>
+<CartProvider>
+
       <ScrollToTop />
-      {!shouldHideNavbar &&
-        (role === "admin" ? <NavBarAdmin /> : <NavBar />)}{" "}
+      {!shouldHideNavbar && 
+  (role === "admin" 
+    ? <NavBarAdmin /> 
+    : role === "radnik"
+      ? <NavBarWorker />
+      : <NavBar />
+  )
+}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pocetna" element={<HomePage />} />
@@ -152,9 +170,16 @@ function App() {
 />
 <Route path="/profil" element={<ProfilePage />} />
         <Route path="/kupi" element={<DeliveryAndPayment />} />
+<Route path="/product/:id" element={<ProductDetailsPage />} />
+
+<Route path="/radnik/porudzbine" element={
+  <WorkerRoute>
+    <WorkerOrdersPage />
+  </WorkerRoute>
+} />
 
 </Routes>
-        
+          </CartProvider>
     </>
   );
 }

@@ -13,7 +13,7 @@ import { useCart } from "../context/CartContext";
 import "./NavBar.css";
 
 const NavBar = () => {
-  const { cartItems } = useCart(); // 👈 Uzmi iz CartContext
+  const { cartItems } = useCart();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const [isVisible, setIsVisible] = useState(true);
@@ -70,7 +70,9 @@ const NavBar = () => {
   return (
     <nav className={`navbar ${isVisible ? "" : "hidden-navbar"}`}>
       <div className="left">
-        <img src={logo} alt="Logo" className="logo" />
+        <Link to="/">
+          <img src={logo} alt="Logo" className="logo" />
+        </Link>
       </div>
 
       <div className="center">
@@ -90,9 +92,7 @@ const NavBar = () => {
           style={{ display: "flex", alignItems: "center", gap: "5px" }}
         >
           <FaShoppingCart size={20} />
-          {cartCount > 0 && (
-            <span className="cart-count">{cartCount}</span>
-          )}
+          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
         </Link>
 
         {user ? (

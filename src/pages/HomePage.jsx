@@ -30,17 +30,17 @@ const banners = [
   },
   // Dodajte još banner-a ako želite (minimum 3 za dobar prikaz)
   {
-    image: "https://example.com/drugi-banner1.jpg",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/3636b1168332437.Y3JvcCwxMDgwLDg0NCwwLDA.jpg",
     alt: "Dodatni banner 1",
     link: "/shop?category=cosmetics"
-  },
+  },  
   {
-    image: "https://example.com/drugi-banner2.jpg",
+    image: "https://experapharmacy.com/images/akcije/banner-eucerin-apr-24.jpg",
     alt: "Dodatni banner 2",
     link: "/shop?category=skincare"
   },
   {
-    image: "https://example.com/drugi-banner3.jpg",
+    image: "https://experapharmacy.com/images/akcije/avene-promocija-mart-2021-expera-apoteke.jpg",
     alt: "Dodatni banner 3",
     link: "/shop?category=haircare"
   }

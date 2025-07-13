@@ -291,7 +291,7 @@ const removeItemHandler = (id) => {
         </div>
       </div>
 
-      <MiniProduct />
+      
       <Footer />
     </div>
   );

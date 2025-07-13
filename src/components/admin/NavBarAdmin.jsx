@@ -28,7 +28,7 @@ const NavBarAdmin = () => {
   return (
     <nav className="navbar-admin">
       <div className="admin-left">
-        <Link to="/admin/proizvodi">Proizvodi</Link>
+        {/* Uklonjen Proizvodi link */}
         <Link to="/admin/korisnici">Korisnici</Link>
 
         {/* Dropdown za Dodavanje */}
@@ -41,13 +41,24 @@ const NavBarAdmin = () => {
           </span>
           {dropdownOpen && (
             <div className="admin-dropdown">
-              <Link to="/admin/dodaj-proizvod" onClick={() => setDropdownOpen(false)}>
+              <Link
+                to="/admin/dodaj-proizvod"
+                onClick={() => setDropdownOpen(false)}
+              >
                 Dodaj proizvod
               </Link>
-              <Link to="/admin/dodaj-brend" onClick={() => setDropdownOpen(false)}>
+              <Link
+                to="/admin/dodaj-brend"
+                onClick={() => setDropdownOpen(false)}
+              >
                 Dodaj brand
               </Link>
-              <Link to="/admin/dodaj-sliku" onClick={() => setDropdownOpen(false)} >Dodaj sliku</Link> 
+              <Link
+                to="/admin/dodaj-sliku"
+                onClick={() => setDropdownOpen(false)}
+              >
+                Dodaj sliku
+              </Link>
             </div>
           )}
         </div>

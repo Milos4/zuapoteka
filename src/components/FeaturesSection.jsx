@@ -19,7 +19,7 @@ const FeaturesSection = () => {
         <div className={styles.featureIcon}>
           <Truck className={styles.icon} strokeWidth={1.5} absoluteStrokeWidth />
         </div>
-        <h3>Dostava Srbija</h3>
+        <h3>Dostava BiH</h3>
         <p>Brza isporuka 24-48h</p>
       </div>
 

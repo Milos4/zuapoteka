@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc ,setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import "./ProductDetails.css";
 import { useCart } from "../../context/CartContext";
 
 import HeartIcon from "../Icons/HeartIcon";
+import Popup from "../Popup"; // 👈 uvoz tvoje Popup komponente
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [brand, setBrand] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
   const auth = getAuth();
   const user = auth.currentUser;
-  const { addToCart } = useCart(); // 👈 koristi context
+  const { addToCart } = useCart();
 
   const cijena = parseFloat(product.cijena || 0);
   const popust = parseFloat(product.popustProcenat || 0);
@@ -37,19 +41,22 @@ const ProductDetails = ({ product }) => {
   }, [product.brandId]);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity); // 👈 koristi context da odmah ažurira
-    alert(`Dodano ${quantity} kom u korpu!`);
+    addToCart(product, quantity);
+    setPopupMessage(`Dodano ${quantity} kom u korpu!`);
+    setPopupOpen(true);
   };
 
   const handleAddToFavorites = async () => {
     if (!user) {
-      alert("Morate biti prijavljeni da biste dodali u favorite.");
+      setPopupMessage("Morate biti prijavljeni da biste dodali u favorite.");
+      setPopupOpen(true);
       return;
     }
 
     const favRef = doc(db, "users", user.uid, "favorites", product.id);
     await setDoc(favRef, { ...product });
-    alert("Dodano u favorite!");
+    setPopupMessage("Dodano u favorite!");
+    setPopupOpen(true);
   };
 
   const handleIncrease = () => setQuantity((q) => q + 1);
@@ -58,20 +65,29 @@ const ProductDetails = ({ product }) => {
   return (
     <div className="product-details-wrapper">
       <div className="product-image-container">
-        <img src={product.slikaURL || "https://via.placeholder.com/400"} alt={product.naziv} />
+        <img
+          src={product.slikaURL || "https://via.placeholder.com/400"}
+          alt={product.naziv}
+        />
       </div>
 
       <div className="product-main-info">
         <h2>{product.naziv}</h2>
         <div className="category">
           {product.kategorija}
-          {product.subkategorije?.length ? ` → ${product.subkategorije.join(", ")}` : ""}
+          {product.subkategorije?.length
+            ? ` → ${product.subkategorije.join(", ")}`
+            : ""}
         </div>
         <div className="description">{product.opis}</div>
 
         {brand && (
           <div className="brand-logo-wrapper">
-            <img src={brand.imageUrl} alt="Brand logo" className="brand-logo-only" />
+            <img
+              src={brand.imageUrl}
+              alt="Brand logo"
+              className="brand-logo-only"
+            />
           </div>
         )}
       </div>
@@ -81,7 +97,9 @@ const ProductDetails = ({ product }) => {
           {popust > 0 ? (
             <>
               <div className="price-rows">
-                <div className="original-price crossed">{cijena.toFixed(2)} BAM</div>
+                <div className="original-price crossed">
+                  {cijena.toFixed(2)} BAM
+                </div>
                 <div className="discounted-price">{novaCijena} BAM</div>
               </div>
               <div className="discount-circle">-{popust}%</div>
@@ -107,7 +125,13 @@ const ProductDetails = ({ product }) => {
                 <button className="quantity-button-1" onClick={handleDecrease}>
                   −
                 </button>
-                <input type="number" value={quantity} min="1" className="quantity-input" readOnly />
+                <input
+                  type="number"
+                  value={quantity}
+                  min="1"
+                  className="quantity-input"
+                  readOnly
+                />
                 <button className="quantity-button-2" onClick={handleIncrease}>
                   +
                 </button>
@@ -122,6 +146,12 @@ const ProductDetails = ({ product }) => {
           )}
         </div>
       </div>
+
+      <Popup
+        isOpen={popupOpen}
+        onClose={() => setPopupOpen(false)}
+        message={popupMessage}
+      />
     </div>
   );
 };

@@ -17,6 +17,8 @@ import Arrows from "../arrows/Arrows";
 import Popup from "../Popup";
 import { useCart } from "../../context/CartContext";
 
+
+
 import "./special-offers.css";
 
 const SpecialOffers = () => {

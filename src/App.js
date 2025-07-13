@@ -59,6 +59,9 @@ import ScrollToTop from "./components/ScrollToTop";
 import DeliveryAndPayment from "./pages/DeliveryAndPayment";
 
 
+import GenerateCategories from "./GenerateCategories";
+
+
 import { useLocation } from "react-router-dom";
 
 ////
@@ -94,7 +97,6 @@ function App() {
   return (
     <>
 <CartProvider>
-
       <ScrollToTop />
       {!shouldHideNavbar && 
   (role === "admin" 
@@ -117,7 +119,7 @@ function App() {
         <Route path="/pitanja" element={<FAQPage />} />
 
         <Route path="/korpa" element={<CartProductsPage />} />
-        <Route path="/prodavnica1" element={<ShopPage />} />
+        <Route path="/prodavnica" element={<ShopPage />} />
         <Route path="/informacije-dostave" element={<OrderingProcessPage />} />
 
         <Route path="/prijava" element={<LoginPage />} />
@@ -128,7 +130,6 @@ function App() {
           path="/zaboravljenja-sifra"
           element={<ForgottenPasswordPage />}
         />
-        <Route path="/prodavnica" element={<ProductDetailsPage />} />
         <Route
           path="/admin"
           element={

@@ -34,4 +34,5 @@ const RegularProduct = ({
   );
 };
 
+
 export default RegularProduct;

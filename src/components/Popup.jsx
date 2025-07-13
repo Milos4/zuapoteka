@@ -12,13 +12,11 @@ const Popup = ({ isOpen, onClose, message }) => {
 
   return (
     <div className="popup-overlay" onClick={handleOverlayClick}>
-      <div className="popup-container">
-        <div className="popup-content">
-          <p className="popup-message">{message}</p>
-          <button className="popup-ok-button" onClick={onClose}>
-            OK
-          </button>
-        </div>
+      <div className="popup-box">
+        <p className="popup-message">{message}</p>
+        <button className="popup-button" onClick={onClose}>
+          OK
+        </button>
       </div>
     </div>
   );

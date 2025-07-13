@@ -56,7 +56,7 @@ const HomePage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-      <BannerSlider banners={banners} />
+      <BannerSlider banners={banners.slice(0, 3)} />
       
       <PharmacyCategories />
       <SpecialOffers />

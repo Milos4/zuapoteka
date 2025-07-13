@@ -9,6 +9,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import Popupyn from "../../components/Popupyn";
 import "./Orders.css";
 
 const statusOptionsDelivery = ["Poručeno", "Potvrđeno", "Poslato", "Završeno"];
@@ -17,8 +18,6 @@ const statusOptionsPickup = ["Poručeno", "Pripremljeno", "Preuzeto"];
 const allStatusOptions = Array.from(
   new Set([...statusOptionsDelivery, ...statusOptionsPickup])
 );
-
-
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -30,21 +29,22 @@ const Orders = () => {
   const [filterDeliveryMethod, setFilterDeliveryMethod] = useState("");
   const [filterDateFrom, setFilterDateFrom] = useState("");
   const [filterDateTo, setFilterDateTo] = useState("");
-
-  // **DODATO - Novi state za apoteku**
   const [filterPickupPharmacy, setFilterPickupPharmacy] = useState("");
 
+  // State za popup
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [pendingRemoval, setPendingRemoval] = useState(null);
 
   const getFilterStatusOptions = () => {
-  if (filterDeliveryMethod === "Preuzimanje u apoteci") {
-    return statusOptionsPickup;
-  } else if (filterDeliveryMethod === "Dostava na adresu") {
-    return statusOptionsDelivery;
-  } else {
-    return allStatusOptions;
-  }
-};
-  // --- OSTALI POSTOJEĆI KOD NIJE DIRAN ---
+    if (filterDeliveryMethod === "Preuzimanje u apoteci") {
+      return statusOptionsPickup;
+    } else if (filterDeliveryMethod === "Dostava na adresu") {
+      return statusOptionsDelivery;
+    } else {
+      return allStatusOptions;
+    }
+  };
 
   // Izračunavanje ukupnih cena i dostave
   const calculateTotals = (items) => {
@@ -106,11 +106,16 @@ const Orders = () => {
   };
 
   const handleRemoveItem = async (orderId, itemToRemove) => {
-    const confirmed = window.confirm(
-      `Da li ste sigurni da želite ukloniti proizvod "${itemToRemove.naziv}" iz narudžbine?`
-    );
-    if (!confirmed) return;
+    // Postavi poruku i podatke za uklanjanje
+    setPopupMessage(`Da li ste sigurni da želite ukloniti proizvod "${itemToRemove.naziv}" iz narudžbine?`);
+    setPendingRemoval({ orderId, itemToRemove });
+    setShowPopup(true);
+  };
 
+  const confirmRemoval = async () => {
+    if (!pendingRemoval) return;
+
+    const { orderId, itemToRemove } = pendingRemoval;
     const order = orders.find((o) => o.id === orderId);
     if (!order) return;
 
@@ -124,19 +129,27 @@ const Orders = () => {
         total,
         shippingCost,
       });
-      alert("Proizvod je uklonjen iz narudžbine.");
+      
       setOrders((prev) =>
         prev.map((o) =>
           o.id === orderId ? { ...o, items: newItems, total, shippingCost } : o
         )
       );
+      
+      // Resetuj popup state
+      setShowPopup(false);
+      setPendingRemoval(null);
     } catch (error) {
       console.error("Greška pri uklanjanju proizvoda:", error);
-      alert("Došlo je do greške prilikom uklanjanja proizvoda.");
     }
   };
 
-  // Funkcija za pretragu sa filterima - vadi samo rezultate koji zadovoljavaju filtere
+  const cancelRemoval = () => {
+    setShowPopup(false);
+    setPendingRemoval(null);
+  };
+
+  // Funkcija za pretragu sa filterima
   const handleSearch = async () => {
     setLoading(true);
 
@@ -155,7 +168,6 @@ const Orders = () => {
       constraints.push(where("deliveryMethod", "==", filterDeliveryMethod));
     }
 
-    // **DODATO - filter po apoteci samo ako je dostava preuzimanje u apoteci i apoteka izabrana**
     if (
       filterDeliveryMethod === "Preuzimanje u apoteci" &&
       filterPickupPharmacy !== ""
@@ -221,24 +233,23 @@ const Orders = () => {
           onChange={(e) => setSearchOrderId(e.target.value)}
           style={{ padding: "6px", minWidth: "150px" }}
         />
-<select
-  value={filterStatus}
-  onChange={(e) => setFilterStatus(e.target.value)}
-  style={{ padding: "6px", minWidth: "150px" }}
->
-  <option value="">Status</option>
-  {getFilterStatusOptions().map((status) => (
-    <option key={status} value={status}>
-      {status}
-    </option>
-  ))}
-</select>
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          style={{ padding: "6px", minWidth: "150px" }}
+        >
+          <option value="">Status</option>
+          {getFilterStatusOptions().map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
 
         <select
           value={filterDeliveryMethod}
           onChange={(e) => {
             setFilterDeliveryMethod(e.target.value);
-            // Resetuj apoteku ako se promeni način dostave
             if (e.target.value !== "Preuzimanje u apoteci") {
               setFilterPickupPharmacy("");
             }
@@ -250,7 +261,6 @@ const Orders = () => {
           <option value="Preuzimanje u apoteci">Preuzimanje u apoteci</option>
         </select>
 
-        {/* DODATO: radio dugmići za izbor apoteke */}
         {filterDeliveryMethod === "Preuzimanje u apoteci" && (
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
             <label>
@@ -311,8 +321,6 @@ const Orders = () => {
           Pretraži
         </button>
       </div>
-
-      {/* OSTALI DEO TVOG KODA (prikaz narudžbina) NIJE DIRAN */}
 
       {loading ? (
         <p>Učitavanje narudžbina...</p>
@@ -470,6 +478,14 @@ const Orders = () => {
           );
         })
       )}
+
+      {/* Popup za potvrdu uklanjanja */}
+      <Popupyn
+        isOpen={showPopup}
+        onClose={cancelRemoval}
+        onConfirm={confirmRemoval}
+        message={popupMessage}
+      />
     </div>
   );
 };

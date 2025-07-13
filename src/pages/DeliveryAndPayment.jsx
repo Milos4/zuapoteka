@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingCart, User, MapPin, Phone, Mail, Home, Package, Truck } from 'lucide-react';
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
+import Popup from "../components/Popup";
 import './DeliveryAndPayment.css';
 import { db } from '../firebase';
 import { getAuth } from "firebase/auth";
@@ -9,9 +10,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-
 const DeliveryAndPayment = () => {
-const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart } = useCart();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,7 +24,12 @@ const { cartItems, clearCart } = useCart();
     paymentMethod: 'pickup',
     selectedPharmacy: 'apoteka1'
   });
-const navigate = useNavigate();
+
+  // State za popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
+  const navigate = useNavigate();
   const items = cartItems;
   const subtotal = items.reduce((sum, item) => sum + (item.cijena * item.quantity), 0);
   const shipping = formData.paymentMethod === 'pickup' ? 0 : (subtotal < 60 ? 10 : 0);
@@ -38,7 +43,58 @@ const navigate = useNavigate();
     }));
   };
 
+  // Funkcija za validaciju polja
+  const validateForm = () => {
+    const requiredFields = ['firstName', 'lastName', 'phone'];
+    
+    // Provjeri osnovna polja
+    for (const field of requiredFields) {
+      if (!formData[field].trim()) {
+        return {
+          valid: false,
+          message: `${getFieldLabel(field)} je obavezno polje!`
+        };
+      }
+    }
+    
+    // Provjeri adresu ako je dostava
+    if (formData.paymentMethod === 'delivery') {
+      const deliveryFields = ['address', 'city', 'postalCode'];
+      for (const field of deliveryFields) {
+        if (!formData[field].trim()) {
+          return {
+            valid: false,
+            message: `${getFieldLabel(field)} je obavezno polje za dostavu!`
+          };
+        }
+      }
+    }
+    
+    return { valid: true };
+  };
+
+  // Funkcija za dobijanje naziva polja
+  const getFieldLabel = (fieldName) => {
+    const labels = {
+      firstName: 'Ime',
+      lastName: 'Prezime',
+      phone: 'Telefon',
+      address: 'Adresa',
+      city: 'Grad',
+      postalCode: 'Poštanski broj'
+    };
+    return labels[fieldName] || fieldName;
+  };
+
   const handleSubmit = async () => {
+    // Validacija forme
+    const validation = validateForm();
+    if (!validation.valid) {
+      setPopupMessage(validation.message);
+      setIsPopupOpen(true);
+      return;
+    }
+
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -77,11 +133,25 @@ const navigate = useNavigate();
     try {
       await addDoc(collection(db, "orders"), orderData);
       clearCart();
-      alert(`Narudžbina je uspešno poslata! ID narudžbe: ${orderId}`);
-       navigate('/');
+      
+      // Prikažite popup umjesto alert-a
+      setPopupMessage(`Narudžbina je uspešno poslata! ID narudžbe: ${orderId}`);
+      setIsPopupOpen(true);
+      
+      // Navigacija će se izvršiti kada se popup zatvori
     } catch (error) {
       console.error("Greška prilikom slanja narudžbine:", error);
-      alert("Došlo je do greške. Pokušajte ponovo.");
+      setPopupMessage("Došlo je do greške. Pokušajte ponovo.");
+      setIsPopupOpen(true);
+    }
+  };
+
+  // Funkcija za zatvaranje popup-a
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    // Navigiraj na početnu stranicu samo ako je narudžba uspešno poslana
+    if (popupMessage.includes("uspešno poslata")) {
+      navigate('/');
     }
   };
 
@@ -105,11 +175,11 @@ const navigate = useNavigate();
                   </h3>
                   <div className="input-grid">
                     <div className="input-group">
-                      <label className="label">Ime</label>
+                      <label className="label">Ime *</label>
                       <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="input" required />
                     </div>
                     <div className="input-group">
-                      <label className="label">Prezime</label>
+                      <label className="label">Prezime *</label>
                       <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="input" required />
                     </div>
                     <div className="input-group">
@@ -117,12 +187,12 @@ const navigate = useNavigate();
                         <Mail size={16} color="var(--tamnoZelena)" />
                         Email
                       </label>
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input" required />
+                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input" />
                     </div>
                     <div className="input-group">
                       <label className="label label-with-icon">
                         <Phone size={16} color="var(--tamnoZelena)" />
-                        Telefon
+                        Telefon *
                       </label>
                       <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="input" required />
                     </div>
@@ -160,7 +230,7 @@ const navigate = useNavigate();
                           </label>
                           <label className="pharmacy-option">
                             <input type="radio" name="selectedPharmacy" value="apoteka2" checked={formData.selectedPharmacy === 'apoteka2'} onChange={handleInputChange} className="pharmacy-radio" />
-                            <span className="pharmacy-label">Apoteka 2 - Novi deo (Vuka Karadžića 23)</span>
+                            <span className="pharmacy-label">Apoteka 2 - Novi deo.(Vuka Karadžića 23)</span>
                           </label>
                         </div>
                       </div>
@@ -191,16 +261,16 @@ const navigate = useNavigate();
                       <div className="input-group full-width">
                         <label className="label label-with-icon">
                           <Home size={16} color="#2563eb" />
-                          Adresa
+                          Adresa *
                         </label>
                         <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input address-input" required />
                       </div>
                       <div className="input-group">
-                        <label className="label">Grad</label>
+                        <label className="label">Grad *</label>
                         <input type="text" name="city" value={formData.city} onChange={handleInputChange} className="input address-input" required />
                       </div>
                       <div className="input-group">
-                        <label className="label">Poštanski broj</label>
+                        <label className="label">Poštanski broj *</label>
                         <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className="input address-input" required />
                       </div>
                     </div>
@@ -257,6 +327,14 @@ const navigate = useNavigate();
           </div>
         </div>
       </div>
+      
+      {/* Popup komponenta */}
+      <Popup 
+        isOpen={isPopupOpen} 
+        onClose={closePopup} 
+        message={popupMessage} 
+      />
+      
       <Footer />
     </div>
   );

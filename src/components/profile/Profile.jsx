@@ -6,7 +6,7 @@ import OrderHistory from "./OrderHistory";
 import "./Profile.css";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("profil");
+  const [activeTab, setActiveTab] = useState("zelje");
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -16,8 +16,7 @@ const Profile = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "profil":
-        return <ProfileDetails />;
+    
       case "zelje":
         return <Wishlist />;
       case "istorija":
@@ -30,12 +29,13 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-sidebar">
-        <button
+       {/* <button
           className={activeTab === "profil" ? "active" : ""}
           onClick={() => setActiveTab("profil")}
         >
           Moj profil
-        </button>
+       </button> 
+       */}
         <button
           className={activeTab === "zelje" ? "active" : ""}
           onClick={() => setActiveTab("zelje")}

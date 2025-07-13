@@ -6,12 +6,10 @@ import {
   query,
   where,
   orderBy,
-  getDocs,
-  limit,
-  startAfter,
+  getDocs
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import "./WorkerProductsPage.css";
+import EditProductModal from "../../components/worker/EditProductModal";
 
 const PAGE_SIZE = 20;
 
@@ -24,12 +22,12 @@ const WorkerProductsPage = () => {
   const [filterOnSale, setFilterOnSale] = useState(false);
   const [filterOutOfStock, setFilterOutOfStock] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     fetchBrands();
@@ -85,6 +83,14 @@ const WorkerProductsPage = () => {
           p.kategorija?.toLowerCase().includes(categoryFilter.toLowerCase())
         );
       }
+      if (subCategoryFilter.trim() !== "") {
+        const term = subCategoryFilter.toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            Array.isArray(p.subkategorije) &&
+            p.subkategorije.some((s) => s.toLowerCase().includes(term))
+        );
+      }
     }
 
     setFiltered(filtered);
@@ -93,10 +99,6 @@ const WorkerProductsPage = () => {
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + PAGE_SIZE);
-  };
-
-  const handleEdit = (productId) => {
-    navigate(`/worker/edit-product/${productId}`);
   };
 
   return (
@@ -129,6 +131,12 @@ const WorkerProductsPage = () => {
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
           placeholder="Kategorija (npr. Mama i bebe)"
+        />
+        <input
+          type="text"
+          value={subCategoryFilter}
+          onChange={(e) => setSubCategoryFilter(e.target.value)}
+          placeholder="Podkategorija (npr. Kupke)"
         />
         <label>
           <input
@@ -178,13 +186,11 @@ const WorkerProductsPage = () => {
                 <td>{p.naziv}</td>
                 <td>{p.sifra}</td>
                 <td>
-                  {p.naPopustu
-                    ? `${p.popustProcenat ?? 0}%`
-                    : "Ne"}
+                  {p.naPopustu ? `${p.popustProcenat ?? 0}%` : "Ne"}
                 </td>
                 <td>{p.naStanju ? "Da" : "Ne"}</td>
                 <td>
-                  <button onClick={() => handleEdit(p.id)} className="btn-secondary">
+                  <button onClick={() => setSelectedProduct(p)} className="btn-secondary">
                     Edit
                   </button>
                 </td>
@@ -198,6 +204,14 @@ const WorkerProductsPage = () => {
         <button className="btn-load-more" onClick={handleLoadMore}>
           Učitaj još
         </button>
+      )}
+
+      {selectedProduct && (
+        <EditProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onSave={fetchAllProducts}
+        />
       )}
     </div>
   );

@@ -109,6 +109,9 @@
   width: 100% !important;
   max-width: none !important;
   margin-bottom: 18px;
+  min-height: 280px !important; /* 🔴 FIKSIRANA VISINA KARTICE */
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .top-products-container .product-grid {
@@ -180,19 +183,21 @@
   opacity: 0.05;
 }
 
-/* ------------------- Slika - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
+/* ------------------- Slika - FIKSIRANA VELIČINA ------------------- */
 .top-products-container .image-box {
   width: 100%;
-  height: 180px;
+  height: 140px !important; /* 🔴 FIKSIRANA VISINA SLIKE */
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid rgba(216, 232, 209, 0.3);
+  flex-shrink: 0; /* 🔴 NE SKUPLJA SE */
 }
 
 .top-products-container .image-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain !important; /* 🔴 POKRIVA PROSTOR BEZ DISTORZIJE */
+  object-position: center !important; /* 🔴 CENTRIRA SLIKU */
   transition: transform 0.4s ease;
   filter: brightness(1.05);
 }
@@ -224,12 +229,14 @@
   background: rgba(253, 247, 237, 0.95);
   backdrop-filter: blur(8px);
   padding: 12px;
+  border-radius: 50%;
   box-shadow: 0 4px 15px rgba(122, 159, 110, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid rgba(216, 232, 209, 0.3);
 }
 
 .top-products-container .action-btn > svg {
@@ -244,7 +251,7 @@
   transform: scale(1.2);
   box-shadow: 0 6px 20px rgba(122, 159, 110, 0.25);
   background: var(--green-light);
-  border-color: var(--green-dark);
+ 
 }
 
 /* Hover varijacije po ikonicama */
@@ -271,7 +278,6 @@
 }
 
 /* ------------------- Badgeovi - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
-/* 🎯 BOJE ZA KOPIRANJE U OSTALE FAJLOVE - BADGE COLORS */
 .top-products-container .badge {
   position: absolute;
   top: 12px;
@@ -302,26 +308,34 @@
   background: linear-gradient(135deg, #5d4037 0%, #4a2c2a 100%);
 }
 
-/* ------------------- Tekst proizvoda - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
+/* ------------------- Tekst proizvoda - FIKSIRAN I KONZISTENTAN ------------------- */
 .top-products-container .product-card h3 {
-  font-size: 17px;
-  margin: 18px 0 8px;
+  font-size: 15px !important; /* 🔴 MANJA VELIČINA FONTA */
+  margin: 12px 0 6px !important; /* 🔴 MANJI MARGIN */
   color: #333;
   padding: 0 18px;
   font-weight: 650;
-  line-height: 1.4;
+  line-height: 1.3 !important; /* 🔴 MANJA VISINA LINIJE */
   position: relative;
   z-index: 2;
+  height: 40px !important; /* 🔴 FIKSIRANA VISINA NASLOVA */
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
 }
 
 .top-products-container .product-card p {
-  font-size: 14px;
-  margin: 0 0 12px;
+  font-size: 12px !important; /* 🔴 MANJA VELIČINA FONTA */
+  margin: 0 0 8px !important; /* 🔴 MANJI MARGIN */
   color: #666;
   padding: 0 18px;
-  line-height: 1.5;
+  line-height: 1.4 !important; /* 🔴 MANJA VISINA LINIJE */
   position: relative;
   z-index: 2;
+  height: 35px !important; /* 🔴 FIKSIRANA VISINA OPISA */
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
 }
 
 /* ------------------- Cijene - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
@@ -329,8 +343,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 18px 18px;
-  margin-top: 8px;
+  padding: 0 18px 15px !important; /* 🔴 MANJI PADDING */
+  margin-top: auto !important; /* 🔴 GURAMO NA DNO */
   position: relative;
   z-index: 2;
 }
@@ -338,13 +352,13 @@
 .top-products-container .old-price {
   text-decoration: line-through;
   color: #999;
-  font-size: 14px;
+  font-size: 12px !important; /* 🔴 MANJA VELIČINA */
 }
 
 .top-products-container .new-price {
   color: var(--green-dark);
   font-weight: 750;
-  font-size: 17px;
+  font-size: 15px !important; /* 🔴 MANJA VELIČINA */
   text-shadow: 0 1px 3px rgba(122, 159, 110, 0.3);
 }
 
@@ -380,6 +394,9 @@
     min-width: 280px;
     padding: 18px 12px;
   }
+  .top-products-container .image-box {
+    height: 130px !important; /* 🔴 PRILAGOĐENA VISINA ZA TABLET */
+  }
 }
 
 @media (max-width: 992px) {
@@ -397,6 +414,9 @@
   .top-products-container .column-title {
     font-size: 1.4rem;
   }
+  .top-products-container .image-box {
+    height: 120px !important; /* 🔴 PRILAGOĐENA VISINA ZA MOBILNI */
+  }
 }
 
 @media (max-width: 768px) {
@@ -411,13 +431,16 @@
     font-size: 1.3rem;
   }
   .top-products-container .image-box {
-    height: 160px;
+    height: 110px !important; /* 🔴 PRILAGOĐENA VISINA ZA MALI MOBILNI */
   }
   .top-products-container .top-products-grid {
     gap: 15px;
   }
   .top-products-container {
     padding: 35px 15px;
+  }
+  .top-products-container .product-card {
+    min-height: 250px !important; /* 🔴 MANJA VISINA KARTICE NA MOBILNOM */
   }
 }
 

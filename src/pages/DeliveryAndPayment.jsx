@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingCart, User, MapPin, Phone, Mail, Home, Package, Truck } from 'lucide-react';
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
+import Popup from '../components/Popup';
 import './DeliveryAndPayment.css';
 
 const DeliveryAndPayment = ({ cartItems = [] }) => {
@@ -16,6 +17,10 @@ const DeliveryAndPayment = ({ cartItems = [] }) => {
     paymentMethod: 'pickup',
     selectedPharmacy: 'apoteka1'
   });
+
+  // State za popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
   // Mock cart data ako nema podataka iz props
   const mockCartItems = [
@@ -46,7 +51,15 @@ const DeliveryAndPayment = ({ cartItems = [] }) => {
       total,
       deliveryMethod
     });
-    alert(`Narudžba je uspešno poslana! Način dostave: ${deliveryMethod}`);
+    
+    // Prikažite popup umjesto alert-a
+    setPopupMessage(`Narudžba je uspešno poslana! Način dostave: ${deliveryMethod}`);
+    setIsPopupOpen(true);
+  };
+
+  // Funkcija za zatvaranje popup-a
+  const closePopup = () => {
+    setIsPopupOpen(false);
   };
 
   return (
@@ -317,6 +330,14 @@ const DeliveryAndPayment = ({ cartItems = [] }) => {
           </div>
         </div>
       </div>
+      
+      {/* Popup komponenta */}
+      <Popup 
+        isOpen={isPopupOpen} 
+        onClose={closePopup} 
+        message={popupMessage} 
+      />
+      
       <Footer />
     </div>
   );

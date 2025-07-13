@@ -51,6 +51,8 @@ import UsersPage from "./pages/admin/UsersPage";
 
 // worker pages
 import WorkerOrdersPage from "./pages/worker/Orders";
+import WorkerProductsPage from "./pages/worker/WorkerProductsPage";
+
 
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -177,7 +179,9 @@ function App() {
     <WorkerOrdersPage />
   </WorkerRoute>
 } />
-
+   <Route path="/radnik/proizvodi" element={ <WorkerRoute>
+    <WorkerProductsPage />
+  </WorkerRoute>} />
 </Routes>
           </CartProvider>
     </>

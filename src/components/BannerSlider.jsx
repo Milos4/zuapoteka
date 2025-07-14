@@ -64,12 +64,18 @@ const BannerSlider = ({ banners }) => {
     return () => clearInterval(interval);
   }, [isAnimating, nextSlide]);
 
-  const handleClick = () => {
-    // Get the actual banner index accounting for the cloned sets
-    const realIndex = currentIndex % banners.length;
-    navigate(banners[realIndex].link);
-  };
+const handleClick = () => {
+  const realIndex = currentIndex % banners.length;
+  const filters = banners[realIndex].filters || {};
+  const query = new URLSearchParams();
 
+  if (filters.brand) query.append("brand", filters.brand);
+  if (filters.category) query.append("kategorija", filters.category);
+  if (filters.discount) query.append("naPopustu", "true");
+  if (filters.new) query.append("novo", "true");
+
+  navigate(`/prodavnica?${query.toString()}`);
+};
   return (
     <div className="banner-slider" ref={sliderRef}>
       <div

@@ -12,38 +12,30 @@ import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
 import BrandSlider from "../components/BrandSlider";
 
+
 const banners = [
   {
-    image: "https://www.nescafe.com/au/sites/default/files/2024-03/NESTHA1560---Cafe-Creations-and-Loreal-promo_2880x1200px_FA.jpg",
-    alt: "Loreal 30% popust",
-    link: "/shop?brand=Loreal&discount=30",
+    image: "https://images-static.nykaa.com/uploads/5d65f189-346b-412d-aca6-784644225651.jpg?tr=cm-pad_resize,w-600",
+    alt: "Maybelline Akcija",
+    filters: {
+      brand: "Nivea",
+      discount: true,
+    },
   },
   {
     image: "https://images-static.nykaa.com/uploads/5d65f189-346b-412d-aca6-784644225651.jpg?tr=cm-pad_resize,w-600",
-    alt: "Nivea 20% popust",
-    link: "/shop?brand=Nivea&discount=20",
+    alt: "Skincare proizvodi",
+    filters: {
+      category: "Mama i bebe",
+    },
   },
   {
     image: "https://api.watsons.com.ph/medias/WP.-1-Main-Banner-MNY-1260x526.jpg?context=bWFzdGVyfGltYWdlc3w4MzIzNXxpbWFnZS9qcGVnfGFHRmtMMmhqTlM4eE5qQXpPVEl4TmpJNE16WTNPQzlYVUM0Z01TQk5ZV2x1SUVKaGJtNWxjaUJOVGxrZ01USTJNSGcxTWpZdWFuQm58Yjc5YTg2MTUyYWYyZWVjZjRlNzVkNjk0NDI5NDkyYjY4MzQxOTAzMTI0ZTBjODE0NzkyYzNkZjE4NGU5MjYzNw",
-    alt: "Maybelline Akcija",
-    link: "/shop?brand=Maybelline",
+    alt: "Novo u ponudi",
+    filters: {
+      new: true,
+    },
   },
-  // Dodajte još banner-a ako želite (minimum 3 za dobar prikaz)
-  {
-    image: "https://mir-s3-cdn-cf.behance.net/projects/404/3636b1168332437.Y3JvcCwxMDgwLDg0NCwwLDA.jpg",
-    alt: "Dodatni banner 1",
-    link: "/shop?category=cosmetics"
-  },  
-  {
-    image: "https://experapharmacy.com/images/akcije/banner-eucerin-apr-24.jpg",
-    alt: "Dodatni banner 2",
-    link: "/shop?category=skincare"
-  },
-  {
-    image: "https://experapharmacy.com/images/akcije/avene-promocija-mart-2021-expera-apoteke.jpg",
-    alt: "Dodatni banner 3",
-    link: "/shop?category=haircare"
-  }
 ];
 
 const HomePage = () => {

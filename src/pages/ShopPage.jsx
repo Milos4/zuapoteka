@@ -15,8 +15,7 @@ import RegularProduct from "../components/SpecialOffers/RegularProduct";
 import NewProduct from "../components/SpecialOffers/NewProduct";
 import Popup from "../components/Popup";
 import "./ShopPage.css";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PAGE_SIZE = 20;
 
@@ -27,20 +26,51 @@ const capitalize = (str) => {
 
 const ShopPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [user, setUser] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [filterDiscount, setFilterDiscount] = useState(false);
+  const [filterNew, setFilterNew] = useState(false);
+  const [brandSearch, setBrandSearch] = useState("");
 
   const { addToCart } = useCart();
+
+ useEffect(() => {
+  const params = new URLSearchParams(location.search);
+
+  const brandParams = params.getAll("brand"); // npr. ["Nivea", "Bebi program"]
+  const kategorija = params.get("kategorija");
+  const naPopustu = params.get("naPopustu");
+  const novo = params.get("novo");
+
+  const applyFilters = async () => {
+    if (brandParams.length > 0 && brands.length > 0) {
+      // Pronađi ID-eve na osnovu imena brenda
+      const matchingIds = brands
+        .filter((b) => brandParams.includes(b.name))
+        .map((b) => b.id);
+      setSelectedBrands(matchingIds);
+    }
+
+    if (kategorija) setSelectedCategories([kategorija]);
+    if (naPopustu === "true") setFilterDiscount(true);
+    if (novo === "true") setFilterNew(true);
+  };
+
+  applyFilters();
+}, [location.search, brands]);
+
 
   useEffect(() => {
     fetchProducts();
@@ -94,23 +124,15 @@ const ShopPage = () => {
 
   const filtered = products.filter((p) => {
     if (search && !p.naziv.toLowerCase().includes(search.toLowerCase())) return false;
-    if (selectedBrand && p.brandId !== selectedBrand) return false;
-    if (
-      selectedCategories.length > 0 &&
-      !selectedCategories.includes(p.kategorija)
-    )
-      return false;
-    if (
-      selectedSubcategories.length > 0 &&
-      selectedCategories.includes(p.kategorija)
-    ) {
-      if (
-        !p.subkategorije ||
-        !selectedSubcategories.every((sub) => p.subkategorije.includes(sub))
-      ) {
+    if (selectedBrands.length > 0 && !selectedBrands.includes(p.brandId)) return false;
+    if (selectedCategories.length > 0 && !selectedCategories.includes(p.kategorija)) return false;
+    if (selectedSubcategories.length > 0 && selectedCategories.includes(p.kategorija)) {
+      if (!p.subkategorije || !selectedSubcategories.every((sub) => p.subkategorije.includes(sub))) {
         return false;
       }
     }
+    if (filterDiscount && !p.naPopustu) return false;
+    if (filterNew && !p.novo) return false;
     return true;
   });
 
@@ -123,6 +145,12 @@ const ShopPage = () => {
   const handleSubcategoryToggle = (sub) => {
     setSelectedSubcategories((prev) =>
       prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]
+    );
+  };
+
+  const handleBrandToggle = (id) => {
+    setSelectedBrands((prev) =>
+      prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
   };
 
@@ -163,7 +191,7 @@ const ShopPage = () => {
     setShowPopup(true);
   };
 
-    const handleViewProduct = (productId) => {
+  const handleViewProduct = (productId) => {
     navigate(`/product/${productId}`);
   };
 
@@ -176,7 +204,7 @@ const ShopPage = () => {
       name: p.naziv,
       description: desc,
       price: p.cijena.toFixed(2),
-onView: () => handleViewProduct(p.id),
+      onView: () => handleViewProduct(p.id),
       onAddToCart: () => addToCart(p),
       onAddToFavorites: () => handleAddToFavorite(p),
       inWishlist,
@@ -205,15 +233,27 @@ onView: () => handleViewProduct(p.id),
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <h3>Brend</h3>
-        <select value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
-          <option value="">Svi brendovi</option>
-          {brands.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
-        </select>
+        <h3>Brendovi</h3>
+        <input
+          type="text"
+          placeholder="Pretraži brend..."
+          value={brandSearch}
+          onChange={(e) => setBrandSearch(e.target.value)}
+        />
+        <div className="brand-list scrollable">
+          {brands
+            .filter((b) => b.name.toLowerCase().includes(brandSearch.toLowerCase()))
+            .map((b) => (
+              <label key={b.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedBrands.includes(b.id)}
+                  onChange={() => handleBrandToggle(b.id)}
+                />
+                {b.name}
+              </label>
+            ))}
+        </div>
 
         <h3>Kategorije</h3>
         {Object.keys(categories).map((k) => (
@@ -226,7 +266,6 @@ onView: () => handleViewProduct(p.id),
               />
               {capitalize(k)}
             </label>
-
             {selectedCategories.includes(k) && categories[k].length > 0 && (
               <div className="subcategories">
                 {categories[k].map((s) => (
@@ -243,6 +282,25 @@ onView: () => handleViewProduct(p.id),
             )}
           </div>
         ))}
+
+        <h3>Ostalo</h3>
+        <label>
+          <input
+            type="checkbox"
+            checked={filterDiscount}
+            onChange={() => setFilterDiscount((prev) => !prev)}
+          />
+          Na popustu
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            checked={filterNew}
+            onChange={() => setFilterNew((prev) => !prev)}
+          />
+          Novo
+        </label>
       </div>
 
       <div className="products">

@@ -132,3 +132,7 @@
   background-color: var(--tamnoZelena);
   border-radius: 10px;
 }
+.brand-list.scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+}

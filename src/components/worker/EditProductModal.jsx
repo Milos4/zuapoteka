@@ -7,10 +7,11 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 const EditProductModal = ({ product, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     ...product,
-    // Pretvori niz podkategorija u string za prikaz u inputu
     subkategorije: Array.isArray(product.subkategorije)
       ? product.subkategorije.join(", ")
       : product.subkategorije || "",
+    nacinUpotrebe: product.nacinUpotrebe || "",
+    sastav: product.sastav || "",
   });
 
   const [newImageFile, setNewImageFile] = useState(null);
@@ -24,9 +25,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setNewImageFile(file);
-    }
+    if (file) setNewImageFile(file);
   };
 
   const handleSave = async () => {
@@ -141,7 +140,21 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           name="opis"
           value={formData.opis || ""}
           onChange={handleChange}
-        ></textarea>
+        />
+
+        <label>Način upotrebe</label>
+        <textarea
+          name="nacinUpotrebe"
+          value={formData.nacinUpotrebe || ""}
+          onChange={handleChange}
+        />
+
+        <label>Sastav</label>
+        <textarea
+          name="sastav"
+          value={formData.sastav || ""}
+          onChange={handleChange}
+        />
 
         <label>Slika</label>
         <input type="file" accept="image/*" onChange={handleImageChange} />

@@ -6,13 +6,14 @@ import "./ProductDetails.css";
 import { useCart } from "../../context/CartContext";
 
 import HeartIcon from "../Icons/HeartIcon";
-import Popup from "../Popup"; // 👈 uvoz tvoje Popup komponente
+import Popup from "../Popup";
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [brand, setBrand] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [activeTab, setActiveTab] = useState("opis");
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -73,13 +74,41 @@ const ProductDetails = ({ product }) => {
 
       <div className="product-main-info">
         <h2>{product.naziv}</h2>
+
         <div className="category">
           {product.kategorija}
           {product.subkategorije?.length
             ? ` → ${product.subkategorije.join(", ")}`
             : ""}
         </div>
-        <div className="description">{product.opis}</div>
+
+        <div className="tab-buttons">
+          <button
+            className={activeTab === "opis" ? "active-tab" : ""}
+            onClick={() => setActiveTab("opis")}
+          >
+            Opis
+          </button>
+          <button
+            className={activeTab === "nacinUpotrebe" ? "active-tab" : ""}
+            onClick={() => setActiveTab("nacinUpotrebe")}
+          >
+            Način upotrebe
+          </button>
+          <button
+            className={activeTab === "sastav" ? "active-tab" : ""}
+            onClick={() => setActiveTab("sastav")}
+          >
+            Sastav
+          </button>
+        </div>
+
+        <div className="description">
+          {activeTab === "opis" && (product.opis || "Nema opisa.")}
+          {activeTab === "nacinUpotrebe" &&
+            (product.nacinUpotrebe || "Nema načina upotrebe.")}
+          {activeTab === "sastav" && (product.sastav || "Nema sastava.")}
+        </div>
 
         {brand && (
           <div className="brand-logo-wrapper">

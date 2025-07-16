@@ -11,6 +11,8 @@ import TopProducts from "../components/SpecialOffers/TopProducts/TopProducts";
 import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
 import BrandSlider from "../components/BrandSlider";
+import UpdateMissingFields from "./UpdateMissingFields";
+
 
 
 const banners = [
@@ -48,6 +50,7 @@ const HomePage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
+
       <BannerSlider banners={banners.slice(0, 3)} />
       
       <PharmacyCategories />

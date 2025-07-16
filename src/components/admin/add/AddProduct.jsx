@@ -6,7 +6,7 @@ import "./AddProduct.css";
 
 const AddProduct = () => {
   const [form, setForm] = useState({
-     sifra: "",
+    sifra: "",
     naziv: "",
     brandId: "",
     kategorija: "",
@@ -17,6 +17,8 @@ const AddProduct = () => {
     popustProcenat: "",
     novo: false,
     opis: "",
+    nacinUpotrebe: "",
+    sastav: "",
     slika: null,
   });
 
@@ -82,11 +84,11 @@ const AddProduct = () => {
         cijena: parseFloat(form.cijena),
         naStanju: form.naStanju,
         naPopustu: form.naPopustu,
-        popustProcenat: form.naPopustu
-          ? parseInt(form.popustProcenat)
-          : 0,
+        popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
         novo: form.novo,
         opis: form.opis,
+        nacinUpotrebe: form.nacinUpotrebe,
+        sastav: form.sastav,
         slikaURL,
         brojNarudzbinaUkupno: 0,
         brojNarudzbinaMjesec: 0,
@@ -107,6 +109,8 @@ const AddProduct = () => {
         popustProcenat: "",
         novo: false,
         opis: "",
+        nacinUpotrebe: "",
+        sastav: "",
         slika: null,
       });
       setPreview(null);
@@ -122,14 +126,14 @@ const AddProduct = () => {
     <div className="add-product-container">
       <h2>Dodaj Proizvod</h2>
       <form onSubmit={handleSubmit} className="add-product-form">
-<input
-  type="text"
-  name="sifra"
-  placeholder="Šifra proizvoda"
-  value={form.sifra}
-  onChange={handleChange}
-  required
-/>
+        <input
+          type="text"
+          name="sifra"
+          placeholder="Šifra proizvoda"
+          value={form.sifra}
+          onChange={handleChange}
+          required
+        />
 
         <input
           type="text"
@@ -226,6 +230,20 @@ const AddProduct = () => {
           name="opis"
           placeholder="Opis proizvoda"
           value={form.opis}
+          onChange={handleChange}
+        />
+
+        <textarea
+          name="nacinUpotrebe"
+          placeholder="Način upotrebe"
+          value={form.nacinUpotrebe}
+          onChange={handleChange}
+        />
+
+        <textarea
+          name="sastav"
+          placeholder="Sastav"
+          value={form.sastav}
           onChange={handleChange}
         />
 

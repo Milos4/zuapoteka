@@ -242,3 +242,37 @@
 .favorite-icon-btn:hover {
   background-color: #ffe6e6;
 }
+
+.tab-buttons {
+  display: flex;
+  gap: 20px;
+  margin: 10px 0 20px 0;
+}
+
+.tab-buttons button {
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab-buttons button.active-tab {
+  color: var(--zelena);
+  font-weight: bold;
+}
+
+.tab-buttons button.active-tab::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: var(--zelena);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}

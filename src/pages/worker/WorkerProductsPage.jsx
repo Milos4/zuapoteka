@@ -6,7 +6,7 @@ import {
   query,
   where,
   orderBy,
-  getDocs
+  getDocs, doc, deleteDoc 
 } from "firebase/firestore";
 import "./WorkerProductsPage.css";
 import EditProductModal from "../../components/worker/EditProductModal";
@@ -56,6 +56,19 @@ const WorkerProductsPage = () => {
     }
     setLoading(false);
   };
+
+  const deleteProduct = async (productId) => {
+  if (!window.confirm("Da li sigurno želiš da obrišeš ovaj proizvod?")) return;
+
+  try {
+    await deleteDoc(doc(db, "products", productId));
+    alert("Proizvod obrisan.");
+    fetchAllProducts(); // osveži listu
+  } catch (err) {
+    console.error("Greška pri brisanju proizvoda:", err);
+    alert("Greška pri brisanju proizvoda.");
+  }
+};
 
   const handleSearch = () => {
     let filtered = allProducts;
@@ -193,6 +206,12 @@ const WorkerProductsPage = () => {
                   <button onClick={() => setSelectedProduct(p)} className="btn-secondary">
                     Edit
                   </button>
+                   <button
+    onClick={() => deleteProduct(p.id)}
+    className="btn-delete"
+  >
+    Obriši
+  </button>
                 </td>
               </tr>
             ))}

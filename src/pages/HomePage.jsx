@@ -11,6 +11,8 @@ import TopProducts from "../components/SpecialOffers/TopProducts/TopProducts";
 import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
 import BrandSlider from "../components/BrandSlider";
+import BrandCarousel from "../components/BrandCarousel";
+
 import UpdateMissingFields from "./UpdateMissingFields";
 
 
@@ -90,7 +92,7 @@ const HomePage = () => {
       />
       <MiniProduct />
       {/* Ovde možeš dodati druge sekcije kao featured products itd. */}
-      <BrandSlider />
+      <BrandCarousel />
       <Footer />
     </div>
   );

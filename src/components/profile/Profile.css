@@ -105,3 +105,26 @@
   font-size: 18px;
   color: var(--siva);
 }
+
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+
+  .profile-sidebar {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    min-width: auto;
+  }
+
+  .profile-sidebar button {
+    text-align: center;
+    flex: 1;
+  }
+
+  .profile-separator {
+    display: none;
+  }
+}

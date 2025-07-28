@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/colors.css";
 
-import NavBar from "./components/NavBar";
+import NavBar from "./components/MainNavbar";
 import NavBarAdmin from "./components/admin/NavBarAdmin";
 import NavBarWorker from "./components/worker/NavBarWorker";
 

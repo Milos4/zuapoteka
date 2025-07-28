@@ -1,318 +1,147 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Arrows from './arrows/Arrows';
-import './brand-slider.css';
+import React, { useEffect, useState, useRef } from "react";
+import { collection, getDocs, query, limit } from "firebase/firestore";
+import { db } from "../firebase";
+import "./brand-slider.css";
 
-// Import slika
-import A_DERMA from '../assets/brands/A_DERMA.webp';
-import APIVITA from '../assets/brands/APIVITA.png';
-import AVENE from '../assets/brands/AVENE.png';
-import BIODERMA from '../assets/brands/BIODERMA.png';
-import CERAVE from '../assets/brands/CERAVE.png';
-import EUCERIN from '../assets/brands/EUCERIN.png';
-import FILLERINA from '../assets/brands/FILLERINA.webp';
-import GAMARDE from '../assets/brands/GAMARDE.png';
-import HAWKINS_BRIMBLE from '../assets/brands/HAWKINS_BRIMBLE.png';
-import KLORANE from '../assets/brands/KLORANE.png';
-import LA_ROCHE_POSAY from '../assets/brands/LA_ROCHE_POSAY.png';
-import SKEYNDOR from '../assets/brands/SKEYNDOR.png';
-import SKINCODE from '../assets/brands/SKINCODE.png';
-import SVR from '../assets/brands/SVR.png';
-import URIAGE from '../assets/brands/URIAGE.png';
-import VICHY from '../assets/brands/VICHY.png';
-
-const BrandSlider = () => {
+const BrandCarousel = () => {
+  const [brands, setBrands] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(window.innerWidth <= 768 ? 2 : 5);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [prevTranslate, setPrevTranslate] = useState(0);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const sliderRef = useRef(null);
-  const autoScrollRef = useRef(null);
-  const animationRef = useRef(null);
+  const containerRef = useRef(null);
 
-  // Niz sa svim slikama brendova
-  const brandImages = [
-    A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY,
-     A_DERMA, APIVITA, AVENE, BIODERMA, CERAVE, EUCERIN, FILLERINA, GAMARDE,
-    HAWKINS_BRIMBLE, KLORANE, LA_ROCHE_POSAY, SKEYNDOR, SKINCODE, SVR, URIAGE, VICHY
-  ];
-
-  // Kreiranje beskonačnog niza - 3x ponavljanje za smooth beskonačan loop
-  const infiniteBrands = [...brandImages, ...brandImages, ...brandImages];
-  const brandWidth = 178; // 150 + 20 gap + 8 margin sa obje strane
-  const totalWidth = infiniteBrands.length * brandWidth;
-  const singleSetWidth = brandImages.length * brandWidth;
-
+  // Fetch max 10 brands from Firestore
   useEffect(() => {
-  if (isAutoScrolling && !isDragging) {
-    autoScrollRef.current = setInterval(() => {
-      setCurrentIndex(prevIndex => {
-        let newIndex = prevIndex + 1;
+    const fetchBrands = async () => {
+      const q = query(collection(db, "brands"), limit(10));
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setBrands(data);
+    };
+    fetchBrands();
+  }, []);
 
-        // Ako prelazi desni kraj drugog seta
-        if (newIndex >= brandImages.length * 2) {
-          // Odmah prebacujemo na sredinu, ali bez animacije
-          newIndex = brandImages.length;
-          setCurrentTranslate(-newIndex * brandWidth);
-          setPrevTranslate(-newIndex * brandWidth);
-
-          // Privremeno isključi animaciju
-          if (sliderRef.current) {
-            sliderRef.current.style.transition = 'none';
-            sliderRef.current.style.transform = `translateX(${-newIndex * brandWidth}px)`;
-
-            // Vraćamo animaciju nakon sledećeg frame-a
-            requestAnimationFrame(() => {
-              if (sliderRef.current) {
-                sliderRef.current.style.transition = 'transform 0.3s ease-out';
-              }
-            });
-          }
-        } else {
-          // Normalno premeštanje
-          const newTranslate = -newIndex * brandWidth;
-          setCurrentTranslate(newTranslate);
-          setPrevTranslate(newTranslate);
-        }
-
-        return newIndex;
-      });
-    }, 2500);
-  }
-
-  return () => {
-    if (autoScrollRef.current) {
-      clearInterval(autoScrollRef.current);
-    }
-  };
-}, [isAutoScrolling, isDragging, brandImages.length, brandWidth]);
-
-
-  // Postavi početni indeks na srednji set za beskonačan loop
+  // Update visible count on resize
   useEffect(() => {
-    const middleIndex = brandImages.length;
-    setCurrentIndex(middleIndex);
-    setCurrentTranslate(-middleIndex * brandWidth);
-    setPrevTranslate(-middleIndex * brandWidth);
-  }, [brandImages.length, brandWidth]);
+    const onResize = () => {
+      setVisibleCount(window.innerWidth <= 768 ? 2 : 5);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
-  // Smooth animacija
-  const animate = () => {
-    if (isDragging) {
-      if (sliderRef.current) {
-        sliderRef.current.style.transform = `translateX(${currentTranslate}px)`;
-      }
-      animationRef.current = requestAnimationFrame(animate);
-    }
-  };
-
-  // Mouse event handlers
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setIsAutoScrolling(false);
-    setStartX(e.clientX);
-    
-    if (sliderRef.current) {
-      sliderRef.current.style.cursor = 'grabbing';
-    }
-    
-    animationRef.current = requestAnimationFrame(animate);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    
-    const currentX = e.clientX;
-    const diff = currentX - startX;
-    const newTranslate = prevTranslate + diff;
-    
-    // Ograniči drag da ne ide van granica
-    const minTranslate = -(infiniteBrands.length - 1) * brandWidth;
-    const maxTranslate = 0;
-    
-    setCurrentTranslate(Math.max(minTranslate, Math.min(newTranslate, maxTranslate)));
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-    
-    if (sliderRef.current) {
-      sliderRef.current.style.cursor = 'grab';
-    }
-    
-    // Izračunaj trenutni indeks na osnovu trenutne pozicije
-    let newIndex = Math.round(-currentTranslate / brandWidth);
-    
-    // Wrap around logika za beskonačan loop
-    if (newIndex < 0) {
-      // Ako je otišao lijevo previše, prebaci na kraj srednjeg seta
-      newIndex = brandImages.length * 2 - 1;
-    } else if (newIndex >= infiniteBrands.length) {
-      // Ako je otišao desno previše, prebaci na početak srednjeg seta
-      newIndex = brandImages.length;
-    }
-    
-    setCurrentIndex(newIndex);
-    const finalTranslate = -newIndex * brandWidth;
-    setCurrentTranslate(finalTranslate);
-    setPrevTranslate(finalTranslate);
-    
-    // Nastavi auto-scroll nakon 3 sekunde
-    setTimeout(() => {
-      setIsAutoScrolling(true);
-    }, 3000);
-  };
-
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      setIsDragging(false);
-      
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-      
-      if (sliderRef.current) {
-        sliderRef.current.style.cursor = 'grab';
-      }
-      
-      // Izračunaj trenutni indeks na osnovu trenutne pozicije
-      let newIndex = Math.round(-currentTranslate / brandWidth);
-      
-      // Wrap around logika za beskonačan loop
-      if (newIndex < 0) {
-        // Ako je otišao lijevo previše, prebaci na kraj srednjeg seta
-        newIndex = brandImages.length * 2 - 1;
-      } else if (newIndex >= infiniteBrands.length) {
-        // Ako je otišao desno previše, prebaci na početak srednjeg seta
-        newIndex = brandImages.length;
-      }
-      
-      setCurrentIndex(newIndex);
-      const finalTranslate = -newIndex * brandWidth;
-      setCurrentTranslate(finalTranslate);
-      setPrevTranslate(finalTranslate);
-      
-      setTimeout(() => {
-        setIsAutoScrolling(true);
-      }, 3000);
-    }
-  };
-
-  // Touch events za mobilne uređaje
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setIsAutoScrolling(false);
-    setStartX(e.touches[0].clientX);
-    animationRef.current = requestAnimationFrame(animate);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
-    const newTranslate = prevTranslate + diff;
-    
-    // Ograniči drag da ne ide van granica
-    const minTranslate = -(infiniteBrands.length - 1) * brandWidth;
-    const maxTranslate = 0;
-    
-    setCurrentTranslate(Math.max(minTranslate, Math.min(newTranslate, maxTranslate)));
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-    
-    // Izračunaj trenutni indeks na osnovu trenutne pozicije
-    let newIndex = Math.round(-currentTranslate / brandWidth);
-    
-    // Wrap around logika za beskonačan loop
-    if (newIndex < 0) {
-      // Ako je otišao lijevo previše, prebaci na kraj srednjeg seta
-      newIndex = brandImages.length * 2 - 1;
-    } else if (newIndex >= infiniteBrands.length) {
-      // Ako je otišao desno previše, prebaci na početak srednjeg seta
-      newIndex = brandImages.length;
-    }
-    
-    setCurrentIndex(newIndex);
-    const finalTranslate = -newIndex * brandWidth;
-    setCurrentTranslate(finalTranslate);
-    setPrevTranslate(finalTranslate);
-    
-    // Nastavi auto-scroll nakon 3 sekunde
-    setTimeout(() => {
-      setIsAutoScrolling(true);
-    }, 3000);
-  };
-
-  // Ažuriranje transform-a kada se menja currentIndex automatski
+  // Auto rotate logic
   useEffect(() => {
-    if (!isDragging) {
-      const newTranslate = -currentIndex * brandWidth;
-      setCurrentTranslate(newTranslate);
-      setPrevTranslate(newTranslate);
+    if (brands.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % brands.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [brands]);
+
+  // Drag/Touch scroll handling
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftStart = useRef(0);
+
+  const onMouseDown = (e) => {
+    isDragging.current = true;
+    startX.current = e.pageX;
+    scrollLeftStart.current = currentIndex;
+  };
+
+  const onMouseMove = (e) => {
+    if (!isDragging.current) return;
+    const diff = e.pageX - startX.current;
+    if (Math.abs(diff) > 30) {
+      if (diff > 0) {
+        // drag right, show previous
+        setCurrentIndex((prev) => (prev - 1 + brands.length) % brands.length);
+      } else {
+        // drag left, show next
+        setCurrentIndex((prev) => (prev + 1) % brands.length);
+      }
+      startX.current = e.pageX; // reset startX to prevent multiple changes in one drag
     }
-  }, [currentIndex, isDragging, brandWidth]);
+  };
+
+  const onMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  const onTouchStart = (e) => {
+    isDragging.current = true;
+    startX.current = e.touches[0].clientX;
+    scrollLeftStart.current = currentIndex;
+  };
+
+  const onTouchMove = (e) => {
+    if (!isDragging.current) return;
+    const diff = e.touches[0].clientX - startX.current;
+    if (Math.abs(diff) > 30) {
+      if (diff > 0) {
+        setCurrentIndex((prev) => (prev - 1 + brands.length) % brands.length);
+      } else {
+        setCurrentIndex((prev) => (prev + 1) % brands.length);
+      }
+      startX.current = e.touches[0].clientX;
+    }
+  };
+
+  const onTouchEnd = () => {
+    isDragging.current = false;
+  };
+
+  // Izračunaj pomeraj za transform:
+  // Svaki brend ima širinu: (100% - gap* (visibleCount-1)) / visibleCount
+  // Gap je 20px
+  // Pomeraš ceo flex-lej aut levo za currentIndex * (itemWidth + gap)
+  // Ali jer je fleks, koristićemo procentualni pomeraj
+
+  // % po jednom itemu sa gapom: (100 / visibleCount) + (gap* (visibleCount-1)) => gap je 20px ali u % teško - radićemo približno
+
+  // Bolje je da pomeramo po elementima sa flex-shrink 0 i margin gap
+
+  // Tako da pomeramo ceo container sa transform: translateX(- offset)
+  // Offset = currentIndex * (itemWidth + gap)
+  // itemWidth u px: računamo iz ref, ali za sad možemo approximirati
+
+  // Da pojednostavimo, item width u % je (100% - totalGap) / visibleCount
+  // Gap u % = (visibleCount -1) * 20px / containerWidth * 100%
+
+  const containerWidth = containerRef.current?.clientWidth || 1200;
+  const gapPx = 20;
+  const totalGapPx = gapPx * (visibleCount - 1);
+  const itemWidthPx = (containerWidth - totalGapPx) / visibleCount;
+  const offset = (itemWidthPx + gapPx) * currentIndex;
 
   return (
-    <div className="brand-slider-container">
-      <div 
-        ref={sliderRef}
+    <div
+      className="brand-slider-container"
+      ref={containerRef}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      style={{ overflow: "hidden" }}
+    >
+      <div
         className="brands-grid"
         style={{
-          transform: `translateX(${currentTranslate}px)`,
-          width: `${totalWidth}px`,
-          transition: isDragging ? 'none' : 'transform 0.3s ease-out'
+          transform: `translateX(-${offset}px)`,
+          transition: isDragging.current ? "none" : "transform 0.5s ease",
         }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
-        {infiniteBrands.map((brand, index) => (
-          <div key={`brand-${index}`} className="brand-item">
+        {brands.map((brand) => (
+          <div className="brand-item" key={brand.id}>
             <div className="brand-image-container">
-              <img 
-                src={brand} 
-                alt={`Brand ${(index % brandImages.length) + 1}`} 
+              <img
+                src={brand.imageUrl}
+                alt={brand.name}
                 className="brand-image"
                 draggable={false}
               />
@@ -324,4 +153,4 @@ const BrandSlider = () => {
   );
 };
 
-export default BrandSlider;
+export default BrandCarousel;

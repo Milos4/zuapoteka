@@ -11,28 +11,7 @@ const BottomImageSection = () => {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Dekorativni elementi */}
-      <div style={{
-        position: 'absolute',
-        top: '-50px',
-        right: '-50px',
-        width: '200px',
-        height: '200px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(153,188,133,0.2) 0%, transparent 70%)',
-        zIndex: '0',
-      }}/>
-      
-      <div style={{
-        position: 'absolute',
-        bottom: '-30px',
-        left: '-30px',
-        width: '150px',
-        height: '150px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(153,188,133,0.2) 0%, transparent 70%)',
-        zIndex: '0',
-      }}/>
+
 
       {/* Glavni sadržaj */}
       <div style={{

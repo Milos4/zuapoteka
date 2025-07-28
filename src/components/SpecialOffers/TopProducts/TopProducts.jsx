@@ -20,7 +20,6 @@ import "./TopProducts.css";
 
 const categoriesFilter = [
   "Imunitet",
- 
   "Mama i bebe", 
   "Dijetetika i samoliječenje",
 ];
@@ -35,8 +34,26 @@ const TopProducts = () => {
   const [popupMessage, setPopupMessage] = useState("");
   const [user, setUser] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
+  const isMobile = windowWidth <= 992;
+
+  // 🔴 FUNKCIJA ZA TOGGLE ACTIVE KLASE (kao u SpecialOffers)
+  const handleToggleActive = (id) => {
+    const el = document.getElementById(`product-${id}`);
+    if (el) {
+      el.classList.toggle("active");
+    }
+  };
+
+  useEffect(() => {
+    // Praćenje promene veličine ekrana
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -91,52 +108,51 @@ const TopProducts = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleAddToFavorite = async (product) => {
-    if (user) {
-      try {
-        const wishlistRef = collection(db, "wishlist");
-        const q = query(
-          wishlistRef,
-          where("userId", "==", user.uid),
-          where("productId", "==", product.id)
-        );
+const handleAddToFavorite = async (product) => {
+  if (!user) {
+    setPopupMessage("Morate biti ulogovani da biste dodali proizvod u listu želja!");
+    setShowPopup(true);
+    return;
+  }
 
-        const querySnapshot = await getDocs(q);
+  try {
+    // Reference na podkolekciju favorites unutar dokumenta korisnika
+    const favoritesRef = collection(db, "users", user.uid, "favorites");
 
-        if (!querySnapshot.empty) {
-          setPopupMessage("Ovaj proizvod je već u listi želja!");
-          setShowPopup(true);
-          return;
-        }
+    // Provera da li je proizvod već u favoritima
+    const q = query(favoritesRef, where("productId", "==", product.id));
+    const querySnapshot = await getDocs(q);
 
-        const wishlistData = {
-          userId: user.uid,
-          productId: product.id,
-          naziv: product.naziv,
-          cijena: product.cijena,
-          slikaURL: product.slikaURL,
-          kategorija: product.kategorija || "Nepoznato",
-          naPopustu: product.naPopustu || false,
-          popustProcenat: product.popustProcenat || 0,
-          brandImageUrl: product.brandImageUrl || "",
-          dateAdded: new Date().toISOString(),
-        };
-
-        const docRef = await addDoc(wishlistRef, wishlistData);
-
-        setWishlistItems((prev) => [...prev, product.id]);
-        setPopupMessage("Proizvod je dodat u listu želja!");
-        setShowPopup(true);
-      } catch (error) {
-        console.error("Greška:", error);
-        setPopupMessage("Greška pri dodavanju u listu želja!");
-        setShowPopup(true);
-      }
-    } else {
-      setPopupMessage("Morate biti ulogovani da biste dodali proizvod u listu želja!");
+    if (!querySnapshot.empty) {
+      setPopupMessage("Ovaj proizvod je već u listi želja!");
       setShowPopup(true);
+      return;
     }
-  };
+
+    // Podaci koje čuvamo za proizvod u favoritima
+    const favoriteData = {
+      productId: product.id,
+      naziv: product.naziv,
+      cijena: product.cijena,
+      slikaURL: product.slikaURL,
+      kategorija: product.kategorija || "Nepoznato",
+      naPopustu: product.naPopustu || false,
+      popustProcenat: product.popustProcenat || 0,
+      brandImageUrl: product.brandImageUrl || "",
+      dateAdded: new Date().toISOString(),
+    };
+
+    await addDoc(favoritesRef, favoriteData);
+
+    setWishlistItems((prev) => [...prev, product.id]);
+    setPopupMessage("Proizvod je dodat u listu želja!");
+    setShowPopup(true);
+  } catch (error) {
+    console.error("Greška:", error);
+    setPopupMessage("Greška pri dodavanju u listu želja!");
+    setShowPopup(true);
+  }
+};
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -167,7 +183,9 @@ const TopProducts = () => {
       onView: () => handleViewProduct(product.id),
       onAddToCart: () => addToCart(product),
       onAddToFavorites: () => handleAddToFavorite(product),
-      inWishlist, // 🔴 Dodajemo prop da srce zna kad da pocrveni
+      inWishlist,
+      onClick: isMobile ? () => handleToggleActive(product.id) : undefined, // 🔴 DODANO
+      id: `product-${product.id}`, // 🔴 DODANO
     };
 
     if (product.naPopustu) {

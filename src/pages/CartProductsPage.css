@@ -1,0 +1,15 @@
+.cart-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+ 
+   .proizvodi{
+    font-size: 12px;
+   }
+ 
+}

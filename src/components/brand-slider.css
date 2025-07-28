@@ -1,135 +1,66 @@
-/* ------------------- Kontejner za slajder ------------------- */
 .brand-slider-container {
   position: relative;
-  width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 20px 60px;
   overflow: hidden;
+  user-select: none; /* da ne selektuje pri dragovanju */
 }
 
-/* ------------------- Grid brendova ------------------- */
 .brands-grid {
   display: flex;
-  flex-wrap: nowrap;
   gap: 20px;
-  justify-content: flex-start;
-  overflow-x: hidden;
-  padding: 10px 0;
+  transition: transform 0.5s ease;
   cursor: grab;
   will-change: transform;
-  user-select: none;
 }
 
 .brands-grid:active {
   cursor: grabbing;
 }
 
-/* ------------------- Pojedinačni brend ------------------- */
 .brand-item {
-  width: 160px; /* Povećana širina kontejnera */
-  height: 120px; /* Povećana visina kontejnera */
   flex-shrink: 0;
-  margin: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
+  background: transparent;
+  transition: transform 0.3s ease;
 }
 
+/* Desktop: 5 visible */
+@media (min-width: 769px) {
+  .brand-item {
+    width: calc((100% - 80px) / 5); /* 20px * 4 gaps = 80px total */
+    height: 120px;
+  }
+}
+
+/* Mobile: 2 visible */
+@media (max-width: 768px) {
+  .brand-item {
+    width: calc((100% - 20px) / 2); /* 20px gap */
+    height: 90px;
+  }
+  .brand-slider-container {
+    padding: 20px 20px;
+  }
+}
 .brand-image-container {
   width: 100%;
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
-  border: none; /* Uklonjen border */
-  transition: transform 0.3s ease;
-  background-color: transparent; /* Transparentna pozadina */
-  box-shadow: none; /* Uklonjena senka */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .brand-image {
-  width: auto;
-  height: auto;
-  max-width: 85%; /* Ograniči maksimalnu širinu */
-  max-height: 85%; /* Ograniči maksimalnu visinu */
+  max-width: 85%;
+  max-height: 85%;
   object-fit: contain;
-  transition: transform 0.2s ease;
-  pointer-events: none; /* Spriječi drag slike */
-}
-
-/* ------------------- Hover efekti ------------------- */
-.brand-image-container:hover {
-  transform: translateY(-4px) scale(1.03);
-}
-
-.brand-image-container:hover .brand-image {
-  transform: scale(1.05);
-}
-
-/* ------------------- Strelice - SKRIVENE ------------------- */
-.brand-slider-container .arrows-container {
-  display: none;
-}
-
-/* ------------------- Responsivnost ------------------- */
-@media (max-width: 768px) {
-  .brand-item {
-    width: 100px;
-    height: 90px;
-    margin: 0 4px;
-  }
-  
-  .brand-slider-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.brands-grid {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-  
-  .brand-image {
-    max-width: 90%;
-    max-height: 90%;
-  }
-  
-  .brand-image-container {
-    border-radius: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .brand-item {
-    width: 85px;
-    height: 75px;
-    margin: 0 2px;
-  }
-  
-  .brand-slider-container {
-    padding: 15px 20px;
-  }
-  
-  .brands-grid {
-    gap: 8px;
-  }
-  
-  .brand-image {
-    max-width: 92%;
-    max-height: 92%;
-  }
-  
-  .brand-image-container {
-    border-radius: 6px;
-    border-width: 1px;
-  }
-  
-  .brand-image-container:hover {
-    transform: translateY(-2px) scale(1.02);
-  }
+  pointer-events: none;
+  user-select: none;
 }

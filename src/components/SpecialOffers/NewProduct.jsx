@@ -11,10 +11,11 @@ const NewProduct = ({
   price,
   onView,
   onAddToCart,
-  onAddToFavorites
+  onAddToFavorites, onClick,     
+  id 
 }) => {
   return (
-    <div className="product-card new">
+    <div className="product-card new" onClick={onClick} id={id}>
       <div className="badge new">NOVO!</div>
       <div className="image-box">
         {image && <img src={image} alt={name} />}

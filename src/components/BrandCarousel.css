@@ -1,0 +1,95 @@
+.brand-carousel-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  overflow: hidden;
+  user-select: none;
+  background: var(--bez);
+}
+
+.brands-wrapper {
+  overflow: hidden;
+  width: 100%;
+  -webkit-overflow-scrolling: auto;
+  touch-action: pan-y; /* dozvoljava vertikalni scroll, blokira horizontalni */
+}
+
+.brands-list {
+  display: flex;
+  gap: 20px;
+  will-change: transform;
+  cursor: grab;
+}
+
+.brand-item {
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.brand-image {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Desktop - 5 vidljivo */
+@media (min-width: 769px) {
+  .brand-item {
+    height: 120px;
+    width: calc((100% - 80px) / 5); /* 5 itema + 4 gapa po 20px */
+  }
+}
+
+/* Mobilni - 2 vidljivo */
+@media (max-width: 768px) {
+  .brand-item {
+    height: 90px;
+    width: calc((100% - 20px) / 2); /* 2 itema + 1 gap 20px */
+  }
+  .brand-carousel-container {
+    padding: 10px 20px;
+  }
+}
+
+/* Strelice */
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.3);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+.arrow-button:hover:not(:disabled) {
+  background: rgba(0,0,0,0.6);
+}
+.arrow-button:disabled {
+  cursor: default;
+  background: rgba(0,0,0,0.1);
+}
+
+.arrow-left {
+  left: 10px;
+}
+.arrow-right {
+  right: 10px;
+}

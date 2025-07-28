@@ -4,6 +4,7 @@ import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext"; // 👈 koristimo kontekst
+import "./CartProductsPage.css"
 
 const CartProductsPage = () => {
 const { cartItems: cart, updateQuantity, removeFromCart, setCartItems } = useCart();
@@ -32,13 +33,7 @@ const removeItemHandler = (id) => {
   return (
     <div style={{ backgroundColor: "var(--bez)", minHeight: "100vh" }}>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "40px",
-          padding: "40px 16px",
-          flexWrap: "wrap",
-        }}
+       className="cart-wrapper"
       >
         {/* Leva strana - proizvodi */}
         <div style={{ flex: "1 1 400px", maxWidth: "600px" }}>
@@ -63,6 +58,7 @@ const removeItemHandler = (id) => {
                   position: "relative",
                   border: "1px solid var(--svijetloZelena)",
                 }}
+                className="proizvodi"
               >
                 {item.naPopustu && (
                   <div

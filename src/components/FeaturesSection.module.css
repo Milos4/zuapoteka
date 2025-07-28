@@ -125,37 +125,29 @@
   }
 }
 
-@media (max-width: 480px) {
-  .featureCard {
-    min-width: calc(50% - 15px);
+@media (max-width: 768px) {
+  .featuresContainer {
+    flex-direction: column;
+    align-items: center;
   }
-}
-.icon {
-  width: 32px;
-  height: 32px;
-}
 
-/* Stil za kombinovanu ikonicu katanac + kvačica */
-.lockWithCheck {
-  position: relative;
-  width: 32px;
-  height: 32px;
-}
+  .featureCard {
+    width: 100%;
+    max-width: 90%;
+    animation: fadeSlideUp 0.5s ease forwards;
+  }
 
-.lockIcon {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-}
-
-.checkIcon {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  bottom: -4px;
-  right: -6px;
-  color: #7a9f6e;
-  background: white;
-  border-radius: 50%;
-  padding: 2px;
+  /* Animacije po redosledu */
+  .featureCard:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .featureCard:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .featureCard:nth-child(3) {
+    animation-delay: 0.5s;
+  }
+  .featureCard:nth-child(4) {
+    animation-delay: 0.7s;
+  }
 }

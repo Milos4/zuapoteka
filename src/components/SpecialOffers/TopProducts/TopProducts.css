@@ -386,71 +386,46 @@
 }
 
 /* ------------------- Responsive design - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
-@media (max-width: 1200px) {
-  .top-products-container .top-products-grid {
-    gap: 20px;
-  }
-  .top-products-container .product-column {
-    min-width: 280px;
-    padding: 18px 12px;
-  }
-  .top-products-container .image-box {
-    height: 130px !important; /* 🔴 PRILAGOĐENA VISINA ZA TABLET */
-  }
-}
-
 @media (max-width: 992px) {
-  .top-products-container .top-products-grid {
-    flex-direction: column;
-    align-items: center;
+  /* Sakrij dugmad po defaultu na mobilnom */
+  .top-products-container .image-box:hover .actions-overlay {
+    opacity: 0 !important;
   }
-  .top-products-container .product-column {
-    width: 100%;
-    max-width: 500px;
-  }
-  .top-products-container .top-products-title {
-    font-size: 2rem;
-  }
-  .top-products-container .column-title {
-    font-size: 1.4rem;
-  }
-  .top-products-container .image-box {
-    height: 120px !important; /* 🔴 PRILAGOĐENA VISINA ZA MOBILNI */
-  }
-}
 
-@media (max-width: 768px) {
-  .top-products-container .product-column {
-    min-width: 260px;
-    padding: 15px 10px;
+  /* Prikaži dugmad samo kada je kartica aktivna */
+  .top-products-container .product-card.active .actions-overlay {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) !important;
+    transition: opacity 0.3s ease !important;
   }
-  .top-products-container .top-products-title {
-    font-size: 1.8rem;
-  }
-  .top-products-container .column-title {
-    font-size: 1.3rem;
-  }
-  .top-products-container .image-box {
-    height: 110px !important; /* 🔴 PRILAGOĐENA VISINA ZA MALI MOBILNI */
-  }
-  .top-products-container .top-products-grid {
-    gap: 15px;
-  }
-  .top-products-container {
-    padding: 35px 15px;
-  }
-  .top-products-container .product-card {
-    min-height: 250px !important; /* 🔴 MANJA VISINA KARTICE NA MOBILNOM */
-  }
-}
 
-/* ------------------- Suptilni dodatni efekti - SPECIFIČAN ZA TOP PRODUCTS ------------------- */
-.top-products-container .product-card:hover h3 {
-  color: var(--green-dark);
-  transition: color 0.3s ease;
-}
+  /* Ukloni hover animacije na mobilnom */
+  .top-products-container .product-card:hover {
+    transform: none !important;
+    box-shadow: 0 5px 20px rgba(122, 159, 110, 0.1) !important;
+  }
 
-.top-products-container .product-card:hover .new-price {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+  /* Stilizuj aktivnu karticu */
+  .top-products-container .product-card.active {
+    border-color: var(--green-dark);
+    box-shadow: 0 8px 25px rgba(122, 159, 110, 0.2);
+  }
+
+  /* Dugmad na aktivnoj kartici */
+  .top-products-container .product-card.active .action-btn {
+    background: rgba(253, 247, 237, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(122, 159, 110, 0.3);
+  }
+
+  /* Touch feedback za dugmad */
+  .top-products-container .action-btn:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
+  }
+
+  /* Ukloni hover scale efekat na dugmadima */
+  .top-products-container .action-btn:hover {
+    transform: none;
+  }
 }

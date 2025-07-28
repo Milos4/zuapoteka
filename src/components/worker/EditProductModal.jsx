@@ -35,7 +35,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
       // Upload nove slike ako postoji
       if (newImageFile) {
-        const storageRef = ref(storage, `product-images/${product.id}`);
+        const storageRef = ref(storage, `images/${product.id}`);
         await uploadBytes(storageRef, newImageFile);
         const imageUrl = await getDownloadURL(storageRef);
         updatedData.slikaURL = imageUrl;

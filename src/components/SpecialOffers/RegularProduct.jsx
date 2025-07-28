@@ -11,10 +11,13 @@ const RegularProduct = ({
   price,
   onView,
   onAddToCart,
-  onAddToFavorites
+  onAddToFavorites,
+   onClick,     
+  id   
 }) => {
   return (
-    <div className="product-card regular">
+    <div className="product-card regular" 
+    onClick={onClick} id={id}>
       <div className="image-box">
         {image && <img src={image} alt={name} />}
 

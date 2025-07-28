@@ -1,18 +1,13 @@
-:root {
-  --beige: #fdf7ed;
-  --green-light: #d8e8d1;
-  --green-dark: #7a9f6e;
-  --icon-color: #5a6d5a;
-  --shadow: rgba(0, 0, 0, 0.1);
-}
-
-/* ------------------- Grid ------------------- */
 .product-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  flex-wrap: nowrap; /* Jedan red */
+  gap: 30px;
+  overflow-x: hidden; /* Sakriven horizontalni scroll na desktop */
+  padding: 0 20px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
+
 
 /* ------------------- Kartica proizvoda ------------------- */
 .product-card {
@@ -25,7 +20,7 @@
   position: relative;
   cursor: pointer;
 
-   display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   height: 100%;
@@ -52,7 +47,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-    background-color: white;
+  background-color: white;
   transition: transform 0.3s ease;
 }
 
@@ -139,11 +134,13 @@
 }
 
 .badge.discount {
-   background: linear-gradient(135deg, #c62828 0%, #a21a1a 100%);
+  background: linear-gradient(135deg, #c62828 0%, #a21a1a 100%);
 }
+
 .badge.new {
   background: var(--green-gradient);
 }
+
 .badge.gift {
   background-color: #5d4037;
 }
@@ -171,7 +168,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 12px 12px;
-  margin-top: auto; /* Ovo je ključno! */
+  margin-top: auto;
 }
 
 .old-price {
@@ -208,19 +205,16 @@
   font-weight: bold;
 }
 
-/* ------------------- Slajderi ------------------- */
-/* Dodati u postojeći special-offers.css */
-
 /* ------------------- Kontejner za specijalne ponude ------------------- */
 .special-offers-container {
   position: relative;
   width: 100%;
-  max-width: 1400px; /* Povećano sa 1200px na 1400px */
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 40px; /* Povećan padding sa strane */
+  padding: 20px 40px;
 }
 
-/* Pozicioniranje strelica u odnosu na grid */
+/* Pozicija strelica */
 .special-offers-container .arrows-container {
   position: absolute;
   top: 50%;
@@ -232,19 +226,38 @@
   padding: 0;
 }
 
-/* Animacija za promenu proizvoda */
-.product-grid {
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 30px; /* Povećan gap između proizvoda sa 20px na 30px */
-  overflow-x: hidden;
-  padding: 0 20px; /* Povećan padding sa strane */
-}
-
-/* Dodatna stilizacija za fokus na strelice (pristupačnost) */
+/* Dodatna stilizacija za fokus strelica */
 .arrow-btn:focus {
   outline: 2px solid var(--green-dark);
   outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    overflow-x: hidden;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  .product-card:hover {
+  transform: translateY(0px);
+  box-shadow: 0 6px 20px var(--shadow);
+  background: linear-gradient(180deg, var(--green-light) 0%, var(--beige) 100%);
+}
+
+  .product-card {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+
+  /* Onemogući hover efekat ikonica */
+  .image-box:hover .actions-overlay {
+    opacity: 0;
+  }
+
+  /* Prikaži ikonice samo kad je kliknuto (kad ima klasu active) */
+  .product-card.active .actions-overlay {
+    opacity: 1;
+  }
 }

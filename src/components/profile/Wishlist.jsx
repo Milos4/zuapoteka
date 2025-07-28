@@ -6,7 +6,8 @@ import {
   deleteDoc,
   doc,
   query,
-  where
+  where,getDoc
+  
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../firebase";
@@ -42,18 +43,16 @@ const Wishlist = () => {
   const fetchWishlistItems = async (userId) => {
     try {
       setLoading(true);
-      const q = query(
-        collection(db, "wishlist"),
-        where("userId", "==", userId)
-      );
-      const snapshot = await getDocs(q);
+      // Ovde koristimo podkolekciju favorites u users/{userId}
+      const favoritesRef = collection(db, "users", userId, "favorites");
+      const snapshot = await getDocs(favoritesRef);
       const items = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setWishlistItems(items);
     } catch (error) {
-      console.error("Greška pri dohvatanju wishlist-a:", error);
+      console.error("Greška pri dohvatanju liste želja:", error);
     } finally {
       setLoading(false);
     }
@@ -61,38 +60,55 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (wishlistItemId) => {
     try {
-      await deleteDoc(doc(db, "wishlist", wishlistItemId));
+      // Brisemo iz podkolekcije favorites korisnika
+      await deleteDoc(doc(db, "users", user.uid, "favorites", wishlistItemId));
       setWishlistItems((prev) =>
         prev.filter((item) => item.id !== wishlistItemId)
       );
       setPopupMessage("Proizvod je uklonjen iz liste želja!");
       setShowPopup(true);
     } catch (error) {
-      console.error("Greška pri uklanjanju iz wishlist-a:", error);
+      console.error("Greška pri uklanjanju iz liste želja:", error);
       setPopupMessage("Greška pri uklanjanju iz liste želja!");
       setShowPopup(true);
     }
   };
+const getProductById = async (id) => {
+  try {
+    const docRef = doc(db, "products", id);
+    const docSnap = await getDoc(docRef);
 
-  const handleAddToCart = (item) => {
-    const product = {
-      id: item.productId,
-      naziv: item.naziv,
-      cijena: item.cijena,
-      slikaURL: item.slikaURL,
-      kategorija: item.kategorija,
-      naPopustu: item.naPopustu,
-      popustProcenat: item.popustProcenat,
-      brandImageUrl: item.brandImageUrl,
-    };
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Greška pri dohvatanju proizvoda:", error);
+    return null;
+  }
+};
 
-    addToCart(product);
+ const handleAddToCart = async (item) => {
+  try {
+    const fullProduct = await getProductById(item.productId);
+    if (!fullProduct) {
+      setPopupMessage("Proizvod više nije dostupan.");
+      setShowPopup(true);
+      return;
+    }
+
+    addToCart(fullProduct);
     setPopupMessage("Proizvod je dodat u korpu!");
     setShowPopup(true);
-  };
-
-  const handleViewProduct = (productId) => {
-    navigate(`/product/${productId}`);
+  } catch (error) {
+    console.error("Greška pri dodavanju u korpu:", error);
+    setPopupMessage("Greška prilikom dodavanja proizvoda.");
+    setShowPopup(true);
+  }
+};
+  const handleViewProduct = (product) => {
+    navigate(`/product/${product.productId}`);
   };
 
   const handleClosePopup = () => {
@@ -180,7 +196,7 @@ const Wishlist = () => {
                     </button>
                     <button
                       title="Vidi proizvod"
-                      onClick={() => handleViewProduct(item.productId)}
+                      onClick={() => handleViewProduct(item)}
                       className="wishlist-btn view-btn"
                     >
                       <SlEye />

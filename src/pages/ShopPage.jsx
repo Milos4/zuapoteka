@@ -203,16 +203,20 @@ const ShopPage = () => {
       image: p.slikaURL,
       name: p.naziv,
       description: desc,
-      price: p.cijena.toFixed(2),
-      onView: () => handleViewProduct(p.id),
+price: Number(
+  typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+).toFixed(2),      onView: () => handleViewProduct(p.id),
       onAddToCart: () => addToCart(p),
       onAddToFavorites: () => handleAddToFavorite(p),
       inWishlist,
     };
 
     if (p.naPopustu) {
-      const stara = p.cijena / (1 - (p.popustProcenat || 0) / 100);
-      return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
+    const parsedCijena = Number(
+  typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+);
+const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
+return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
     }
 
     if (p.novo) {

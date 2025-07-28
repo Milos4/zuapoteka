@@ -148,3 +148,25 @@ body {
 .back-to-home a:hover {
   text-decoration: underline;
 }
+
+@media screen and (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .login-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 20px;
+  }
+}

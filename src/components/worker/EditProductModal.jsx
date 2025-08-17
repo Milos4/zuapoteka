@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./EditProductModal.css";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, getDocs } from "firebase/firestore";
 import { db, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -12,10 +12,25 @@ const EditProductModal = ({ product, onClose, onSave }) => {
       : product.subkategorije || "",
     nacinUpotrebe: product.nacinUpotrebe || "",
     sastav: product.sastav || "",
+    brandId: product.brandId || "" // za brand
   });
 
+  const [brands, setBrands] = useState([]);
   const [newImageFile, setNewImageFile] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  // Učitaj brendove iz Firestore
+  useEffect(() => {
+    const fetchBrands = async () => {
+      const brandsSnapshot = await getDocs(collection(db, "brands"));
+      const brandsList = brandsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setBrands(brandsList);
+    };
+    fetchBrands();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -106,6 +121,16 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           onChange={handleChange}
           placeholder="npr. podkategorija1, podkategorija2"
         />
+
+        <label>Brand</label>
+        <select name="brandId" value={formData.brandId} onChange={handleChange}>
+          <option value="">-- Izaberite brand --</option>
+          {brands.map((b) =0> (
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
+          ))}
+        </select>
 
         <label>Na popustu</label>
         <input

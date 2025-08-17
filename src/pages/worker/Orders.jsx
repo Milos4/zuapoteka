@@ -421,7 +421,13 @@ const Orders = () => {
                       return (
                         <tr key={item.id}>
                           <td>{item.sifra || "N/A"}</td>
-                          <td>{item.naziv}</td>
+                                  <td>
+          {item.naziv}{" "}
+          {item.kategorija === "Odjeca" && item.selectedSize
+            ? `(Veličina: ${item.selectedSize})`
+            : ""}
+        </td>
+
                           <td>{pricePerItem.toFixed(2)} BAM</td>
                           <td>
                             <button

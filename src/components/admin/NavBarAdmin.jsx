@@ -59,6 +59,12 @@ const NavBarAdmin = () => {
               >
                 Dodaj sliku
               </Link>
+                     <Link
+                to="/admin/dodaj-odjecu"
+                onClick={() => setDropdownOpen(false)}
+              >
+                Dodaj Odjecu
+              </Link>
             </div>
           )}
         </div>

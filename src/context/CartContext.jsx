@@ -80,11 +80,15 @@ const mergeLocalCartToFirestore = async (user) => {
 
 
   const addToCart = async (product, quantity = 1) => {
-    const existingIndex = cartItems.findIndex((item) => item.id === product.id);
-    let updatedCart;
+const existingIndex = cartItems.findIndex(
+  (item) =>
+    item.id === product.id &&
+    item.selectedSize === product.selectedSize // ista veličina = ista stavka
+);    let updatedCart;
 
     if (existingIndex !== -1) {
-      updatedCart = [...cartItems];
+     updatedCart = [...cartItems, { ...product, quantity, selectedSize: product.selectedSize }];
+
       updatedCart[existingIndex].quantity += quantity;
     } else {
       updatedCart = [...cartItems, { ...product, quantity }];

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
-  addDoc,
   query,
   where,
+  addDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../firebase";
@@ -46,31 +46,29 @@ const ShopPage = () => {
 
   const { addToCart } = useCart();
 
- useEffect(() => {
-  const params = new URLSearchParams(location.search);
+  // Primjena filtera iz bannera (query params)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
 
-  const brandParams = params.getAll("brand"); // npr. ["Nivea", "Bebi program"]
-  const kategorija = params.get("kategorija");
-  const naPopustu = params.get("naPopustu");
-  const novo = params.get("novo");
+    const brandParams = params.getAll("brand");
+    const kategorija = params.get("kategorija");
+    const naPopustu = params.get("naPopustu");
+    const novo = params.get("novo");
 
-  const applyFilters = async () => {
-    if (brandParams.length > 0 && brands.length > 0) {
-      // Pronađi ID-eve na osnovu imena brenda
-      const matchingIds = brands
-        .filter((b) => brandParams.includes(b.name))
-        .map((b) => b.id);
-      setSelectedBrands(matchingIds);
-    }
+    const applyFilters = async () => {
+      if (brandParams.length > 0 && brands.length > 0) {
+        const matchingIds = brands
+          .filter((b) => brandParams.includes(b.name))
+          .map((b) => b.id);
+        setSelectedBrands(matchingIds);
+      }
+      if (kategorija) setSelectedCategories([kategorija]);
+      if (naPopustu === "true") setFilterDiscount(true);
+      if (novo === "true") setFilterNew(true);
+    };
 
-    if (kategorija) setSelectedCategories([kategorija]);
-    if (naPopustu === "true") setFilterDiscount(true);
-    if (novo === "true") setFilterNew(true);
-  };
-
-  applyFilters();
-}, [location.search, brands]);
-
+    applyFilters();
+  }, [location.search, brands]);
 
   useEffect(() => {
     fetchProducts();
@@ -94,9 +92,12 @@ const ShopPage = () => {
   }, []);
 
   const fetchProducts = async () => {
-    const snapshot = await getDocs(collection(db, "products"));
-    const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setProducts(list);
+    const snapshotProducts = await getDocs(collection(db, "products"));
+    const normalProducts = snapshotProducts.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setProducts(normalProducts);
   };
 
   const fetchBrands = async () => {
@@ -113,6 +114,10 @@ const ShopPage = () => {
       const data = doc.data();
       catObj[data.naziv] = data.subkategorije?.filter((s) => s.trim() !== "") || [];
     });
+
+    // Dodaj "Odjeca" ako ne postoji
+    if (!catObj["Odjeca"]) catObj["Odjeca"] = [];
+
     setCategories(catObj);
   };
 
@@ -195,6 +200,15 @@ const ShopPage = () => {
     navigate(`/product/${productId}`);
   };
 
+  const handleAddToCartClick = (product) => {
+    if (product.kategorija && product.kategorija.toLowerCase() === "odjeca") {
+      // Odjeća ide na product details da se bira veličina
+      navigate(`/product/${product.id}`);
+    } else {
+      addToCart(product);
+    }
+  };
+
   const renderProduct = (p) => {
     const desc = shortenDescription(p.opis);
     const inWishlist = wishlistItems.includes(p.id);
@@ -203,20 +217,21 @@ const ShopPage = () => {
       image: p.slikaURL,
       name: p.naziv,
       description: desc,
-price: Number(
-  typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
-).toFixed(2),      onView: () => handleViewProduct(p.id),
-      onAddToCart: () => addToCart(p),
+      price: Number(
+        typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+      ).toFixed(2),
+      onView: () => handleViewProduct(p.id),
+      onAddToCart: () => handleAddToCartClick(p),
       onAddToFavorites: () => handleAddToFavorite(p),
       inWishlist,
     };
 
     if (p.naPopustu) {
-    const parsedCijena = Number(
-  typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
-);
-const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
-return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
+      const parsedCijena = Number(
+        typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+      );
+      const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
+      return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
     }
 
     if (p.novo) {

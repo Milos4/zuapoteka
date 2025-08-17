@@ -261,3 +261,55 @@
     opacity: 1;
   }
 }
+
+/* --- Clothes sizes --- */
+.product-card.clothes .size-group {
+  margin: 10px 0 12px;
+}
+
+.product-card.clothes .size-label {
+  display: inline-block;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.product-card.clothes .size-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.product-card.clothes .size-chip {
+  padding: 6px 10px;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .2s ease;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.product-card.clothes .size-chip:hover {
+  transform: translateY(-1px);
+  border-color: #999;
+}
+
+.product-card.clothes .size-chip.active {
+  background: #0a7b62;     /* uskladi sa tvojim tematskim zelenim */
+  color: #fff;
+  border-color: #0a7b62;
+}
+
+.product-card.clothes .size-hint {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* Disable cart kada nema veličine */
+.product-card.clothes .action-btn.cart-btn.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

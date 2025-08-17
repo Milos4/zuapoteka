@@ -102,6 +102,11 @@ const removeItemHandler = (id) => {
                   <h3 style={{ margin: 0, color: "var(--tamnoZelena)" }}>
                     {item.naziv}
                   </h3>
+                  {item.selectedSize && (
+  <p style={{ margin: "4px 0", fontSize: "14px", color: "#555" }}>
+    Veličina: {item.selectedSize}
+  </p>
+)}
                   <div>
                     {item.naPopustu && (
                       <p

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword ,signOut } from "firebase/auth";
@@ -13,6 +13,8 @@ import {
 import login from "../assets/Slika2.jpg";
 import "./LoginForm.css";
 
+
+
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     usernameOrEmail: "",
@@ -20,6 +22,18 @@ const LoginForm = () => {
   });
   const navigate = useNavigate();
 
+  const countProducts = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    console.log("Ukupno proizvoda:", querySnapshot.size);
+  } catch (error) {
+    console.error("Greška pri brojanju proizvoda:", error);
+  }
+};
+
+useEffect(() => {
+  countProducts();
+}, []);
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,

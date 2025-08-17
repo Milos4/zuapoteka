@@ -46,6 +46,7 @@ import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AddBrandPage from "./pages/admin/AddBrandPage";
 import AddProductPage from "./pages/admin/AddProductPage";
 import AddImagePage from "./pages/admin/AddImagePage";
+import AddProductCPage from "./pages/admin/AddProductCPage";
 import UsersPage from "./pages/admin/UsersPage";
 
 
@@ -171,6 +172,15 @@ function App() {
     </AdminRoute>
   }
 />
+<Route
+  path="/admin/dodaj-odjecu"
+  element={
+    <AdminRoute>
+      <AddProductCPage />
+    </AdminRoute>
+  }
+/>
+
 <Route path="/profil" element={<ProfilePage />} />
         <Route path="/kupi" element={<DeliveryAndPayment />} />
 <Route path="/product/:id" element={<ProductDetailsPage />} />

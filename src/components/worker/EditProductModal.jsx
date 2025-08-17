@@ -125,7 +125,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         <label>Brand</label>
         <select name="brandId" value={formData.brandId} onChange={handleChange}>
           <option value="">-- Izaberite brand --</option>
-          {brands.map((b) =0> (
+          {brands.map((b) => (
             <option key={b.id} value={b.id}>
               {b.name}
             </option>

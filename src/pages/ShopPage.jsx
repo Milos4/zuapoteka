@@ -43,10 +43,29 @@ const ShopPage = () => {
   const [filterDiscount, setFilterDiscount] = useState(false);
   const [filterNew, setFilterNew] = useState(false);
   const [brandSearch, setBrandSearch] = useState("");
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
 
   const { addToCart } = useCart();
 
-  // Primjena filtera iz bannera (query params)
+
+
+  const isMobile = windowWidth <= 768; 
+
+
+    const handleToggleActive = (id) => {
+    const el = document.getElementById(`product-${id}`);
+    if (el) {
+      el.classList.toggle("active");
+    }
+  };
+
+   useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
 
@@ -124,7 +143,7 @@ const ShopPage = () => {
   const shortenDescription = (text) => {
     if (!text) return "";
     const words = text.split(" ");
-    return words.slice(0, 4).join(" ") + (words.length > 4 ? "..." : "");
+    return words.slice(0, 8).join(" ") + (words.length > 4 ? "..." : "");
   };
 
   const filtered = products.filter((p) => {
@@ -158,6 +177,11 @@ const ShopPage = () => {
       prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
   };
+  const [filtersOpen, setFiltersOpen] = React.useState(false);
+
+const toggleFilters = () => {
+  setFiltersOpen(prev => !prev);
+};
 
   const handleAddToFavorite = async (product) => {
     if (user) {
@@ -202,133 +226,205 @@ const ShopPage = () => {
 
   const handleAddToCartClick = (product) => {
     if (product.kategorija && product.kategorija.toLowerCase() === "odjeca") {
-      // Odjeća ide na product details da se bira veličina
       navigate(`/product/${product.id}`);
     } else {
       addToCart(product);
     }
   };
 
-  const renderProduct = (p) => {
-    const desc = shortenDescription(p.opis);
-    const inWishlist = wishlistItems.includes(p.id);
-    const common = {
-      key: p.id,
-      image: p.slikaURL,
-      name: p.naziv,
-      description: desc,
-      price: Number(
-        typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
-      ).toFixed(2),
-      onView: () => handleViewProduct(p.id),
-      onAddToCart: () => handleAddToCartClick(p),
-      onAddToFavorites: () => handleAddToFavorite(p),
-      inWishlist,
-    };
-
-    if (p.naPopustu) {
-      const parsedCijena = Number(
-        typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
-      );
-      const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
-      return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
-    }
-
-    if (p.novo) {
-      return <NewProduct {...common} />;
-    }
-
-    return <RegularProduct {...common} />;
+  const clearAllFilters = () => {
+    setSearch("");
+    setSelectedBrands([]);
+    setSelectedCategories([]);
+    setSelectedSubcategories([]);
+    setFilterDiscount(false);
+    setFilterNew(false);
   };
 
+  const renderProduct = (p) => {
+  const desc = shortenDescription(p.opis);
+  const inWishlist = wishlistItems.includes(p.id);
+
+  const common = {
+    key: p.id,
+    image: p.slikaURL,
+    name: p.naziv,
+    description: desc,
+    price: Number(
+      typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+    ).toFixed(2),
+    onView: () => handleViewProduct(p.id),
+    onAddToCart: () => handleAddToCartClick(p),
+    onAddToFavorites: () => handleAddToFavorite(p),
+    inWishlist,
+              onClick: isMobile ? () => handleToggleActive(p.id) : undefined,
+                id: `product-${p.id}`,
+  };
+
+  if (p.naPopustu) {
+    const parsedCijena = Number(
+      typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+    );
+    const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
+    return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
+  }
+
+  if (p.novo) {
+    return <NewProduct {...common} />;
+  }
+
+  return <RegularProduct {...common} />;
+};
   return (
     <div className="shop-page">
-      <div className="sidebar">
-        <h2>Pretraga</h2>
-        <input
-          type="text"
-          placeholder="Pretraži proizvode..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+       <div className="sidebar-wrapper">
+{isMobile && (
+  <button className="toggle-filters-btn" onClick={toggleFilters}>
+    Filteri {filtersOpen ? "▲" : "▼"}
+  </button>
+)}
+  <div className={`sidebar ${filtersOpen ? "active" : ""}`}>
+    <h2>Pretraga</h2>
+    <input
+      type="text"
+      placeholder="Pretraži proizvode..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
 
-        <h3>Brendovi</h3>
-        <input
-          type="text"
-          placeholder="Pretraži brend..."
-          value={brandSearch}
-          onChange={(e) => setBrandSearch(e.target.value)}
-        />
-        <div className="brand-list scrollable">
-          {brands
-            .filter((b) => b.name.toLowerCase().includes(brandSearch.toLowerCase()))
-            .map((b) => (
-              <label key={b.id}>
+    <h3>Brendovi</h3>
+    <input
+      type="text"
+      placeholder="Pretraži brend..."
+      value={brandSearch}
+      onChange={(e) => setBrandSearch(e.target.value)}
+    />
+    <div className="brand-list scrollable">
+      {brands
+        .filter((b) => b.name.toLowerCase().includes(brandSearch.toLowerCase()))
+        .map((b) => (
+          <label key={b.id}>
+            <input
+              type="checkbox"
+              checked={selectedBrands.includes(b.id)}
+              onChange={() => handleBrandToggle(b.id)}
+            />
+            {b.name}
+          </label>
+        ))}
+    </div>
+
+    <h3>Kategorije</h3>
+    {Object.keys(categories).map((k) => (
+      <div key={k}>
+        <label>
+          <input
+            type="checkbox"
+            checked={selectedCategories.includes(k)}
+            onChange={() => handleCategoryToggle(k)}
+          />
+          {capitalize(k)}
+        </label>
+        {selectedCategories.includes(k) && categories[k].length > 0 && (
+          <div className="subcategories">
+            {categories[k].map((s) => (
+              <label key={s}>
                 <input
                   type="checkbox"
-                  checked={selectedBrands.includes(b.id)}
-                  onChange={() => handleBrandToggle(b.id)}
+                  checked={selectedSubcategories.includes(s)}
+                  onChange={() => handleSubcategoryToggle(s)}
                 />
-                {b.name}
+                {capitalize(s)}
               </label>
             ))}
-        </div>
-
-        <h3>Kategorije</h3>
-        {Object.keys(categories).map((k) => (
-          <div key={k}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedCategories.includes(k)}
-                onChange={() => handleCategoryToggle(k)}
-              />
-              {capitalize(k)}
-            </label>
-            {selectedCategories.includes(k) && categories[k].length > 0 && (
-              <div className="subcategories">
-                {categories[k].map((s) => (
-                  <label key={s}>
-                    <input
-                      type="checkbox"
-                      checked={selectedSubcategories.includes(s)}
-                      onChange={() => handleSubcategoryToggle(s)}
-                    />
-                    {capitalize(s)}
-                  </label>
-                ))}
-              </div>
-            )}
           </div>
-        ))}
-
-        <h3>Ostalo</h3>
-        <label>
-          <input
-            type="checkbox"
-            checked={filterDiscount}
-            onChange={() => setFilterDiscount((prev) => !prev)}
-          />
-          Na popustu
-        </label>
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            checked={filterNew}
-            onChange={() => setFilterNew((prev) => !prev)}
-          />
-          Novo
-        </label>
-      </div>
-
-      <div className="products">
-        {filtered.slice(0, visibleCount).map(renderProduct)}
-        {visibleCount < filtered.length && (
-          <button className="btn-load-more" onClick={() => setVisibleCount((prev) => prev + 10)}>
-            Učitaj još
-          </button>
         )}
+      </div>
+    ))}
+
+    <h3>Ostalo</h3>
+    <label>
+      <input
+        type="checkbox"
+        checked={filterDiscount}
+        onChange={() => setFilterDiscount((prev) => !prev)}
+      />
+      Na popustu
+    </label>
+    <br />
+    <label>
+      <input
+        type="checkbox"
+        checked={filterNew}
+        onChange={() => setFilterNew((prev) => !prev)}
+      />
+      Novo
+    </label>
+  </div>
+</div>
+
+
+      <div className="products-container">
+        {/* Aktivni filteri */}
+        {(search || selectedBrands.length > 0 || selectedCategories.length > 0 || selectedSubcategories.length > 0 || filterDiscount || filterNew) && (
+          <div className="active-filters">
+            <h4>Aktivni filteri:</h4>
+            <div className="filter-tags">
+              {search && (
+                <span className="filter-tag">
+                  Pretraga: "{search}"
+                  <button onClick={() => setSearch("")}>✕</button>
+                </span>
+              )}
+              {selectedBrands.map((id) => {
+                const brand = brands.find((b) => b.id === id);
+                return (
+                  <span key={id} className="filter-tag">
+                    Brend: {brand?.name}
+                    <button onClick={() => handleBrandToggle(id)}>✕</button>
+                  </span>
+                );
+              })}
+              {selectedCategories.map((kat) => (
+                <span key={kat} className="filter-tag">
+                  Kategorija: {capitalize(kat)}
+                  <button onClick={() => handleCategoryToggle(kat)}>✕</button>
+                </span>
+              ))}
+              {selectedSubcategories.map((sub) => (
+                <span key={sub} className="filter-tag">
+                  Podkategorija: {capitalize(sub)}
+                  <button onClick={() => handleSubcategoryToggle(sub)}>✕</button>
+                </span>
+              ))}
+              {filterDiscount && (
+                <span className="filter-tag">
+                  Na popustu
+                  <button onClick={() => setFilterDiscount(false)}>✕</button>
+                </span>
+              )}
+              {filterNew && (
+                <span className="filter-tag">
+                  Novo
+                  <button onClick={() => setFilterNew(false)}>✕</button>
+                </span>
+              )}
+            </div>
+            <button className="clear-filters" onClick={clearAllFilters}>
+              Očisti sve filtere
+            </button>
+          </div>
+        )}
+
+        {/* Proizvodi */}
+        <div className="products">
+          {filtered.slice(0, visibleCount).map(renderProduct)}
+          {visibleCount < filtered.length && (
+            <button className="btn-load-more" onClick={() => setVisibleCount((prev) => prev + 10)}>
+              Učitaj još
+            </button>
+          )}
+        </div>
       </div>
 
       <Popup isOpen={showPopup} message={popupMessage} onClose={() => setShowPopup(false)} />

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { collection, getDocs, query, limit } from "firebase/firestore";
 import { db } from "../firebase";
+import { useNavigate } from "react-router-dom"; // dodano
 import "./BrandCarousel.css";
 
 const AUTO_ROTATE_INTERVAL = 3500;
@@ -16,10 +17,10 @@ const BrandCarousel = () => {
   const brandsListRef = useRef(null);
   const transitionTimeout = useRef(null);
 
-  // Detekcija da li je mobilni
+  const navigate = useNavigate(); // hook za navigaciju
+
   const isMobile = window.innerWidth <= 768;
 
-  // Učitaj max 10 brendova iz Firestore
   useEffect(() => {
     const fetchBrands = async () => {
       const q = query(collection(db, "brands"), limit(10));
@@ -30,7 +31,6 @@ const BrandCarousel = () => {
     fetchBrands();
   }, []);
 
-  // Update visibleCount na resize
   useEffect(() => {
     const handleResize = () => {
       setVisibleCount(window.innerWidth <= 768 ? 2 : 5);
@@ -39,12 +39,10 @@ const BrandCarousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Extended brands triple za infinite loop
   const extendedBrands = [...brands, ...brands, ...brands];
   const baseLength = brands.length;
-  const startIndex = baseLength; // start u sredini
+  const startIndex = baseLength;
 
-  // Postavi početni currentIndex
   useEffect(() => {
     if (brands.length > 0) {
       setCurrentIndex(startIndex);
@@ -52,7 +50,6 @@ const BrandCarousel = () => {
     }
   }, [brands]);
 
-  // Auto rotacija (ako nije drag)
   useEffect(() => {
     if (brands.length === 0) return;
     if (autoRotateTimer.current) clearInterval(autoRotateTimer.current);
@@ -67,7 +64,6 @@ const BrandCarousel = () => {
 
   const [transitionEnabled, setTransitionEnabled] = useState(true);
 
-  // Funkcija za pomeranje i loop reset
   const moveToIndex = useCallback(
     (newIndex) => {
       if (transitionTimeout.current) return;
@@ -87,7 +83,6 @@ const BrandCarousel = () => {
     [baseLength]
   );
 
-  // Strelice
   const next = () => {
     if (isDragging || transitionTimeout.current) return;
     moveToIndex(currentIndex + 1);
@@ -96,8 +91,6 @@ const BrandCarousel = () => {
     if (isDragging || transitionTimeout.current) return;
     moveToIndex(currentIndex - 1);
   };
-
-  // Drag & Touch handleri
 
   const onDragStart = (clientX) => {
     if (transitionTimeout.current) return;
@@ -132,29 +125,6 @@ const BrandCarousel = () => {
     setDragTranslateX(0);
   };
 
-  // Touch event handlers za mobilni da isključe drag i scroll
-  const onTouchStart = (e) => {
-    if (!isMobile) {
-      onDragStart(e.touches[0].clientX);
-    }
-  };
-
-  const onTouchMove = (e) => {
-    if (isMobile) {
-      // Spreči scroll horizontalno na mobilnom (samo vertikalno dozvoli)
-      e.preventDefault();
-    } else {
-      onDragMove(e.touches[0].clientX);
-    }
-  };
-
-  const onTouchEnd = () => {
-    if (!isMobile) {
-      onDragEnd();
-    }
-  };
-
-  // Izračunaj translateX za pomeranje
   const getTranslateX = () => {
     if (!brandsListRef.current) return 0;
     const itemWidth = brandsListRef.current.firstChild
@@ -164,13 +134,14 @@ const BrandCarousel = () => {
     return -currentIndex * (itemWidth + gap) + dragTranslateX;
   };
 
+  // 👉 klik na brand
+  const handleBrandClick = (name) => {
+    navigate(`/prodavnica?brand=${name}`);
+  };
+
   return (
     <div className="brand-carousel-container">
-      <button
-        className="arrow-button arrow-left"
-        onClick={prev}
-        aria-label="Previous brands"
-      >
+      <button className="arrow-button arrow-left" onClick={prev} aria-label="Previous brands">
         &#8249;
       </button>
 
@@ -180,9 +151,6 @@ const BrandCarousel = () => {
         onMouseMove={(e) => onDragMove(e.clientX)}
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
       >
         <div
           className={`brands-list ${isDragging ? "dragging" : ""}`}
@@ -193,7 +161,12 @@ const BrandCarousel = () => {
           ref={brandsListRef}
         >
           {extendedBrands.map((brand, idx) => (
-            <div className="brand-item" key={`${brand.id}-${idx}`}>
+            <div
+              className="brand-item"
+              key={`${brand.id}-${idx}`}
+              onClick={() => handleBrandClick(brand.name)} // klik
+              style={{ cursor: "pointer" }}
+            >
               <img
                 src={brand.imageUrl}
                 alt={brand.name}
@@ -205,11 +178,7 @@ const BrandCarousel = () => {
         </div>
       </div>
 
-      <button
-        className="arrow-button arrow-right"
-        onClick={next}
-        aria-label="Next brands"
-      >
+      <button className="arrow-button arrow-right" onClick={next} aria-label="Next brands">
         &#8250;
       </button>
     </div>

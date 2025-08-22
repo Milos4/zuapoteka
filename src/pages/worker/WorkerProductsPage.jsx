@@ -4,9 +4,10 @@ import { db } from "../../firebase";
 import {
   collection,
   query,
-  where,
   orderBy,
-  getDocs, doc, deleteDoc 
+  getDocs,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import "./WorkerProductsPage.css";
 import EditProductModal from "../../components/worker/EditProductModal";
@@ -16,6 +17,7 @@ const PAGE_SIZE = 20;
 const WorkerProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [brandMap, setBrandMap] = useState({});
   const [searchName, setSearchName] = useState("");
   const [searchCode, setSearchCode] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
@@ -37,8 +39,18 @@ const WorkerProductsPage = () => {
   const fetchBrands = async () => {
     try {
       const snapshot = await getDocs(collection(db, "brands"));
-      const brandList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const brandList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       setBrands(brandList);
+
+      // Napravi mapu {id: name}
+      const map = {};
+      brandList.forEach((b) => {
+        map[b.id] = b.name;
+      });
+      setBrandMap(map);
     } catch (err) {
       console.error("Greška prilikom učitavanja brendova", err);
     }
@@ -47,7 +59,9 @@ const WorkerProductsPage = () => {
   const fetchAllProducts = async () => {
     setLoading(true);
     try {
-      const snapshot = await getDocs(query(collection(db, "products"), orderBy("naziv")));
+      const snapshot = await getDocs(
+        query(collection(db, "products"), orderBy("naziv"))
+      );
       const all = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setAllProducts(all);
       setFiltered(all);
@@ -58,17 +72,17 @@ const WorkerProductsPage = () => {
   };
 
   const deleteProduct = async (productId) => {
-  if (!window.confirm("Da li sigurno želiš da obrišeš ovaj proizvod?")) return;
+    if (!window.confirm("Da li sigurno želiš da obrišeš ovaj proizvod?")) return;
 
-  try {
-    await deleteDoc(doc(db, "products", productId));
-    alert("Proizvod obrisan.");
-    fetchAllProducts(); // osveži listu
-  } catch (err) {
-    console.error("Greška pri brisanju proizvoda:", err);
-    alert("Greška pri brisanju proizvoda.");
-  }
-};
+    try {
+      await deleteDoc(doc(db, "products", productId));
+      alert("Proizvod obrisan.");
+      fetchAllProducts(); // osveži listu
+    } catch (err) {
+      console.error("Greška pri brisanju proizvoda:", err);
+      alert("Greška pri brisanju proizvoda.");
+    }
+  };
 
   const handleSearch = () => {
     let filtered = allProducts;
@@ -136,7 +150,9 @@ const WorkerProductsPage = () => {
         >
           <option value="">Svi brendovi</option>
           {brands.map((b) => (
-            <option key={b.id} value={b.id}>{b.name}</option>
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
           ))}
         </select>
         <input
@@ -156,14 +172,16 @@ const WorkerProductsPage = () => {
             type="checkbox"
             checked={filterOnSale}
             onChange={() => setFilterOnSale(!filterOnSale)}
-          /> Na popustu
+          />{" "}
+          Na popustu
         </label>
         <label>
           <input
             type="checkbox"
             checked={filterOutOfStock}
             onChange={() => setFilterOutOfStock(!filterOutOfStock)}
-          /> Nije na stanju
+          />{" "}
+          Nije na stanju
         </label>
         <button className="btn-load-more" onClick={handleSearch}>
           Pretraži
@@ -181,6 +199,7 @@ const WorkerProductsPage = () => {
               <th>Slika</th>
               <th>Naziv</th>
               <th>Šifra</th>
+              <th>Brend</th>
               <th>Popust</th>
               <th>Na stanju</th>
               <th>Akcija</th>
@@ -191,27 +210,33 @@ const WorkerProductsPage = () => {
               <tr key={p.id}>
                 <td>
                   {p.slikaURL ? (
-                    <img src={p.slikaURL} alt={p.naziv} className="product-img" />
+                    <img
+                      src={p.slikaURL}
+                      alt={p.naziv}
+                      className="product-img"
+                    />
                   ) : (
                     <div className="no-image">Nema slike</div>
                   )}
                 </td>
                 <td>{p.naziv}</td>
                 <td>{p.sifra}</td>
-                <td>
-                  {p.naPopustu ? `${p.popustProcenat ?? 0}%` : "Ne"}
-                </td>
+                <td>{brandMap[p.brandId] || "Nepoznat"}</td>
+                <td>{p.naPopustu ? `${p.popustProcenat ?? 0}%` : "Ne"}</td>
                 <td>{p.naStanju ? "Da" : "Ne"}</td>
                 <td>
-                  <button onClick={() => setSelectedProduct(p)} className="btn-secondary">
+                  <button
+                    onClick={() => setSelectedProduct(p)}
+                    className="btn-secondary"
+                  >
                     Edit
                   </button>
-                   <button
-    onClick={() => deleteProduct(p.id)}
-    className="btn-delete"
-  >
-    Obriši
-  </button>
+                  <button
+                    onClick={() => deleteProduct(p.id)}
+                    className="btn-delete"
+                  >
+                    Obriši
+                  </button>
                 </td>
               </tr>
             ))}

@@ -71,3 +71,69 @@
   font-size: 20px;
   color: #333;
 }
+
+/* 📱 Responsive dizajn */
+@media (max-width: 1024px) {
+  .terms-container {
+    width: 95%;
+    flex-direction: column; /* sidebar ide gore */
+    padding: 20px 0;
+  }
+
+  .terms-sidebar {
+    width: 100%;
+    position: relative; /* više nije sticky */
+    top: auto;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .terms-sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .terms-sidebar li {
+    margin: 5px 10px;
+    font-size: 18px;
+  }
+
+  .terms-content {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .terms-content h2 {
+    font-size: 20px;
+  }
+
+  .terms-content p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+/* 📱 Mali telefoni */
+@media (max-width: 600px) {
+  .terms-sidebar ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .terms-sidebar li {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+
+  .terms-content h2 {
+    font-size: 18px;
+  }
+
+  .terms-content p {
+    font-size: 15px;
+  }
+}

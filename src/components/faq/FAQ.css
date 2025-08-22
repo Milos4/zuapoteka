@@ -60,3 +60,57 @@
   margin-left: 10px;
   transition: transform 0.3s ease;
 }
+
+@media (max-width: 1024px) { /* Tablet */
+  .faq-container {
+    width: 80%;
+    margin: 40px auto;
+  }
+
+  .faq-container h1 {
+    font-size: 28px;
+  }
+
+  .faq-item {
+    padding: 12px 15px;
+  }
+
+  .faq-question {
+    font-size: 20px;
+  }
+
+  .faq-answer {
+    font-size: 16px;
+  }
+
+  .faq-icon {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 600px) { /* Mobilni */
+  .faq-container {
+    width: 95%;
+    margin: 30px auto;
+  }
+
+  .faq-container h1 {
+    font-size: 24px;
+  }
+
+  .faq-item {
+    padding: 10px 12px;
+  }
+
+  .faq-question {
+    font-size: 18px;
+  }
+
+  .faq-answer {
+    font-size: 15px;
+  }
+
+  .faq-icon {
+    font-size: 22px;
+  }
+}

@@ -47,3 +47,51 @@
   color: #c53030; /* crvena za upozorenje */
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .complaints-container {
+    max-width: 95%;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: none; /* na telefonu izgleda čišće bez jakog sjaja */
+  }
+
+  .complaints-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .complaints-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--tamnoZelena);
+    padding-bottom: 3px;
+  }
+
+  .complaints-section p,
+  .complaints-section li {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  ul {
+    padding-left: 20px; /* da lista ne ide skroz do ivice */
+  }
+}
+
+/* 📱 Manji telefoni ispod 480px */
+@media (max-width: 480px) {
+  .complaints-title {
+    font-size: 1.5rem;
+  }
+
+  .complaints-section h2 {
+    font-size: 1.1rem;
+  }
+
+  .complaints-section p,
+  .complaints-section li {
+    font-size: 0.95rem;
+  }
+}

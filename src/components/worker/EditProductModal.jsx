@@ -10,6 +10,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     subkategorije: Array.isArray(product.subkategorije)
       ? product.subkategorije.join(", ")
       : product.subkategorije || "",
+    velicine: Array.isArray(product.velicine)
+      ? product.velicine.join(", ")
+      : product.velicine || "", // dodano polje za velicine
     nacinUpotrebe: product.nacinUpotrebe || "",
     sastav: product.sastav || "",
     brandId: product.brandId || "" // za brand
@@ -62,6 +65,14 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           .split(",")
           .map((s) => s.trim())
           .filter((s) => s.length > 0);
+      }
+
+      // Konvertuj velicine iz stringa u niz
+      if (typeof updatedData.velicine === "string") {
+        updatedData.velicine = updatedData.velicine
+          .split(",")
+          .map((v) => v.trim())
+          .filter((v) => v.length > 0);
       }
 
       const productRef = doc(db, "products", product.id);
@@ -121,6 +132,21 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           onChange={handleChange}
           placeholder="npr. podkategorija1, podkategorija2"
         />
+
+        {/* Samo ako je kategorija odjeca ili obuca */}
+        {(formData.kategorija?.toLowerCase() === "odjeca" ||
+          formData.kategorija?.toLowerCase() === "obuca") && (
+          <>
+            <label>Veličine (odvojene zarezom)</label>
+            <input
+              type="text"
+              name="velicine"
+              value={formData.velicine}
+              onChange={handleChange}
+              placeholder="npr. S, M, L, XL ili 40, 41, 42"
+            />
+          </>
+        )}
 
         <label>Brand</label>
         <select name="brandId" value={formData.brandId} onChange={handleChange}>

@@ -1,7 +1,17 @@
-import React from "react";
+
 import { sectionBox, sectionHeading, sectionParagraph } from "../../styles/commonStyles";
+import   React,{useState, useEffect } from "react";
+
 
 const ValuesSection = () => {
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div style={{
       display: 'flex',
@@ -9,12 +19,14 @@ const ValuesSection = () => {
       padding: '2rem 5%',
       marginBottom: '3rem',
       gap: '2%', // Razmak između kartica
+          flexWrap: 'wrap',
+             flexDirection: isMobile ? "column" : "row"
     }}>
       <div style={{
         ...sectionBox,
-        flex: '1 1 32%', // Flex-grow i flex-shrink omogućavaju prilagodbu širine
-        minWidth: '30%', // Minimalna širina kartice
-        maxWidth: '32%', // Maksimalna širina kartice
+   flex: isMobile ? '1 1 100%' : '1 1 32%',
+        minWidth: isMobile ? '100%' : '30%',
+        maxWidth: isMobile ? '100%' : '32%',
       }}>
         <div style={{
           display: 'flex',
@@ -80,9 +92,9 @@ const ValuesSection = () => {
 
       <div style={{
         ...sectionBox,
-        flex: '1 1 32%', // Flex-grow i flex-shrink omogućavaju prilagodbu širine
-        minWidth: '30%', // Minimalna širina kartice
-        maxWidth: '32%', // Maksimalna širina kartice
+      flex: isMobile ? '1 1 100%' : '1 1 32%',
+        minWidth: isMobile ? '100%' : '30%',
+        maxWidth: isMobile ? '100%' : '32%',
       }}>
         <div style={{
           display: 'flex',
@@ -139,9 +151,9 @@ const ValuesSection = () => {
 
       <div style={{
         ...sectionBox,
-        flex: '1 1 32%', // Flex-grow i flex-shrink omogućavaju prilagodbu širine
-        minWidth: '30%', // Minimalna širina kartice
-        maxWidth: '32%', // Maksimalna širina kartice
+ flex: isMobile ? '1 1 100%' : '1 1 32%',
+        minWidth: isMobile ? '100%' : '30%',
+        maxWidth: isMobile ? '100%' : '32%',
       }}>
         <div style={{
           display: 'flex',

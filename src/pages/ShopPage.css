@@ -82,7 +82,7 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 25px;
+  gap: 15px;
 }
 
 .btn-load-more {
@@ -135,4 +135,194 @@
 .brand-list.scrollable {
   max-height: 200px;
   overflow-y: auto;
+}
+
+@media (max-width: 1600px) {
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+@media (max-width: 1400px) {
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 1100px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .shop-page {
+    flex-direction: column;
+  }
+    .products-container{
+      width: 100%;
+  }
+  .sidebar {
+    position: relative;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-container{
+    width: 100%;
+  }
+  .products {
+    grid-template-columns: repeat(1, 1fr);
+        min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Poboljšan hover efekat na dugme */
+.btn-load-more:hover {
+  background-color: var(--zelena);
+}
+
+/* Scrollbar za brand listu */
+.brand-list.scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.brand-list.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.brand-list.scrollable::-webkit-scrollbar-thumb {
+  background-color: var(--zelena);
+  border-radius: 4px;
+}
+
+
+/* Aktivni filteri wrapper */
+.active-filters {
+  margin: 15px 0;
+  padding: 15px;
+  background: var(--bez); /* svetlo zelena pozadina */
+  border: 1px solid var(--zelena); /* svetlozelena ivica */
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 128, 0, 0.1);
+}
+
+.active-filters h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: var(--tamnoZelena); /* tamno zelena */
+  font-weight: 600;
+}
+
+/* Container za filter tagove */
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Svaki tag */
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--zelena); /* zelena */
+  color: white;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3);
+  transition: 0.2s ease;
+}
+
+.filter-tag:hover {
+  background: var(--zelena); /* tamnija zelena kad hover */
+  transform: scale(1.05);
+}
+
+/* Dugme za zatvaranje (X) */
+.filter-tag button {
+  margin-left: 8px;
+  background: white;
+  color: var(--tamnoZelena);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.filter-tag button:hover {
+  background: var(--tamnoZelena);
+  color: white;
+}
+
+/* Očisti sve filtere dugme */
+.clear-filters {
+  margin-top: 12px;
+  background: #dc2626; /* crveno */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.clear-filters:hover {
+  background: #b91c1c;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .sidebar-wrapper .sidebar {
+    display: none; /* default sakriveno */
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+  }
+
+  .sidebar-wrapper .sidebar.active {
+    display: block;
+    max-height: 2000px; /* dovoljno visoko da obuhvati sve filtere */
+    opacity: 1;
+  }
+
+  .toggle-filters-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: var(--zelena);
+    border: 1px solid var(--zelena);
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
 }

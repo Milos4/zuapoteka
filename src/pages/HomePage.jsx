@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import BannerSlider from "../components/BannerSlider";
@@ -43,6 +43,13 @@ const banners = [
 ];
 
 const HomePage = () => {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div
       style={{
@@ -59,7 +66,7 @@ const HomePage = () => {
       <SpecialOffers />
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
-      <TripleBannerSlider banners={banners.slice(0, 6)} />
+      {!isMobile && <TripleBannerSlider banners={banners.slice(0, 6)} />}
       
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

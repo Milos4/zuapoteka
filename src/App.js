@@ -53,6 +53,8 @@ import UsersPage from "./pages/admin/UsersPage";
 // worker pages
 import WorkerOrdersPage from "./pages/worker/Orders";
 import WorkerProductsPage from "./pages/worker/WorkerProductsPage";
+import WorkerBrandsPage from "./pages/worker/WorkerBrandsPage";
+
 
 
 
@@ -188,6 +190,12 @@ function App() {
 <Route path="/radnik/porudzbine" element={
   <WorkerRoute>
     <WorkerOrdersPage />
+  </WorkerRoute>
+} />
+
+<Route path="/radnik/brendovi" element={
+  <WorkerRoute>
+    <WorkerBrandsPage />
   </WorkerRoute>
 } />
    <Route path="/radnik/proizvodi" element={ <WorkerRoute>

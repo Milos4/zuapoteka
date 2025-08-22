@@ -24,14 +24,36 @@
   color: var(--tamnoZelena);
 }
 
-.worker-right .logout-link {
+
+.worker-right {
+  display: flex;
+  align-items: center;
+  /* gap: 15px;  ukloni ako nema drugih elemenata desno */
+}
+
+.logout-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* razmak između badge i teksta */
+  cursor: pointer;
   color: var(--bez);
   font-weight: 600;
-  cursor: pointer;
   transition: color 0.3s ease;
 }
 
-
-.worker-right .logout-link:hover {
+.logout-wrapper:hover {
   color: var(--tamnoZelena);
+}
+
+.logout-wrapper .badge1 {
+  color: white;
+  padding: 2px 8px;
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
 }

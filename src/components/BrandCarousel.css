@@ -40,13 +40,7 @@
   user-select: none;
 }
 
-/* Desktop - 5 vidljivo */
-@media (min-width: 769px) {
-  .brand-item {
-    height: 120px;
-    width: calc((100% - 80px) / 5); /* 5 itema + 4 gapa po 20px */
-  }
-}
+
 
 /* Mobilni - 2 vidljivo */
 @media (max-width: 768px) {
@@ -64,12 +58,12 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.3);
+  background: var(--bez);
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  color: white;
+  width: 30px;
+  height: 30px;
+  color:var(--tamnoZelena);
   font-size: 24px;
   cursor: pointer;
   z-index: 10;
@@ -80,7 +74,7 @@
   transition: background-color 0.2s ease;
 }
 .arrow-button:hover:not(:disabled) {
-  background: rgba(0,0,0,0.6);
+  background: var(--zelena)
 }
 .arrow-button:disabled {
   cursor: default;
@@ -92,4 +86,22 @@
 }
 .arrow-right {
   right: 10px;
+}
+
+@media (max-width: 768px) {
+  .arrow-button {
+    background: transparent;
+    color: var(--tamnoZelena);
+    border: none;
+    border-radius: 50%;
+  }
+
+  .arrow-button:hover:not(:disabled) {
+    background: transparent; /* ne menja se pri hover */
+  }
+
+  .arrow-button:disabled {
+    background: transparent;
+    color: rgba(0, 0, 0, 0.3); /* opcionalno za disabled */
+  }
 }

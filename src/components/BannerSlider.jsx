@@ -77,9 +77,9 @@ const handleClick = () => {
   navigate(`/prodavnica?${query.toString()}`);
 };
   return (
-    <div className="banner-slider" ref={sliderRef}>
+    <div className="banner-slider1" ref={sliderRef}>
       <div
-        className="banner-wrapper"
+        className="banner-wrapper1"
         onClick={handleClick}
         style={{
           transform: `translateX(-${

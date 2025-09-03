@@ -16,10 +16,15 @@ import BrandCarousel from "../components/BrandCarousel";
 import UpdateMissingFields from "./UpdateMissingFields";
 
 
+import biodermaBanner from "../assets/banners/Bioderma20.jpg";
+import laRocheBanner from "../assets/banners/LaRoche10.jpg";
+import vichyBanner from "../assets/banners/Vichy10.jpg";
+import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
+
 
 const banners = [
   {
-    image: "https://images-static.nykaa.com/uploads/5d65f189-346b-412d-aca6-784644225651.jpg?tr=cm-pad_resize,w-600",
+    image:biodermaBanner,
     alt: "Maybelline Akcija",
     filters: {
       brand: "Nivea",
@@ -27,14 +32,22 @@ const banners = [
     },
   },
   {
-    image: "https://images-static.nykaa.com/uploads/5d65f189-346b-412d-aca6-784644225651.jpg?tr=cm-pad_resize,w-600",
+    image: laRocheBanner,
     alt: "Skincare proizvodi",
     filters: {
       category: "Mama i bebe",
     },
   },
   {
-    image: "https://api.watsons.com.ph/medias/WP.-1-Main-Banner-MNY-1260x526.jpg?context=bWFzdGVyfGltYWdlc3w4MzIzNXxpbWFnZS9qcGVnfGFHRmtMMmhqTlM4eE5qQXpPVEl4TmpJNE16WTNPQzlYVUM0Z01TQk5ZV2x1SUVKaGJtNWxjaUJOVGxrZ01USTJNSGcxTWpZdWFuQm58Yjc5YTg2MTUyYWYyZWVjZjRlNzVkNjk0NDI5NDkyYjY4MzQxOTAzMTI0ZTBjODE0NzkyYzNkZjE4NGU5MjYzNw",
+    image: vichyBanner,
+    alt: "Novo u ponudi",
+    filters: {
+      new: true,
+    },
+  },
+
+   {
+    image: ceraVeBanner,
     alt: "Novo u ponudi",
     filters: {
       new: true,
@@ -60,7 +73,7 @@ const HomePage = () => {
       }}
     >
 
-      <BannerSlider banners={banners.slice(0, 3)} />
+      <BannerSlider banners={banners.slice(0, 4)} />
       
       <PharmacyCategories />
       <SpecialOffers />

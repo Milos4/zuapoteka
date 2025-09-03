@@ -14,6 +14,8 @@ import { doc, getDoc } from "firebase/firestore";
 
 import AdminRoute from "./components/admin/AdminRoute";
 import WorkerRoute from "./components/worker/WorkerRoute";
+import { fixProductCategories } from "./fixProductCategories"; 
+
 
 
 //Pages
@@ -54,6 +56,7 @@ import UsersPage from "./pages/admin/UsersPage";
 import WorkerOrdersPage from "./pages/worker/Orders";
 import WorkerProductsPage from "./pages/worker/WorkerProductsPage";
 import WorkerBrandsPage from "./pages/worker/WorkerBrandsPage";
+import WorkerCategoryPage from "./pages/worker/WorkerCategoryPage";
 
 
 
@@ -92,6 +95,11 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    fixProductCategories();
+  }, []);
+
+
   const location = useLocation();
   const hideNavbarRoutes = ["/prijava", "/registracija"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
@@ -99,6 +107,7 @@ function App() {
   if (loading) return null;
   return (
     <>
+<GenerateCategories></GenerateCategories>
 <CartProvider>
       <ScrollToTop />
       {!shouldHideNavbar && 
@@ -196,6 +205,12 @@ function App() {
 <Route path="/radnik/brendovi" element={
   <WorkerRoute>
     <WorkerBrandsPage />
+  </WorkerRoute>
+} />
+
+<Route path="/radnik/kategorije" element={
+  <WorkerRoute>
+    <WorkerCategoryPage />
   </WorkerRoute>
 } />
    <Route path="/radnik/proizvodi" element={ <WorkerRoute>

@@ -20,6 +20,10 @@ import biodermaBanner from "../assets/banners/Bioderma20.jpg";
 import laRocheBanner from "../assets/banners/LaRoche10.jpg";
 import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
+import ceraVe from "../assets/banners/cerave.jpg";
+import laR from "../assets/banners/LaR.jpg";
+import bioderma from "../assets/banners/bioderma.jpg";
+import vichy from "../assets/banners/vichy.jpg";
 
 
 const banners = [
@@ -27,31 +31,54 @@ const banners = [
     image:biodermaBanner,
     alt: "Maybelline Akcija",
     filters: {
-      brand: "Nivea",
-      discount: true,
-    },
+      brand: "Bioderma",
+      },
   },
   {
     image: laRocheBanner,
     alt: "Skincare proizvodi",
     filters: {
-      category: "Mama i bebe",
+      brand: "La Roche-Posay",
     },
   },
   {
     image: vichyBanner,
     alt: "Novo u ponudi",
     filters: {
-      new: true,
-    },
+  brand: "Vichy",    },
   },
 
    {
     image: ceraVeBanner,
     alt: "Novo u ponudi",
     filters: {
-      new: true,
+  brand: "CeraVe",       },
+  },
+    {
+    image: laR,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "La Roche-Posay", 
+      
     },
+  },
+    {
+    image: bioderma,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Bioderma",       },
+  },
+    {
+    image: vichy,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Vichy",       },
+  },
+    {
+    image: ceraVe,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "CeraVe",       },
   },
 ];
 
@@ -72,15 +99,17 @@ const HomePage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
+        <BannerSlider   banners={isMobile ? banners.slice(4, 8) : banners.slice(0, 4)} />
 
-      <BannerSlider banners={banners.slice(0, 4)} />
-      
+
+     
       <PharmacyCategories />
       <SpecialOffers />
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
-      {!isMobile && <TripleBannerSlider banners={banners.slice(0, 6)} />}
-      
+
+         {!isMobile && <TripleBannerSlider banners={banners.slice(2,8)} />}
+
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (
          <TripleBannerSlider banners={banners.slice(3, 6)} />*/}

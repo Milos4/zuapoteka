@@ -2,41 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./TripleBannerSlider.css";
 
-// Default banners data
-const defaultBanners = [
-  {
-    image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fexpera.ba%2F&psig=AOvVaw1VgwErwRMkBZG8TZZW205k&ust=1752365545963000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJCRisGEto4DFQAAAAAdAAAAABAE",
-    alt: "Banner 1",
-    link: "/promotion1"
-  },
-  {
-    image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fafarm.ba%2Fpage%2F2%2F%3Fadd-to-cart%3D29574&psig=AOvVaw1VgwErwRMkBZG8TZZW205k&ust=1752365545963000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJCRisGEto4DFQAAAAAdAAAAABAL",
-    alt: "Banner 2",
-    link: "/promotion2"
-  },
-  {
-    image: "https://via.placeholder.com/800x400?text=Banner+3",
-    alt: "Banner 3",
-    link: "/promotion3"
-  },
-  {
-    image: "https://via.placeholder.com/800x400?text=Banner+4",
-    alt: "Banner 4",
-    link: "/promotion4"
-  },
-  {
-    image: "https://via.placeholder.com/800x400?text=Banner+5",
-    alt: "Banner 5",
-    link: "/promotion5"
-  },
-  {
-    image: "https://via.placeholder.com/800x400?text=Banner+6",
-    alt: "Banner 6",
-    link: "/promotion6"
-  }
-];
 
-const TripleBannerSlider = ({ banners = defaultBanners }) => {
+const TripleBannerSlider = ({ banners  }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -98,9 +65,18 @@ const TripleBannerSlider = ({ banners = defaultBanners }) => {
     return () => clearInterval(interval);
   }, [isAnimating, nextSlide]);
 
-  const handleClick = (link) => {
-    navigate(link);
-  };
+const handleClick = (banner) => {
+  const filters = banner.filters || {};
+  const query = new URLSearchParams();
+
+  if (filters.brand) query.append("brand", filters.brand);
+  if (filters.category) query.append("kategorija", filters.category);
+  if (filters.discount) query.append("naPopustu", "true");
+  if (filters.new) query.append("novo", "true");
+
+  navigate(`/prodavnica?${query.toString()}`);
+};
+
 
   return (
     <div className="triple-banner-slider">
@@ -118,7 +94,7 @@ const TripleBannerSlider = ({ banners = defaultBanners }) => {
               <div
                 key={`${groupIndex}-${bannerIndex}`}
                 className="triple-banner-slide"
-                onClick={() => handleClick(banner.link)}
+                onClick={() => handleClick(banner)}
               >
                 <img src={banner.image} alt={banner.alt} />
               </div>

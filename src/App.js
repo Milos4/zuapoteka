@@ -66,6 +66,7 @@ import DeliveryAndPayment from "./pages/DeliveryAndPayment";
 
 
 import GenerateCategories from "./GenerateCategories";
+//<GenerateCategories></GenerateCategories>
 
 
 import { useLocation } from "react-router-dom";
@@ -95,9 +96,10 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    fixProductCategories();
-  }, []);
+  //ZA UPDEJTOVANJE KATEGORIJE
+  // useEffect(() => {
+  //   fixProductCategories();
+  // }, []);
 
 
   const location = useLocation();
@@ -107,7 +109,6 @@ function App() {
   if (loading) return null;
   return (
     <>
-<GenerateCategories></GenerateCategories>
 <CartProvider>
       <ScrollToTop />
       {!shouldHideNavbar && 

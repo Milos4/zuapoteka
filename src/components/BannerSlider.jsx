@@ -21,6 +21,7 @@ const BannerSlider = ({ banners }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  
   const goToSlide = useCallback(
     (newIndex) => {
       if (isAnimating) return;

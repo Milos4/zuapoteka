@@ -257,7 +257,7 @@ const toggleFilters = () => {
     onAddToCart: () => handleAddToCartClick(p),
     onAddToFavorites: () => handleAddToFavorite(p),
     inWishlist,
-              onClick: isMobile ? () => handleToggleActive(p.id) : undefined,
+              onClick: isMobile ? () => handleToggleActive(p.id) :  () => handleViewProduct(p.id),
                 id: `product-${p.id}`,
   };
 

@@ -168,7 +168,7 @@ const handleToggleActive = (id) => {
       onAddToCart: () => addToCart(product),
       onAddToFavorites: () => handleAddToFavorite(product),
       inWishlist,
-      onClick: isMobile ? () => handleToggleActive(product.id) : undefined,
+      onClick: isMobile ? () => handleToggleActive(product.id) :  () => handleViewProduct(product.id),
   id: `product-${product.id}`,
     };
 

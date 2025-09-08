@@ -79,30 +79,32 @@ const mergeLocalCartToFirestore = async (user) => {
 };
 
 
-  const addToCart = async (product, quantity = 1) => {
-const existingIndex = cartItems.findIndex(
-  (item) =>
-    item.id === product.id &&
-    item.selectedSize === product.selectedSize // ista veličina = ista stavka
-);    let updatedCart;
+const addToCart = async (product, quantity = 1) => {
+  const existingIndex = cartItems.findIndex(
+    (item) =>
+      item.id === product.id &&
+      item.selectedSize === product.selectedSize // ista veličina = ista stavka
+  );
 
-    if (existingIndex !== -1) {
-     updatedCart = [...cartItems, { ...product, quantity, selectedSize: product.selectedSize }];
+  let updatedCart = [...cartItems];
 
-      updatedCart[existingIndex].quantity += quantity;
-    } else {
-      updatedCart = [...cartItems, { ...product, quantity }];
-    }
+  if (existingIndex !== -1) {
+    // Ako već postoji, samo povećaj quantity
+    updatedCart[existingIndex].quantity += quantity;
+  } else {
+    // Ako ne postoji, dodaj novi proizvod
+    updatedCart.push({ ...product, quantity });
+  }
 
-    setCartItems(updatedCart);
+  setCartItems(updatedCart);
 
-    if (user) {
-      const docRef = doc(db, "users", user.uid, "cart", product.id);
-      await setDoc(docRef, updatedCart.find((item) => item.id === product.id));
-    } else {
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-    }
-  };
+  if (user) {
+    const docRef = doc(db, "users", user.uid, "cart", product.id);
+    await setDoc(docRef, updatedCart.find((item) => item.id === product.id));
+  } else {
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  }
+};
 
   
   const clearCart = async () => {

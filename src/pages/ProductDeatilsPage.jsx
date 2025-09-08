@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import ProductDetails from "../components/ProductDetails/ProductDetails";
+import RelatedProducts from "../components/ProductDetails/RelatedProducts";
+
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -33,7 +35,13 @@ const ProductDetailsPage = () => {
   if (loading) return <p style={{ textAlign: "center" }}>Učitavanje...</p>;
   if (!product) return <p style={{ textAlign: "center" }}>Proizvod nije pronađen.</p>;
 
-  return <ProductDetails product={product} />;
+  return (
+  <>
+    <ProductDetails product={product} />
+    <RelatedProducts product={product} />
+  </>
+);
+
 };
 
 export default ProductDetailsPage;

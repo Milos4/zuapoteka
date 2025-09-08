@@ -22,9 +22,18 @@ const RegularProduct = ({
         {image && <img src={image} alt={name} />}
 
         <div className="actions-overlay">
-          <span className="action-btn eye-btn" onClick={onView}><EyeIcon /></span>
-          <span className="action-btn cart-btn" onClick={onAddToCart}><CartIcon /></span>
-          <span className="action-btn heart-btn" onClick={onAddToFavorites}><HeartIcon /></span>
+          <span className="action-btn eye-btn"       onClick={(e) => {
+              e.stopPropagation(); // sprječava klik kartice
+              onView();
+            }}><EyeIcon /></span>
+          <span className="action-btn cart-btn"      onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart();
+            }}><CartIcon /></span>
+          <span className="action-btn heart-btn" onClick={(e) => {
+              e.stopPropagation();
+              onAddToFavorites();
+            }}><HeartIcon /></span>
         </div>
       </div>
 

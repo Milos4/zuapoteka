@@ -3,7 +3,15 @@ import { db } from "./firebase";
 
 // mapa starih kategorija → novih kategorija
 const categoryReplacements = {
-  "dijetetika  i samolječenje": "Dijetetika i samoliječenje",
+  "Higijena,njega i ostalo": "Higijena, njega i ostalo",
+  "Preparati za masažu i regeneraciju9.70":"Preparati za masažu i regeneraciju",
+    "mama i bebe":"Mama i bebe",
+        "higijena,njega i ostalo":"Higijena, njega i ostalo",
+        "dijetetika i samoliječenje":"Dijetetika i samoliječenje",
+"zdrava hrana i čajevi":"Zdrava hrana i čajevi",
+"medicinska pomagala":"Medicinska pomagala"
+
+
 
   
   // dodaj koliko god treba

@@ -80,6 +80,20 @@ brand: "La Roche-Posay",
     filters: {
   brand: "CeraVe",       },
   },
+    {
+    image: laR,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "La Roche-Posay", 
+      
+    },
+  },
+    {
+    image: bioderma,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Bioderma",       },
+  },
 ];
 
 const HomePage = () => {
@@ -99,8 +113,11 @@ const HomePage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-        <BannerSlider   banners={isMobile ? banners.slice(4, 8) : banners.slice(0, 4)} />
-
+{isMobile ? (
+  <BannerSlider banners={banners.slice(4, 8)} />
+) : (
+  <TripleBannerSlider banners={banners.slice(4, 10)} />
+)}
 
      
       <PharmacyCategories />
@@ -108,7 +125,7 @@ const HomePage = () => {
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-         {!isMobile && <TripleBannerSlider banners={banners.slice(2,8)} />}
+         {!isMobile && <BannerSlider banners={banners.slice(0,4)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

@@ -207,7 +207,7 @@ function App() {
   <WorkerRoute>
     <WorkerBrandsPage />
   </WorkerRoute>
-} />
+} /> 
 
 <Route path="/radnik/kategorije" element={
   <WorkerRoute>

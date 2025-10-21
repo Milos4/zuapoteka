@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 
 import logo from "../assets/Logo1.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,8 +21,15 @@ const NavBar = () => {
   const [username, setUsername] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const [allProducts, setAllProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
   const navigate = useNavigate();
 
+  // --- Scroll hide navbar ---
   useEffect(() => {
     let prevScrollPos = window.scrollY;
     const handleScroll = () => {
@@ -34,6 +41,49 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // --- Normalizacija za č ć ž š đ ---
+  const normalizeText = (text) => {
+    return text
+      .toLowerCase()
+      .replace(/č/g, "c")
+      .replace(/ć/g, "c")
+      .replace(/š/g, "s")
+      .replace(/ž/g, "z")
+      .replace(/đ/g, "dj");
+  };
+
+  // --- Fetch svi proizvodi (za search) ---
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      const productsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAllProducts(productsData);
+    };
+    fetchProducts();
+  }, []);
+
+  // --- Search logika ---
+  useEffect(() => {
+    if (searchQuery.trim().length < 3) {
+      setFilteredProducts([]);
+      return;
+    }
+
+    const normalizedQuery = normalizeText(searchQuery);
+    const queryWords = normalizedQuery.split(" ").filter(Boolean);
+
+    const results = allProducts.filter((p) => {
+      const nameNorm = normalizeText(p.naziv || "");
+      return queryWords.every((word) => nameNorm.includes(word));
+    });
+
+    setFilteredProducts(results);
+  }, [searchQuery, allProducts]);
+
+  // --- Auth logika ---
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -51,6 +101,7 @@ const NavBar = () => {
     return () => unsubscribe();
   }, []);
 
+  // --- Klik izvan dropdowna ---
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -67,6 +118,19 @@ const NavBar = () => {
     navigate("/prijava");
   };
 
+  const handleSearchKey = (e) => {
+    if (e.key === "Enter" && searchQuery.trim().length >= 3) {
+      navigate(`/prodavnica?search=${encodeURIComponent(searchQuery.trim())}`);
+      setShowResults(false);
+    }
+  };
+
+  const handleProductClick = (id) => {
+    navigate(`/product/${id}`);
+    setSearchQuery("");
+    setShowResults(false);
+  };
+
   return (
     <nav className={`navbar ${isVisible ? "" : "hidden-navbar"}`}>
       <div className="left">
@@ -80,6 +144,56 @@ const NavBar = () => {
         <Link to="/prodavnica">Prodavnica</Link>
         <Link to="/o-nama">O nama</Link>
         <Link to="/kontakt">Kontakt</Link>
+
+      <div className="navbar-search">
+  <input
+    type="text"
+    placeholder="Pretraži..."
+    className="search-input"
+    value={searchQuery}
+    onChange={(e) => {
+      setSearchQuery(e.target.value);
+      setShowResults(true);
+    }}
+    onKeyDown={handleSearchKey}
+  />
+
+  {showResults && searchQuery.trim().length >= 3 && (
+    <div className="search-results">
+      {filteredProducts.length > 0 ? (
+        filteredProducts.slice(0, 5).map((p) => (
+          <div
+            key={p.id}
+            className="search-item"
+            onClick={() => handleProductClick(p.id)}
+          >
+            <img src={p.slikaURL} alt={p.naziv} />
+            <div>
+              <p className="search-name">{p.naziv}</p>
+              <span className="search-price">{p.cijena} KM</span>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="search-no-results">Nema rezultata...</div>
+      )}
+
+      {filteredProducts.length > 5 && (
+        <div
+          className="search-show-all"
+          onClick={() => {
+            navigate(`/prodavnica?search=${encodeURIComponent(searchQuery.trim())}`);
+            setShowResults(false);
+          }}
+        >
+          Prikaži sve rezultate →
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+
       </div>
 
       <div

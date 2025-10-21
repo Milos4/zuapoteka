@@ -9,6 +9,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+
 
 export default function PharmacyCategories() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -189,6 +191,7 @@ export default function PharmacyCategories() {
             onMouseEnter={() => setActiveCategory(category.id)}
             onMouseLeave={() => setActiveCategory(null)}
             onClick={() => alert(`Kliknuli ste na ${category.name}`)}
+
           >
             <div
               style={{

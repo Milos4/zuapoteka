@@ -17,11 +17,12 @@ code {
 *::after {
   box-sizing: border-box;
 }
-
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  height: 100%;
+  overflow-x: hidden; /* sakriva horizontalni */
+  overflow-y: auto;   /* pokazuje vertikalni scroll */
 }
 
 ::-webkit-scrollbar {

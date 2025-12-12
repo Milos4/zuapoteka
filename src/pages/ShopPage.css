@@ -159,6 +159,7 @@
 
 
 @media (max-width: 768px) {
+
   .shop-page {
     flex-direction: column;
   }
@@ -176,15 +177,24 @@
     width: 100%;
   }
 }
-
 @media (max-width: 600px) {
-  .products-container{
+  .products-container {
     width: 100%;
+    padding: 0 10px; /* malo unutrašnjeg razmaka */
   }
+
   .products {
-    grid-template-columns: repeat(1, 1fr);
-        min-width: 100%;
-    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 👉 2 proizvoda u redu */
+    gap: 12px;
+    width: 100%;
+    min-width: unset; /* ❗ važno da ne razvuče */
+    max-width: unset; /* ❗ */
+  }
+
+  .product-card {
+    width: 100%;
+    height: auto;
   }
 }
 

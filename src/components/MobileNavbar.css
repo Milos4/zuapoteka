@@ -145,6 +145,8 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 3000;
+  width: 250px;
+
 }
 
 .search-item {
@@ -191,4 +193,15 @@
 }
 .search-show-all:hover {
   background: #eee;
+}
+
+.mobile-nav-store-link {
+  font-size: 15px;
+  margin-right: 12px;
+  color: #333;
+  font-weight: 600;
+}
+
+.mobile-nav-store-link:hover {
+  color: #009688;
 }

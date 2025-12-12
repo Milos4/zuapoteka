@@ -220,3 +220,19 @@
     opacity: 0;
   }
 }
+
+
+@media (max-width: 600px) {
+  .product-card {
+    width: 100% !important;     /* Uzme cijelu grid kolonu */
+    min-width: 0 !important;    /* Spriječi da se gura van ekrana */
+    max-width: 100% !important;
+  }
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 👉 2 proizvoda u redu */
+    gap: 12px;
+    width: 100%;
+  }
+}

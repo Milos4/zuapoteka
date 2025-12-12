@@ -226,11 +226,7 @@ const DeliveryAndPayment = () => {
                         <div className="pharmacy-options">
                           <label className="pharmacy-option">
                             <input type="radio" name="selectedPharmacy" value="apoteka1" checked={formData.selectedPharmacy === 'apoteka1'} onChange={handleInputChange} className="pharmacy-radio" />
-                            <span className="pharmacy-label">Apoteka 1 - Centar (Kralja Petra I 15)</span>
-                          </label>
-                          <label className="pharmacy-option">
-                            <input type="radio" name="selectedPharmacy" value="apoteka2" checked={formData.selectedPharmacy === 'apoteka2'} onChange={handleInputChange} className="pharmacy-radio" />
-                            <span className="pharmacy-label">Apoteka 2 - Novi deo.(Vuka Karadžića 23)</span>
+                            <span className="pharmacy-label">Apoteka 1 - Agrotržni centar Lamela B, 76300, Bijeljina</span>
                           </label>
                         </div>
                       </div>

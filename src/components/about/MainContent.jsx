@@ -2,7 +2,7 @@ import React from "react";
 import { sectionBox, sectionHeading, sectionParagraph } from "../../styles/commonStyles";
 import MissionSection from "./MissionSection";
 import PracticeSection from "./PracticeSection";
-import apotekarka5 from "../../assets/apotekarka5.jpg";
+import apotekarka5 from "../../assets/Slika1.jpg";
 import WelcomeSection from "./WelcomeSection";
 
 const MainContent = () => {

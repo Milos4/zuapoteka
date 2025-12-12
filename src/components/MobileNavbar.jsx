@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import "./MobileNavbar.css";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaShoppingBag} from "react-icons/fa";
 
 const MobileNavbar = () => {
   const { cartItems } = useCart();
@@ -78,7 +78,7 @@ const MobileNavbar = () => {
   };
 
   const handleProductClick = (id) => {
-    navigate(`/proizvod/${id}`);
+    navigate(`/product/${id}`);
     setShowResults(false);
   };
 
@@ -127,14 +127,14 @@ const MobileNavbar = () => {
                         className="search-show-all"
                         onClick={() => {
                           navigate(
-                            `/prodavnica?search=${encodeURIComponent(
+                            `/prodavnica?zou are =${encodeURIComponent(
                               searchQuery.trim()
                             )}`
                           );
                           setShowResults(false);
                         }}
                       >
-                        Prikaži sve rezultate →
+                        Prikaži sve rezultate
                       </div>
                     )}
                   </>
@@ -147,12 +147,16 @@ const MobileNavbar = () => {
 
           {/* icons */}
           <div className="mobile-nav-icons">
+                  <Link to="/prodavnica" className="mobile-nav-cart-icon">
+    <FaShoppingBag size={22} />
+  </Link>
             <Link to="/korpa" className="mobile-nav-cart-icon">
               <FaShoppingCart size={22} />
               {cartCount > 0 && (
                 <span className="mobile-nav-cart-count">{cartCount}</span>
               )}
             </Link>
+
             <button className="mobile-nav-menu-toggle" onClick={toggleMenu}>
               {menuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>

@@ -44,6 +44,8 @@ const ShopPage = () => {
   const [filterNew, setFilterNew] = useState(false);
   const [brandSearch, setBrandSearch] = useState("");
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [openBrands, setOpenBrands] = useState(false);
+const [openCategories, setOpenCategories] = useState(false);
 
 
   const { addToCart } = useCart();
@@ -283,49 +285,72 @@ const toggleFilters = () => {
     Filteri {filtersOpen ? "▲" : "▼"}
   </button>
 )}
-  <div className={`sidebar ${filtersOpen ? "active" : ""}`}>
-    <h2>Pretraga</h2>
-    <input
-      type="text"
-      placeholder="Pretraži proizvode..."
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-    />
+<div className={`sidebar ${filtersOpen ? "active" : ""}`}>
 
-    <h3>Brendovi</h3>
-    <input
-      type="text"
-      placeholder="Pretraži brend..."
-      value={brandSearch}
-      onChange={(e) => setBrandSearch(e.target.value)}
-    />
-    <div className="brand-list scrollable">
-      {brands
-        .filter((b) => b.name.toLowerCase().includes(brandSearch.toLowerCase()))
-        .map((b) => (
-          <label key={b.id}>
-            <input
-              type="checkbox"
-              checked={selectedBrands.includes(b.id)}
-              onChange={() => handleBrandToggle(b.id)}
-            />
-            {b.name}
-          </label>
-        ))}
-    </div>
+{/* PRETRAGA */}
+<h2>Pretraga</h2>
+<input
+  type="text"
+  className="underline-input"
+  placeholder="Pretraži proizvode..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
 
-    <h3>Kategorije</h3>
-    {Object.keys(categories).map((k) => (
-      <div key={k}>
-        <label>
+{/* === BRENDOVI DROP === */}
+<h3 className="accordion-title" onClick={() => setOpenBrands(!openBrands)}>
+  Brendovi {openBrands ? "▲" : "▼"}
+</h3>
+
+<div className={`accordion-content ${openBrands ? "open" : ""}`}>
+<input
+  type="text"
+  className="underline-input"
+  placeholder="Pretraži brend..."
+  value={brandSearch}
+  onChange={(e) => setBrandSearch(e.target.value)}
+/>
+
+  <div className="brand-list scrollable">
+    {brands
+      .filter((b) =>
+        b.name.toLowerCase().includes(brandSearch.toLowerCase())
+      )
+      .map((b) => (
+        <label key={b.id}>
           <input
             type="checkbox"
-            checked={selectedCategories.includes(k)}
-            onChange={() => handleCategoryToggle(k)}
+            checked={selectedBrands.includes(b.id)}
+            onChange={() => handleBrandToggle(b.id)}
           />
-          {capitalize(k)}
+          {b.name}
         </label>
-        {selectedCategories.includes(k) && categories[k].length > 0 && (
+      ))}
+  </div>
+</div>
+
+{/* === KATEGORIJE DROP === */}
+<h3
+  className="accordion-title"
+  onClick={() => setOpenCategories(!openCategories)}
+>
+  Kategorije {openCategories ? "▲" : "▼"}
+</h3>
+
+<div className={`accordion-content ${openCategories ? "open" : ""}`}>
+  {Object.keys(categories).map((k) => (
+    <div key={k}>
+      <label>
+        <input
+          type="checkbox"
+          checked={selectedCategories.includes(k)}
+          onChange={() => handleCategoryToggle(k)}
+        />
+        {capitalize(k)}
+      </label>
+
+      {selectedCategories.includes(k) &&
+        categories[k].length > 0 && (
           <div className="subcategories">
             {categories[k].map((s) => (
               <label key={s}>
@@ -339,28 +364,32 @@ const toggleFilters = () => {
             ))}
           </div>
         )}
-      </div>
-    ))}
+    </div>
+  ))}
+</div>
 
-    <h3>Ostalo</h3>
-    <label>
-      <input
-        type="checkbox"
-        checked={filterDiscount}
-        onChange={() => setFilterDiscount((prev) => !prev)}
-      />
-      Na popustu
-    </label>
-    <br />
-    <label>
-      <input
-        type="checkbox"
-        checked={filterNew}
-        onChange={() => setFilterNew((prev) => !prev)}
-      />
-      Novo
-    </label>
-  </div>
+{/* OSTALO */}
+<br />
+<label>
+  <input
+    type="checkbox"
+    checked={filterDiscount}
+    onChange={() => setFilterDiscount((prev) => !prev)}
+  />
+  Na popustu
+</label>
+
+
+
+<label>
+  <input
+    type="checkbox"
+    checked={filterNew}
+    onChange={() => setFilterNew((prev) => !prev)}
+  />
+  Novo
+</label>
+</div>
 </div>
 
 

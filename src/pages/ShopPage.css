@@ -35,19 +35,11 @@
 .sidebar input[type="text"],
 .sidebar select {
   width: 90%;
-  padding: 14px;
   font-size: 17px;
   margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid var(--zelena);
 }
 
-.sidebar input[type="text"]:focus,
-.sidebar select:focus {
-  border-color: var(--tamnoZelena);
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 111, 84, 0.3);
-}
+
 
 .sidebar label {
   display: block;
@@ -335,4 +327,44 @@
     text-align: left;
   }
 
+}
+
+.accordion-title {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--tamnoZelena);
+  margin: 20px 0 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.accordion-content.open {
+  max-height: 2000px; /* dovoljno da stane sve */
+}
+
+.underline-input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--zelena);
+  background: transparent;
+  padding: 6px 4px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.underline-input:focus {
+  outline: none;
+  border-bottom: 2px solid var(--tamnoZelena);
+}
+
+.underline-input::placeholder {
+  color: #777;
 }

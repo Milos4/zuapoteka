@@ -6,13 +6,10 @@
   padding: 40px 0;
 }
 .terms-sidebar {
-  width: 20%;
+  width: 15%;
   position: sticky;
-  top: 20px;
-  background-color: var(--skoroBijela);
-  border-style: double;
-  border-color: var(--tamnoZelena);
-  border-radius: 5px;
+  top: 80px;
+  background-color: var(--bez);
   padding: 20px 0;
   height: fit-content;
 }
@@ -22,25 +19,40 @@
   padding: 0;
   margin: 0;
 }
-
-.terms-sidebar li {
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 15px;
-  cursor: pointer;
-  color: var(--zelena);
-  font-weight: bold;
-  font-size: 20px;
+.terms-content section {
+  scroll-margin-top: 150px; /* visina tvog navbar-a */
 }
 
-.terms-sidebar li:hover {
+.terms-sidebar li {
+  margin: 15px 0;
+  cursor: pointer;
   color: var(--tamnoZelena);
+  font-weight: bold;
+  font-size: 20px;
+  position: relative; /* neophodno za ::after */
+  padding-bottom: 5px; /* prostor za liniju */
+}
+
+.terms-sidebar li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 3px;
+  background-color: var(--tamnoZelena);
+  transition: width 0.3s ease;
+}
+
+.terms-sidebar li:hover::after,
+.terms-sidebar li.active::after {
+  width: 100%; /* linija se širi do kraja teksta */
 }
 
 .terms-content {
   width: 80%;
   background-color: var(--skoroBijela);
-  padding: 30px;
+  padding: 10px 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;

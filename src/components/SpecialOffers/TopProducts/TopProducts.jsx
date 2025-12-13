@@ -184,8 +184,11 @@ const handleAddToFavorite = async (product) => {
       onAddToCart: () => addToCart(product),
       onAddToFavorites: () => handleAddToFavorite(product),
       inWishlist,
-      onClick: isMobile ? () => handleToggleActive(product.id) : undefined, // 🔴 DODANO
-      id: `product-${product.id}`, // 🔴 DODANO
+      
+      onClick: isMobile 
+      ? () => handleToggleActive(product.id) 
+      : () => handleViewProduct(product.id),
+            id: `product-${product.id}`, // 🔴 DODANO
     };
 
     if (product.naPopustu) {

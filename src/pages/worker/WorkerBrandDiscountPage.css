@@ -1,0 +1,44 @@
+.brand-discount-wrapper {
+  padding: 20px;
+}
+
+.brand-discount-wrapper select,
+.brand-discount-wrapper input {
+  padding: 8px;
+  margin: 10px 0;
+}
+
+.bulk-actions {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  align-items: center;
+}
+
+.bulk-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #3498db;
+  color: white;
+}
+
+.bulk-actions button.secondary {
+  background: #95a5a6;
+}
+
+.bulk-actions button.apply {
+  background: #27ae60;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}

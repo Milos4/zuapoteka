@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "apotekahigra-42d45"
-  }
+    "default": "apotekahigra-42d45",
+    "nikola": "apotekahigra-42d45"
+  },
+  "targets": {},
+  "etags": {}
 }

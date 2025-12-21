@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./Contact.css";
+import mapa from "../../assets/mapa.png";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,35 +21,49 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // Ovde možeš dodati slanje forme putem API-ja
   };
 
   return (
     <div className="contact-container">
-      {/* Mapa */}
-      <div className="map-placeholder">
-        <p>Ovde ide Google mapa sa lokacijom apoteke</p>
-      </div>
+      {/* MAPA */}
+      <a
+        href="https://maps.app.goo.gl/4z4483kgA15DXkhu9"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="contact-map-link"
+      >
+        <img
+          src={mapa}
+          alt="Pronađi nas na Google mapama"
+          className="contact-map-img"
+        />
+        <div className="contact-map-text">
+          <FaMapMarkerAlt />
+          <span>Otvori lokaciju u Google mapama</span>
+        </div>
+      </a>
 
-      {/* Lokacije */}
+      {/* LOKACIJE */}
       <div className="locations">
         <div className="location">
-          <h3>Apoteka Higra Saric</h3>
-          <p>Agrotrzni centar Lamela B</p>
+          <h3>Apoteka Higra Sarić</h3>
+          <p>Agrotržni centar Lamela B</p>
           <p>Telefon: 055/240-666</p>
-          <p>Radno vreme: Pon-Pet 08:00 - 18:00</p>
+          <p>Radno vreme: Pon–Pet 08:00 – 18:00</p>
         </div>
+
         <div className="location">
-          <h3>Apoteka Higra Saric - Bijeljina</h3>
-          <p>Ulica: Bulevar Zorana Đinđića 88, Bijeljina</p>
-          <p>Telefon: 011/654-321</p>
-          <p>Radno vreme: Pon-Pet 08:00 - 18:00</p>
+          <h3>Apoteka Higra Sarić 2</h3>
+          <p>Centar 76, Velika Obarska</p>
+          <p>Telefon: 055/423-456</p>
+          <p>Radno vreme: Pon–Pet 08:00 – 18:00</p>
         </div>
       </div>
 
-      {/* Kontakt forma */}
+      {/* FORMA */}
       <form className="contact-form" onSubmit={handleSubmit}>
         <h2>Kontaktirajte nas</h2>
+
         <input
           type="text"
           name="name"
@@ -56,6 +72,7 @@ const Contact = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="email"
           name="email"
@@ -64,6 +81,7 @@ const Contact = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="text"
           name="subject"
@@ -71,6 +89,7 @@ const Contact = () => {
           value={formData.subject}
           onChange={handleChange}
         />
+
         <textarea
           name="message"
           placeholder="Vaša poruka"
@@ -79,6 +98,7 @@ const Contact = () => {
           onChange={handleChange}
           required
         ></textarea>
+
         <button type="submit">Pošalji poruku</button>
       </form>
     </div>

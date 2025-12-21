@@ -2,23 +2,40 @@
   width: 80%;
   margin: 0 auto;
   padding: 40px 0;
-  font-family: "'Arial', sans-serif";
+  font-family: Arial, sans-serif;
 }
 
-/* Mapa */
-.map-placeholder {
-  height: 400px;
-  background-color: #e2e2e2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #555;
-  font-size: 18px;
-  border-radius: 8px;
+/* MAPA */
+.contact-map-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   margin-bottom: 50px;
 }
 
-/* Lokacije */
+.contact-map-img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.25s ease;
+}
+
+.contact-map-img:hover {
+  transform: scale(1.02);
+}
+
+.contact-map-text {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: var(--zelena);
+}
+
+/* LOKACIJE */
 .locations {
   display: flex;
   justify-content: space-between;
@@ -42,17 +59,19 @@
   transform: scale(1.03);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
+
 .location h3 {
   color: var(--zelena);
   margin-bottom: 15px;
   margin-top: 10px;
   font-size: 25px;
 }
+
 .location p {
   font-size: 20px;
 }
 
-/* Forma */
+/* FORMA */
 .contact-form {
   background-color: var(--skoroBijela);
   border: 1px solid var(--tamnoZelena);
@@ -76,16 +95,14 @@
   border-radius: 5px;
   font-size: 16px;
   width: 100%;
-  color: #333; /* tekst boja */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  color: #333;
 }
 
-/* Fokus efekat */
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: var(--zelena);
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 128, 0, 0.3); /* nežni zeleni sjaj (opciono) */
+  box-shadow: 0 0 5px rgba(0, 128, 0, 0.3);
 }
 
 .contact-form button {
@@ -100,4 +117,19 @@
 
 .contact-form button:hover {
   background-color: var(--tamnoZelena);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .contact-container {
+    width: 90%;
+  }
+
+  .contact-map-img {
+    height: 260px;
+  }
+
+  .location p {
+    font-size: 16px;
+  }
 }

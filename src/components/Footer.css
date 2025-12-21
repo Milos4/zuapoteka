@@ -5,52 +5,39 @@
   font-family: Arial, sans-serif;
   margin-top: 10px;
 }
+
 .footer-top {
   display: flex;
   justify-content: space-between;
   padding: 1rem 5rem;
 }
 
+/* SECTION 1 */
 .footer-section-1 {
-  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Adresa */
 .footer-logo-img {
   width: 200px;
-  height: auto;
   margin-bottom: 1rem;
-  align-items: center;
 }
 
-/* Stilizacija adresa */
 .footer-address p {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   font-size: 20px;
 }
 
-/* Mapa sekcija */
-.footer-map {
-  margin-top: 1rem;
-  justify-content: center;
-}
-
-/* Korisne informacije - lista linkova */
-
+/* SECTION 2 */
 .footer-section-2 {
-  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .footer-section-2 ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .footer-section-2 ul li {
@@ -60,46 +47,17 @@
 .footer-section-2 ul li a {
   text-decoration: none;
   color: var(--bez);
-  transition: color 0.3s ease;
   font-size: 20px;
 }
 
 .footer-section-2 ul li a:hover {
   color: var(--tamnoZelena);
-  transform: scale(1.05);
 }
 
-.footer-section-4 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.footer-map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-map a {
-  color: var(--bez);
-  transform: scale(1.05);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.footer-map a:hover {
-  color: var(--tamnoZelena);
-
-  transform: scale(1.05);
-}
-
-/* Kontaktne informacije */
-
+/* SECTION 3 */
 .footer-section-3 {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .footer-socials {
@@ -108,20 +66,50 @@
   margin-top: 10px;
 }
 
-.footer-socials .social-link {
+.footer-socials a {
   color: var(--bez);
 }
 
-.footer-socials .social-link:hover {
+.footer-socials a:hover {
   color: var(--tamnoZelena);
 }
 
-/* Donji deo footera */
+/* SECTION 4 MAP */
+.footer-section-4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-map-link {
+  text-decoration: none;
+  color: var(--bez);
+  text-align: center;
+}
+
+.footer-map-img {
+  width: 260px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.footer-map-img:hover {
+  transform: scale(1.04);
+}
+
+.footer-map-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: bold;
+}
+
+/* BOTTOM */
 .footer-bottom {
   text-align: center;
-
-  justify-content: center;
-  padding: 5px;
+  padding: 10px;
 }
 
 .footer-bottom hr {
@@ -131,58 +119,33 @@
 
 .footer-bottom p {
   font-size: 16px;
-  color: var(--bez);
 }
-/* === RESPONSIVE FOOTER ZA MOBILNE === */
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .footer-top {
     flex-direction: column;
     align-items: center;
+    gap: 2rem;
     padding: 2rem 1rem;
     text-align: center;
-    gap: 2rem;
-  }
-
-  .footer-section-1,
-  .footer-section-2,
-  .footer-section-3,
-  .footer-section-4 {
-    width: 100%;
-    align-items: center;
-  }
-
-  .footer-section-2,
-  .footer-section-3 {
-    align-items: center;
-  }
-
-  .footer-section-2 ul {
-    padding: 0;
-  }
-
-  .footer-section-2 ul li {
-    margin-bottom: 10px;
   }
 
   .footer-logo-img {
     width: 140px;
   }
 
-  .footer-address p {
-    font-size: 16px;
+  .footer-map-img {
+    width: 220px;
   }
 
   .footer-section-2 ul li a,
-  .footer-map a,
+  .footer-address p,
   .footer-section-3 p {
     font-size: 16px;
   }
 
   .footer-bottom p {
     font-size: 14px;
-  }
-
-  .footer-socials {
-    justify-content: center;
   }
 }

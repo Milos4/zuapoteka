@@ -12,15 +12,14 @@ const Complaints = () => {
           Ukoliko ste primili pogrešan proizvod ili proizvod sa oštećenjem,
           dužni ste da u roku od <strong>24 časa</strong> od prijema pošiljke
           kontaktirate našu korisničku podršku putem e-mail adrese:{" "}
-          <a href="mailto:info@tvojadomena.rs" className="complaints-link">
-            info@tvojadomena.rs
+          <a href="mailto:info@apoteka-higrasaric.ba" className="complaints-link">
+            info@apoteka-higrasaric.ba
           </a>
           .
         </p>
         <p>
-          Pogrešno isporučeni proizvodi biće{" "}
-          <strong>besplatno zamenjeni</strong>. Molimo vas da odmah po prijemu
-          proverite ispravnost sadržaja paketa u prisustvu dostavljača.
+          Pogrešno isporučeni proizvodi biće <strong>besplatno zamijenjeni</strong>. 
+          Molimo vas da odmah po prijemu provjerite ispravnost sadržaja paketa u prisustvu dostavljača.
         </p>
         <p className="complaints-warning">
           Reklamacije koje se podnesu van navedenog roka od 24 časa neće biti
@@ -31,10 +30,9 @@ const Complaints = () => {
       <section className="complaints-section">
         <h2>2. Povrat sredstava</h2>
         <p>
-          U slučaju vraćanja robe i povrata novca kupcu koji je prethodno platio
-          karticom, povrat se vrši isključivo putem platne kartice korišćene
-          prilikom plaćanja (<strong>VISA, MasterCard, Maestro</strong>). Povrat
-          će izvršiti banka na zahtev prodavca.
+          Ukoliko dođe do vraćanja proizvoda, povrat sredstava izvršava se
+          <strong>gotovinom pouzećem prilikom preuzimanja ili direktno u apoteci</strong>.
+          Online plaćanje karticama trenutno nije dostupno.
         </p>
       </section>
 
@@ -43,11 +41,11 @@ const Complaints = () => {
         <p>
           Obavezujemo se da ćemo čuvati privatnost svih naših korisnika.
           Prikupljamo samo podatke neophodne za realizaciju porudžbine i
-          komunikaciju sa kupcima. Kupci uvek imaju pravo da se uklone sa
+          komunikaciju sa kupcima. Kupci uvijek imaju pravo da se uklone sa
           mailing lista.
         </p>
         <p>
-          Svi podaci se čuvaju strogo poverljivo i dostupni su samo zaposlenima
+          Svi podaci čuvaju se strogo povjerljivo i dostupni su samo zaposlenima
           kojima su potrebni za obavljanje posla.
         </p>
       </section>
@@ -55,15 +53,8 @@ const Complaints = () => {
       <section className="complaints-section">
         <h2>4. Sigurnost transakcija</h2>
         <p>
-          Plaćanja putem kartica na našoj web prodavnici obavljaju se preko
-          bezbednog sistema za online plaćanje – <strong>Monri</strong>. Vaši
-          podaci su šifrovani i sigurni, a mi nikada ne dolazimo u kontakt sa
-          kompletnim podacima vaše kartice.
-        </p>
-        <p>
-          Sistem koristi napredne bezbednosne protokole uključujući{" "}
-          <strong>SSL enkripciju</strong> i <strong>PCI DSS Level 1</strong>{" "}
-          standard.
+          Plaćanje se vrši **gotovinom pouzećem prilikom dostave ili lično u apoteci**.
+          Vaši podaci su sigurni jer ne unosite kartice na web sajtu.
         </p>
       </section>
     </div>

@@ -22,19 +22,21 @@ const DeliveryInformation = () => {
       <section className="complaints-section">
         <h2>2. Troškovi dostave</h2>
         <p>
-          Trošak dostave iznosi <strong>10 KM</strong> za porudžbine ispod 60
-          KM. Za porudžbine iznad 60KM, dostava je <strong>besplatna</strong>.
+          Trošak dostave iznosi <strong>11 KM</strong> za porudžbine ispod 60
+          KM. Za porudžbine iznad 60 KM, dostava je <strong>besplatna</strong>.
         </p>
-      </section>
+       </section>
+{/* 
+  <section className="complaints-section">
+    <h2>3. Praćenje pošiljke</h2>
+    <p>
+      Nakon što pošiljka bude predata kurirskoj službi, dobićete mejl sa
+      brojem za praćenje. Status isporuke možete pratiti putem sajta
+      kurirske službe.
+    </p>
+  </section>
+*/}
 
-      <section className="complaints-section">
-        <h2>3. Praćenje pošiljke</h2>
-        <p>
-          Nakon što pošiljka bude predata kurirskoj službi, dobićete mejl sa
-          brojem za praćenje. Status isporuke možete pratiti putem sajta
-          kurirske službe.
-        </p>
-      </section>
     </div>
   );
 };

@@ -55,6 +55,7 @@ import WorkerCategoryPage from "./pages/worker/WorkerCategoryPage";
 // Utils
 import ScrollToTop from "./components/ScrollToTop";
 import { CartProvider } from "./context/CartContext";
+import CookieBanner from "./components/cookieBanner/CookieBanner";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -133,7 +134,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/kupi" element={<DeliveryAndPayment />} />
 
-        {/* FOOTER STRANICE - DODAJ OVE RUTE */}
+        {/* FOOTER STRANICE */}
         <Route path="/koristnicka-podrska" element={<CustomerSupportPage />} />
         <Route path="/uslovi-koristenja" element={<TermsOfUsePage />} />
         <Route path="/info-dostava" element={<DeliveryInformationPage />} />
@@ -232,6 +233,8 @@ function App() {
           }
         />
       </Routes>
+
+      <CookieBanner />
     </CartProvider>
   );
 }

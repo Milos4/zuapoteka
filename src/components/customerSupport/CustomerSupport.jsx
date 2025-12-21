@@ -10,20 +10,16 @@ const CustomerSupport = () => {
         <h2>1. Kontakt informacije</h2>
         <p>
           Naš tim za korisničku podršku dostupan vam je svakog radnog dana od{" "}
-          <strong>09:00 do 17:00</strong>.
+          <strong>08:00 do 16:00</strong>.
         </p>
         <p>
           📧{" "}
-          <a href="mailto:podrska@tvojadomena.ba" className="complaints-link">
-            podrska@tvojadomena.ba
+          <a href="mailto:info@apoteka-higrasaric.ba" className="complaints-link">
+            info@apoteka-higrasaric.ba
           </a>
         </p>
-        <p>📞 062/123-456</p>
-
-       
-
-        <p>📍 Apoteka "Higra-Saric", Ulica ...., Bijeljina</p>
-
+        <p>📞 +387 55/240-666</p>
+        <p>📍 Agrotržni centar Lamela B, 76300, BIJELJINA, BiH</p>
       </section>
 
       <section className="complaints-section">
@@ -52,7 +48,7 @@ const CustomerSupport = () => {
           <li>🏪 Plaćanje prilikom ličnog preuzimanja u apoteci</li>
         </ul>
         <p>
-          Sve cijene prikazane na sajtu su izražene u konvertibilnim markama
+          Sve cijene prikazane na sajtu izražene su u konvertibilnim markama
           (KM) i uključuju PDV.
         </p>
       </section>
@@ -63,7 +59,7 @@ const CustomerSupport = () => {
           Isporuku vršimo na teritoriji Bosne i Hercegovine putem brze pošte.
         </p>
         <p>
-          Infomacije o dostavi mozete pročitati na{" "}
+          Informacije o dostavi možete pročitati na{" "}
           <a href="/info-dostava" className="complaints-link">
             Uslovi korištenja
           </a>

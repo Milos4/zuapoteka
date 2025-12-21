@@ -5,20 +5,21 @@ const faqData = [
   {
     question: "Kako mogu da naručim proizvod?",
     answer:
-      "Proizvod možete naručiti tako što ga dodate u korpu, zatim nastavite na kasu i popunite podatke za dostavu i plaćanje.",
+      "Proizvod možete naručiti tako što ga dodate u korpu, zatim nastavite na kasu i popunite podatke za dostavu. Plaćanje se vrši pouzećem prilikom isporuke ili lično u apoteci.",
   },
   {
     question: "Koji su načini plaćanja?",
-    answer: "Plaćanje je moguće pouzećem, karticom ili uplatom na račun.",
+    answer:
+      "Plaćanje je moguće **pouzećem prilikom dostave** ili **ličnim preuzimanjem u apoteci**. Online plaćanje karticama trenutno nije dostupno.",
   },
   {
     question: "Koliko traje isporuka?",
-    answer: "Rok isporuke je 1-3 radna dana, u zavisnosti od lokacije.",
+    answer: "Rok isporuke je 1-3 radna dana, u zavisnosti od lokacije kupca.",
   },
   {
     question: "Kako mogu da vratim proizvod?",
     answer:
-      "Proizvod možete vratiti u roku od 14 dana ako je neotvoren i u originalnom pakovanju. Kontaktirajte korisničku podršku za instrukcije.",
+      "Proizvod možete vratiti u roku od 14 dana ako je neotvoren i u originalnom pakovanju. Kontaktirajte korisničku podršku za uputstva.",
   },
   {
     question: "Da li je potrebna registracija za poručivanje?",
@@ -36,13 +37,13 @@ const FAQ = () => {
       (prev) =>
         prev.includes(index)
           ? prev.filter((i) => i !== index) // zatvori ako je već otvoreno
-          : [...prev, index] // dodaj ako nije
+          : [...prev, index] // otvori ako nije
     );
   };
 
   return (
     <div className="faq-container">
-      <h1>Najčešća pitanja u vezi Web prodavnice</h1>
+      <h1>Najčešća pitanja u vezi web prodavnice</h1>
       {faqData.map((item, index) => {
         const isOpen = openIndexes.includes(index);
         return (

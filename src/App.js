@@ -104,7 +104,10 @@ function App() {
           (role === "admin" ? (
             <NavBarAdmin />
           ) : role === "radnik" ? (
-            <NavBarWorker />
+               <>
+    <NavBar />
+    <NavBarWorker />
+  </>
           ) : (
             <NavBar />
           ))}

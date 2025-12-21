@@ -39,7 +39,7 @@ export default function PharmacyCategories() {
   const categories = [
     {
       id: 1,
-      name: "DODACI ISHRANI",
+      name: "Imunitet",
       icon: PlusCircle,
       desc: "",
       details: ["Za energiju", "Imunitet podrška"],

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { db } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import "./Contact.css";
 
 const Contact = () => {
@@ -9,6 +11,10 @@ const Contact = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -16,10 +22,32 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Ovde možeš dodati slanje forme putem API-ja
+    setLoading(true);
+    setErrorMsg("");
+    setSuccessMsg("");
+
+    try {
+      await addDoc(collection(db, "contactMessages"), {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        createdAt: serverTimestamp(),
+        status: "pending",   // status da znamo da nije odgovoreno
+        response: "",
+        respondedAt: null,
+      });
+
+      setSuccessMsg("Poruka je uspješno poslana!");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (err) {
+      console.error("Greška pri slanju poruke:", err);
+      setErrorMsg("Došlo je do greške, pokušajte ponovo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,7 +107,12 @@ const Contact = () => {
           onChange={handleChange}
           required
         ></textarea>
-        <button type="submit">Pošalji poruku</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Šaljem..." : "Pošalji poruku"}
+        </button>
+
+        {successMsg && <p className="success-msg">{successMsg}</p>}
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
       </form>
     </div>
   );

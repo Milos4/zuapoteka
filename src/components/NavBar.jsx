@@ -260,15 +260,6 @@ const NavBar = () => {
                   <span style={{ marginLeft: "10px" }}>Profil</span>
                 </Link>
 
-                <Link
-                  to="/profil?tab=zelje"
-                  className="dropdown-item"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <SlHeart size={20} />
-                  <span style={{ marginLeft: "10px" }}>Lista želja</span>
-                </Link>
-
                 <div
                   className="dropdown-item logout-link"
                   onClick={handleLogout}

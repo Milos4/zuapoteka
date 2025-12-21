@@ -103,11 +103,14 @@ function App() {
     <CartProvider>
       <ScrollToTop />
 
+
       {!shouldHideNavbar &&
         (role === "admin" ? (
           <NavBarAdmin />
         ) : role === "radnik" ? (
+          <><NavBar />
           <NavBarWorker />
+          </>
         ) : (
           <NavBar />
         ))}

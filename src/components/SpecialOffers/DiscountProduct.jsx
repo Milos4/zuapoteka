@@ -5,10 +5,15 @@ import CartIcon from '../Icons/CartIcon';
 import HeartIcon from '../Icons/HeartIcon';
 
 const DiscountProduct = ({ image, name, description, price, oldPrice, onView, onAddToCart, onAddToFavorites,   onClick,     
-  id   }) => {
+  id  }) => {
+
+      // Izračunaj popust
+  const discountPercent = oldPrice
+    ? Math.round(((oldPrice - price) / oldPrice) * 100)
+    : 0;
   return (
     <div className="product-card discount"onClick={onClick} id={id}>
-      <div className="badge discount">-20%</div>
+      <div className="badge discount">-{discountPercent}%</div>
       <div className="image-box">
         {image ? <img src={image} alt={name} /> : null}
 

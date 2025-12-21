@@ -171,11 +171,8 @@ const MobileNavbar = () => {
             <div className="mobile-nav-user">
               <FaUser size={22} /> {username}
             </div>
-            <Link to="/profil?tab=zelje" onClick={toggleMenu}>
-              Lista želja
-            </Link>
-            <Link to="/profil?tab=istorija" onClick={toggleMenu}>
-              Moje narudžbe
+            <Link to="/profil" onClick={toggleMenu}>
+              Profil
             </Link>
           </>
         ) : (

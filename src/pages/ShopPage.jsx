@@ -148,19 +148,33 @@ const [openCategories, setOpenCategories] = useState(false);
     return words.slice(0, 8).join(" ") + (words.length > 4 ? "..." : "");
   };
 
-  const filtered = products.filter((p) => {
-    if (search && !p.naziv.toLowerCase().includes(search.toLowerCase())) return false;
-    if (selectedBrands.length > 0 && !selectedBrands.includes(p.brandId)) return false;
-    if (selectedCategories.length > 0 && !selectedCategories.includes(p.kategorija)) return false;
-    if (selectedSubcategories.length > 0 && selectedCategories.includes(p.kategorija)) {
-      if (!p.subkategorije || !selectedSubcategories.every((sub) => p.subkategorije.includes(sub))) {
-        return false;
-      }
+const filtered = products.filter((p) => {
+  if (search && !p.naziv.toLowerCase().includes(search.toLowerCase())) return false;
+  if (selectedBrands.length > 0 && !selectedBrands.includes(p.brandId)) return false;
+  if (selectedCategories.length > 0 && !selectedCategories.includes(p.kategorija)) return false;
+  if (selectedSubcategories.length > 0 && selectedCategories.includes(p.kategorija)) {
+    if (!p.subkategorije || !selectedSubcategories.every((sub) => p.subkategorije.includes(sub))) {
+      return false;
     }
-    if (filterDiscount && !p.naPopustu) return false;
-    if (filterNew && !p.novo) return false;
-    return true;
-  });
+  }
+  if (filterDiscount && !p.naPopustu) return false;
+  if (filterNew && !p.novo) return false;
+  return true;
+});
+
+// 2️⃣ Sortiranje po prioritetu: novo > naPopustu > ostalo random
+const sortedProducts = [...filtered].sort((a, b) => {
+  // prvo 'novo'
+  if (a.novo && !b.novo) return -1;
+  if (!a.novo && b.novo) return 1;
+
+  // zatim 'naPopustu'
+  if (a.naPopustu && !b.naPopustu) return -1;
+  if (!a.naPopustu && b.naPopustu) return 1;
+
+  // ostalo random
+  return Math.random() - 0.5;
+});
 
   const handleCategoryToggle = (kat) => {
     setSelectedCategories((prev) =>
@@ -447,8 +461,7 @@ const toggleFilters = () => {
 
         {/* Proizvodi */}
         <div className="products">
-          {filtered.slice(0, visibleCount).map(renderProduct)}
-          {visibleCount < filtered.length && (
+{sortedProducts.slice(0, visibleCount).map(renderProduct)}          {visibleCount < filtered.length && (
             <button className="btn-load-more" onClick={() => setVisibleCount((prev) => prev + 10)}>
               Učitaj još
             </button>

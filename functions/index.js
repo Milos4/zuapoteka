@@ -1,27 +1,29 @@
-const functions = require("firebase-functions");
+const { onCall } = require("firebase-functions/v2/https");
 const fetch = require("node-fetch");
-
 const admin = require("firebase-admin");
+
 admin.initializeApp();
 
-// Funkcija za pripremu narudžbine kuriru
-exports.preannounceCourier = functions.https.onCall(async (data, context) => {
+exports.preannounceCourier = onCall(async (request) => {
   try {
+    const payload = request.data.payload;
+
+    console.log("PAYLOAD STRING:", JSON.stringify(payload, null, 2));
+
+
+        // Ovdje logujemo da provjerimo
+     if (!Array.isArray(payload) || payload.length === 0) {
+      throw new Error("Payload mora biti niz pošiljki");
+    }
+
     const username = "higra_api_test";
     const password = "test1234!";
     const auth = Buffer.from(`${username}:${password}`).toString("base64");
-    console.log("DATA FROM FRONTEND:", JSON.stringify(data, null, 2));
 
-    // 🔥 OVO JE KLJUČNO
-    const payload = data.payload;
 
-    if (!Array.isArray(payload) || payload.length === 0) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "Payload mora biti niz pošiljki"
-      );
-    }
-
+      console.log("Auth header (Base64):", auth);
+    console.log("Full header:", { Authorization: `Basic ${auth}` });
+ 
     const response = await fetch(
       "https://gateway.euroexpress.ba/test/shipment/preannounce?lokacija=0",
       {
@@ -34,15 +36,125 @@ exports.preannounceCourier = functions.https.onCall(async (data, context) => {
       }
     );
 
+    const text = await response.text();
+
+    if (!response.ok) {
+      throw new Error(`Kurir API error ${response.status}: ${text}`);
+    }
+
+    return {
+      success: true,
+      result: JSON.parse(text),
+    };
+  } catch (err) {
+    console.error("❌ preannounceCourier ERROR:", err);
+    throw err;
+  }
+});
+
+exports.sendAllPreparedToCourier = onCall(async (_, context) => {
+  try {
+    // ❌ Ako želiš auth, možeš odkomentarisati
+    // if (!context.auth) {
+    //   throw new functions.https.HttpsError(
+    //     "unauthenticated",
+    //     "Nisi ulogovan"
+    //   );
+    // }
+
+    const db = admin.firestore();
+
+    const username = "higra_api_test";
+    const password = "test1234!";
+    const auth = Buffer.from(`${username}:${password}`).toString("base64");
+
+    // 1️⃣ Nađi orders u pripremi
+    const ordersSnap = await db
+      .collection("orders")
+      .where("status", "==", "Priprema")
+      .get();
+
+    if (ordersSnap.empty) {
+      return { success: true, message: "Nema orders u pripremi" };
+    }
+
+    // 2️⃣ Uzmi njihove referentne brojeve
+    const orderIds = [];
+    const orderRefs = [];
+
+    ordersSnap.forEach((doc) => {
+      const data = doc.data();
+      orderIds.push(data.orderId);
+      orderRefs.push(doc.ref);
+    });
+
+    // 3️⃣ Nađi courierOrders za njih
+    const courierSnap = await db
+      .collection("courierOrders")
+      .where("referentniBroj", "in", orderIds)
+      .where("status", "==", "priprema")
+      .get();
+
+    if (courierSnap.empty) {
+      throw new Error("Postoje orders u pripremi bez courier zapisa");
+    }
+
+    // 4️⃣ Skupi payload-ove
+    const shipments = [];
+    const courierRefs = [];
+
+    courierSnap.forEach((doc) => {
+      const data = doc.data();
+      shipments.push(data.payload);
+      courierRefs.push(doc.ref);
+    });
+
+    // 5️⃣ Pošalji kuriru (test/prod endpoint)
+    const response = await fetch(
+      "https://gateway.euroexpress.ba/test/shipment/announce?lokacija=0",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${auth}`,
+        },
+        body: JSON.stringify(shipments),
+      }
+    );
+
     if (!response.ok) {
       const text = await response.text();
       throw new Error(`Kurir API error: ${response.status} ${text}`);
     }
 
-    const result = await response.json();
-    return { success: true, result };
+    const courierResult = await response.json();
+
+    // 6️⃣ Transakcija – sve update-uj
+    const batch = db.batch();
+
+    courierRefs.forEach((ref) => {
+      batch.update(ref, {
+        status: "poslato",
+        sentAt: admin.firestore.FieldValue.serverTimestamp(),
+        courierResponse: courierResult,
+      });
+    });
+
+    orderRefs.forEach((ref) => {
+      batch.update(ref, {
+        status: "Spremno za kurira",
+      });
+    });
+
+    await batch.commit();
+
+    return {
+      success: true,
+      sentCount: shipments.length,
+      courierResult,
+    };
   } catch (err) {
-    console.error("Greška u preannounceCourier:", err);
+    console.error("SEND PREPARED ERROR:", err);
     throw new functions.https.HttpsError("unknown", err.message);
   }
 });

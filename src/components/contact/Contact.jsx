@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { db } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import "./Contact.css";
 import mapa from "../../assets/mapa.png";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -11,6 +13,10 @@ const Contact = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -18,9 +24,10 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    // Ovde možeš dodati slanje forme putem API-ja
   };
 
   return (
@@ -98,7 +105,6 @@ const Contact = () => {
           onChange={handleChange}
           required
         ></textarea>
-
         <button type="submit">Pošalji poruku</button>
       </form>
     </div>

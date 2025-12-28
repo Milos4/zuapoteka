@@ -34,7 +34,7 @@ const Contact = () => {
     <div className="contact-container">
       {/* MAPA */}
       <a
-        href="https://maps.app.goo.gl/4z4483kgA15DXkhu9"
+        href="https://www.google.com/maps/place/Apoteka+Higra+Sari%C4%87/data=!4m2!3m1!1s0x0:0x97a8dcf7eb5e9e8e?sa=X&ved=1t:2428&ictx=111"
         target="_blank"
         rel="noopener noreferrer"
         className="contact-map-link"
@@ -56,14 +56,14 @@ const Contact = () => {
           <h3>Apoteka Higra Sarić</h3>
           <p>Agrotržni centar Lamela B</p>
           <p>Telefon: 055/240-666</p>
-          <p>Radno vreme: Pon–Pet 08:00 – 18:00</p>
+          
         </div>
 
         <div className="location">
           <h3>Apoteka Higra Sarić 2</h3>
           <p>Centar 76, Velika Obarska</p>
           <p>Telefon: 055/423-456</p>
-          <p>Radno vreme: Pon–Pet 08:00 – 18:00</p>
+          
         </div>
       </div>
 

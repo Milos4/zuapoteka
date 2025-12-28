@@ -35,12 +35,12 @@ const Footer = () => {
         <div className="footer-section-3">
           <h3>Kontakt</h3>
           <p><strong>ZU Apoteka "HIGRA-SARIC"</strong></p>
-          <p><strong>Telefon:</strong> 123-456-789</p>
-          <p><strong>Email:</strong> info@apoteka.com</p>
+          <p><strong>Telefon:</strong> 0038755240666</p>
+          <p><strong>Email:</strong> info@apoteka-higrasaric.ba</p>
 
           <div className="footer-socials">
             <a
-              href="https://www.instagram.com"
+              href="https://www.instagram.com/apoteka_higra_saric/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-link"
@@ -53,7 +53,7 @@ const Footer = () => {
         {/* 4 sekcija: Mapa */}
         <div className="footer-section-4">
           <a
-            href="https://maps.app.goo.gl/4z4483kgA15DXkhu9"
+            href="https://www.google.com/maps/place/Apoteka+Higra+Sari%C4%87/data=!4m2!3m1!1s0x0:0x97a8dcf7eb5e9e8e?sa=X&ved=1t:2428&ictx=111"
             target="_blank"
             rel="noopener noreferrer"
             className="footer-map-link"

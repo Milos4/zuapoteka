@@ -4,6 +4,7 @@ const admin = require("firebase-admin");
 
 const { transporter } = require("./email/mailer");
 const { courierPreparedEmail } = require("./email/courierPreparedEmail");
+const { contactReplyEmail } = require("./email/contactReplyEmail");
 
 admin.initializeApp();
 
@@ -191,5 +192,30 @@ exports.sendAllPreparedToCourier = onCall(async (_, context) => {
   } catch (err) {
     console.error("SEND PREPARED ERROR:", err);
     throw new functions.https.HttpsError("unknown", err.message);
+  }
+});
+
+exports.sendContactReply = onCall(async (request) => {
+  try {
+    const { email, ime, odgovor } = request.data;
+
+    if (!email || !odgovor) {
+      throw new Error("Nedostaju podaci za slanje odgovora");
+    }
+
+    await transporter.sendMail({
+      from: '"Apoteka Higra Šarić" <info@apoteka-higrasaric.ba>',
+      to: email,
+      subject: "Odgovor na Vašu poruku",
+      html: contactReplyEmail({
+        ime,
+        odgovor,
+      }),
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("❌ sendContactReply ERROR:", err);
+    throw err;
   }
 });

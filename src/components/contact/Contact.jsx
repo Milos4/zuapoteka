@@ -23,13 +23,37 @@ const Contact = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Ovde možeš dodati slanje forme putem API-ja
-  };
 
+    setLoading(true);
+    setSuccessMsg("");
+    setErrorMsg("");
+
+    try {
+      await addDoc(collection(db, "contactMessages"), {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        status: "new",
+        createdAt: serverTimestamp(),
+      });
+
+      setSuccessMsg("Poruka je uspešno poslata. Kontaktiraćemo vas uskoro.");
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Greška pri slanju poruke:", error);
+      setErrorMsg("Došlo je do greške. Pokušajte ponovo.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="contact-container">
       {/* MAPA */}
@@ -105,7 +129,11 @@ const Contact = () => {
           onChange={handleChange}
           required
         ></textarea>
-        <button type="submit">Pošalji poruku</button>
+        {successMsg && <p className="success-msg">{successMsg}</p>}
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
+        <button type="submit" disabled={loading}>
+          {loading ? "Slanje..." : "Pošalji poruku"}
+        </button>
       </form>
     </div>
   );

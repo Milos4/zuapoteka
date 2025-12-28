@@ -51,6 +51,7 @@ import WorkerBrandDiscountPage from "./pages/worker/WorkerBrandDiscountPage";
 import WorkerProductsPage from "./pages/worker/WorkerProductsPage";
 import WorkerBrandsPage from "./pages/worker/WorkerBrandsPage";
 import WorkerCategoryPage from "./pages/worker/WorkerCategoryPage";
+import WorkerContactMessagesPage from "./pages/worker/WorkerContactMessagesPage";
 
 // Utils
 import ScrollToTop from "./components/ScrollToTop";
@@ -103,13 +104,13 @@ function App() {
     <CartProvider>
       <ScrollToTop />
 
-
       {!shouldHideNavbar &&
         (role === "admin" ? (
           <NavBarAdmin />
         ) : role === "radnik" ? (
-          <><NavBar />
-          <NavBarWorker />
+          <>
+            <NavBar />
+            <NavBarWorker />
           </>
         ) : (
           <NavBar />
@@ -200,6 +201,14 @@ function App() {
           element={
             <WorkerRoute>
               <WorkerOrdersPage />
+            </WorkerRoute>
+          }
+        />
+        <Route
+          path="/radnik/poruke"
+          element={
+            <WorkerRoute>
+              <WorkerContactMessagesPage />
             </WorkerRoute>
           }
         />

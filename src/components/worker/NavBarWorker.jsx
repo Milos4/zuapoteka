@@ -48,6 +48,7 @@ const NavBarWorker = () => {
         <Link to="/radnik/proizvodi">Proizvodi</Link>
         <Link to="/radnik/brendovi">Brendovi</Link>
         <Link to="/radnik/popusti-po-brendu">Popusti</Link>
+        <Link to="/radnik/poruke">Poruke</Link>
       </div>
 
       <div className="worker-right">

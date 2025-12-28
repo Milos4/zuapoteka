@@ -15,7 +15,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
       : product.velicine || "", // dodano polje za velicine
     nacinUpotrebe: product.nacinUpotrebe || "",
     sastav: product.sastav || "",
-    brandId: product.brandId || "" // za brand
+    brandId: product.brandId || "", // za brand
   });
 
   const [brands, setBrands] = useState([]);
@@ -26,9 +26,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
   useEffect(() => {
     const fetchBrands = async () => {
       const brandsSnapshot = await getDocs(collection(db, "brands"));
-      const brandsList = brandsSnapshot.docs.map(doc => ({
+      const brandsList = brandsSnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setBrands(brandsList);
     };
@@ -50,6 +50,14 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     setSaving(true);
     try {
       let updatedData = { ...formData };
+
+      if (!updatedData.naPopustu) {
+        updatedData.popustProcenat = 0;
+      } else {
+        // Ako je na popustu, obezbedi da bude broj
+        updatedData.popustProcenat =
+          parseFloat(updatedData.popustProcenat) || 0;
+      }
 
       // Upload nove slike ako postoji
       if (newImageFile) {

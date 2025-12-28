@@ -1,87 +1,100 @@
-import React, { useState } from 'react';
-import { ShoppingCart, User, MapPin, Phone, Mail, Home, Package, Truck } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  ShoppingCart,
+  User,
+  MapPin,
+  Phone,
+  Mail,
+  Home,
+  Package,
+  Truck,
+} from "lucide-react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import Popup from "../components/Popup";
-import './DeliveryAndPayment.css';
-import { db } from '../firebase';
+import "./DeliveryAndPayment.css";
+import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const DeliveryAndPayment = () => {
   const { cartItems, clearCart } = useCart();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    paymentMethod: 'pickup',
-    selectedPharmacy: 'apoteka1'
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    paymentMethod: "pickup",
+    selectedPharmacy: "apoteka1",
   });
 
   // State za popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
+  const [popupMessage, setPopupMessage] = useState("");
 
   const navigate = useNavigate();
   const items = cartItems;
-  const subtotal = items.reduce((sum, item) => sum + (item.cijena * item.quantity), 0);
-  const shipping = formData.paymentMethod === 'pickup' ? 0 : (subtotal < 60 ? 10 : 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + Number(item.cijena) * item.quantity,
+    0
+  );
+  const shipping =
+    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 10 : 0;
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   // Funkcija za validaciju polja
   const validateForm = () => {
-    const requiredFields = ['firstName', 'lastName', 'phone'];
-    
+    const requiredFields = ["firstName", "lastName", "phone"];
+
     // Provjeri osnovna polja
     for (const field of requiredFields) {
       if (!formData[field].trim()) {
         return {
           valid: false,
-          message: `${getFieldLabel(field)} je obavezno polje!`
+          message: `${getFieldLabel(field)} je obavezno polje!`,
         };
       }
     }
-    
+
     // Provjeri adresu ako je dostava
-    if (formData.paymentMethod === 'delivery') {
-      const deliveryFields = ['address', 'city', 'postalCode'];
+    if (formData.paymentMethod === "delivery") {
+      const deliveryFields = ["address", "city", "postalCode"];
       for (const field of deliveryFields) {
         if (!formData[field].trim()) {
           return {
             valid: false,
-            message: `${getFieldLabel(field)} je obavezno polje za dostavu!`
+            message: `${getFieldLabel(field)} je obavezno polje za dostavu!`,
           };
         }
       }
     }
-    
+
     return { valid: true };
   };
 
   // Funkcija za dobijanje naziva polja
   const getFieldLabel = (fieldName) => {
     const labels = {
-      firstName: 'Ime',
-      lastName: 'Prezime',
-      phone: 'Telefon',
-      address: 'Adresa',
-      city: 'Grad',
-      postalCode: 'Poštanski broj'
+      firstName: "Ime",
+      lastName: "Prezime",
+      phone: "Telefon",
+      address: "Adresa",
+      city: "Grad",
+      postalCode: "Poštanski broj",
     };
     return labels[fieldName] || fieldName;
   };
@@ -98,8 +111,12 @@ const DeliveryAndPayment = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const deliveryMethod = formData.paymentMethod === 'pickup' ? 'Preuzimanje u apoteci' : 'Dostava na adresu';
-    const shippingCost = formData.paymentMethod === 'pickup' ? 0 : (subtotal < 60 ? 10 : 0);
+    const deliveryMethod =
+      formData.paymentMethod === "pickup"
+        ? "Preuzimanje u apoteci"
+        : "Dostava na adresu";
+    const shippingCost =
+      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 10 : 0;
     const totalAmount = subtotal + shippingCost;
 
     const orderId = Math.floor(100000 + Math.random() * 9000000).toString(); // npr. 7-cifren broj
@@ -133,11 +150,11 @@ const DeliveryAndPayment = () => {
     try {
       await addDoc(collection(db, "orders"), orderData);
       clearCart();
-      
+
       // Prikažite popup umjesto alert-a
       setPopupMessage(`Narudžbina je uspešno poslata! ID narudžbe: ${orderId}`);
       setIsPopupOpen(true);
-      
+
       // Navigacija će se izvršiti kada se popup zatvori
     } catch (error) {
       console.error("Greška prilikom slanja narudžbine:", error);
@@ -151,7 +168,7 @@ const DeliveryAndPayment = () => {
     setIsPopupOpen(false);
     // Navigiraj na početnu stranicu samo ako je narudžba uspešno poslana
     if (popupMessage.includes("uspešno poslata")) {
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -176,25 +193,52 @@ const DeliveryAndPayment = () => {
                   <div className="input-grid">
                     <div className="input-group">
                       <label className="label">Ime *</label>
-                      <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="input" required />
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        className="input"
+                        required
+                      />
                     </div>
                     <div className="input-group">
                       <label className="label">Prezime *</label>
-                      <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="input" required />
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        className="input"
+                        required
+                      />
                     </div>
                     <div className="input-group">
                       <label className="label label-with-icon">
                         <Mail size={16} color="var(--tamnoZelena)" />
                         Email
                       </label>
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input" />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="input"
+                      />
                     </div>
                     <div className="input-group">
                       <label className="label label-with-icon">
                         <Phone size={16} color="var(--tamnoZelena)" />
                         Telefon *
                       </label>
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="input" required />
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="input"
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -207,47 +251,97 @@ const DeliveryAndPayment = () => {
                   </h3>
 
                   <div className="radio-group">
-                    <label className={`radio-option ${formData.paymentMethod === 'pickup' ? 'selected' : ''}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: 'pickup' }))}>
-                      <input type="radio" name="paymentMethod" value="pickup" checked={formData.paymentMethod === 'pickup'} onChange={handleInputChange} className="radio" />
+                    <label
+                      className={`radio-option ${
+                        formData.paymentMethod === "pickup" ? "selected" : ""
+                      }`}
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          paymentMethod: "pickup",
+                        }))
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="pickup"
+                        checked={formData.paymentMethod === "pickup"}
+                        onChange={handleInputChange}
+                        className="radio"
+                      />
                       <div className="radio-content">
                         <div className="radio-title">
                           <Package size={18} color="var(--tamnoZelena)" />
                           Preuzimanje u apoteci
                         </div>
                         <div className="radio-description">
-                          Dođite po proizvod u našu apoteku i platite na licu mesta. Besplatno!
+                          Dođite po proizvod u našu apoteku i platite na licu
+                          mesta. Besplatno!
                         </div>
                       </div>
                     </label>
 
-                    {formData.paymentMethod === 'pickup' && (
+                    {formData.paymentMethod === "pickup" && (
                       <div className="pharmacy-selection">
                         <label className="label">Izaberite apoteku:</label>
                         <div className="pharmacy-options">
                           <label className="pharmacy-option">
-                            <input type="radio" name="selectedPharmacy" value="apoteka1" checked={formData.selectedPharmacy === 'apoteka1'} onChange={handleInputChange} className="pharmacy-radio" />
-                            <span className="pharmacy-label">Apoteka 1 - Agrotržni centar Lamela B, 76300, Bijeljina</span>
+                            <input
+                              type="radio"
+                              name="selectedPharmacy"
+                              value="apoteka1"
+                              checked={formData.selectedPharmacy === "apoteka1"}
+                              onChange={handleInputChange}
+                              className="pharmacy-radio"
+                            />
+                            <span className="pharmacy-label">
+                              Apoteka 1 - Agrotržni centar Lamela B, 76300,
+                              Bijeljina
+                            </span>
                           </label>
                         </div>
                       </div>
                     )}
 
-                    <label className={`radio-option ${formData.paymentMethod === 'delivery' ? 'selected' : ''}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: 'delivery' }))}>
-                      <input type="radio" name="paymentMethod" value="delivery" checked={formData.paymentMethod === 'delivery'} onChange={handleInputChange} className="radio" />
+                    <label
+                      className={`radio-option ${
+                        formData.paymentMethod === "delivery" ? "selected" : ""
+                      }`}
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          paymentMethod: "delivery",
+                        }))
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="delivery"
+                        checked={formData.paymentMethod === "delivery"}
+                        onChange={handleInputChange}
+                        className="radio"
+                      />
                       <div className="radio-content">
                         <div className="radio-title">
                           <Truck size={18} color="#f59e0b" />
                           Dostava na adresu - plaćanje pouzećem
                         </div>
                         <div className="radio-description">
-                          Proizvod će biti dostavljen na vašu adresu putem pošte. Plaćanje pri preuzimanju {subtotal < 60 ? `(+10 BAM dostava)` : `(Besplatna dostava)`}.
+                          Proizvod će biti dostavljen na vašu adresu putem
+                          pošte. Plaćanje pri preuzimanju{" "}
+                          {subtotal < 60
+                            ? `(+10 BAM dostava)`
+                            : `(Besplatna dostava)`}
+                          .
                         </div>
                       </div>
                     </label>
                   </div>
                 </div>
 
-                {formData.paymentMethod === 'delivery' && (
+                {formData.paymentMethod === "delivery" && (
                   <div className="section address-section">
                     <h3 className="subsection-title">
                       <MapPin size={20} color="#2563eb" />
@@ -259,15 +353,36 @@ const DeliveryAndPayment = () => {
                           <Home size={16} color="#2563eb" />
                           Adresa *
                         </label>
-                        <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input address-input" required />
+                        <input
+                          type="text"
+                          name="address"
+                          value={formData.address}
+                          onChange={handleInputChange}
+                          className="input address-input"
+                          required
+                        />
                       </div>
                       <div className="input-group">
                         <label className="label">Grad *</label>
-                        <input type="text" name="city" value={formData.city} onChange={handleInputChange} className="input address-input" required />
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          className="input address-input"
+                          required
+                        />
                       </div>
                       <div className="input-group">
                         <label className="label">Poštanski broj *</label>
-                        <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className="input address-input" required />
+                        <input
+                          type="text"
+                          name="postalCode"
+                          value={formData.postalCode}
+                          onChange={handleInputChange}
+                          className="input address-input"
+                          required
+                        />
                       </div>
                     </div>
                   </div>
@@ -291,10 +406,16 @@ const DeliveryAndPayment = () => {
               <div>
                 {items.map((item) => (
                   <div key={item.id} className="cart-item">
-                    <img src={item.slikaURL} alt={item.naziv} className="item-image" />
+                    <img
+                      src={item.slikaURL}
+                      alt={item.naziv}
+                      className="item-image"
+                    />
                     <div className="item-info">
                       <h4 className="item-name">{item.naziv}</h4>
-                      <p className="item-price">{item.cijena.toFixed(2)} BAM</p>
+                      <p className="item-price">
+                        {Number(item.cijena).toFixed(2)} BAM
+                      </p>
                       <p className="item-quantity">Količina: {item.quantity}</p>
                     </div>
                   </div>
@@ -307,10 +428,14 @@ const DeliveryAndPayment = () => {
                   <span>{subtotal.toFixed(2)} BAM</span>
                 </div>
 
-                {formData.paymentMethod === 'delivery' && (
+                {formData.paymentMethod === "delivery" && (
                   <div className="summary-row">
                     <span>Dostava:</span>
-                    <span>{shipping === 0 ? 'Besplatno' : `${shipping.toFixed(2)} BAM`}</span>
+                    <span>
+                      {shipping === 0
+                        ? "Besplatno"
+                        : `${shipping.toFixed(2)} BAM`}
+                    </span>
                   </div>
                 )}
 
@@ -323,14 +448,10 @@ const DeliveryAndPayment = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Popup komponenta */}
-      <Popup 
-        isOpen={isPopupOpen} 
-        onClose={closePopup} 
-        message={popupMessage} 
-      />
-      
+      <Popup isOpen={isPopupOpen} onClose={closePopup} message={popupMessage} />
+
       <Footer />
     </div>
   );

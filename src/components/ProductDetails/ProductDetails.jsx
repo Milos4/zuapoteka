@@ -16,15 +16,34 @@ const ProductDetails = ({ product }) => {
   const [popupMessage, setPopupMessage] = useState("");
   const [activeTab, setActiveTab] = useState("opis");
 
+  const [freshProduct, setFreshProduct] = useState(product);
+
   const auth = getAuth();
   const user = auth.currentUser;
   const { addToCart } = useCart();
 
-  const cijena = parseFloat(product.cijena || 0);
-  const popust = parseFloat(product.popustProcenat || 0);
+  const cijena = parseFloat(freshProduct.cijena || 0);
+  const naPopustu = freshProduct.naPopustu === true;
+  const popust = parseFloat(freshProduct.popustProcenat || 0);
   const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
 
   const isClothing = product.kategorija?.toLowerCase() === "odjeca";
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!product.id) return;
+      try {
+        const productRef = doc(db, "products", product.id);
+        const productSnap = await getDoc(productRef);
+        if (productSnap.exists()) {
+          setFreshProduct(productSnap.data());
+        }
+      } catch (error) {
+        console.error("Greška pri dohvatanju proizvoda:", error);
+      }
+    };
+    fetchProduct();
+  }, [product.id]);
 
   useEffect(() => {
     const fetchBrand = async () => {
@@ -43,6 +62,7 @@ const ProductDetails = ({ product }) => {
   }, [product.brandId]);
 
   const handleAddToCart = () => {
+    console.log(freshProduct);
     if (isClothing && !selectedSize) {
       setPopupMessage("Molimo odaberite veličinu.");
       setPopupOpen(true);
@@ -84,7 +104,9 @@ const ProductDetails = ({ product }) => {
 
         <div className="category">
           {product.kategorija}
-          {product.subkategorije?.length ? ` → ${product.subkategorije.join(", ")}` : ""}
+          {product.subkategorije?.length
+            ? ` → ${product.subkategorije.join(", ")}`
+            : ""}
         </div>
 
         {/* Tabovi se prikazuju samo ako nije odjeća */}
@@ -113,8 +135,12 @@ const ProductDetails = ({ product }) => {
 
         <div className="description">
           {activeTab === "opis" && (product.opis || "Nema opisa.")}
-          {!isClothing && activeTab === "nacinUpotrebe" && (product.nacinUpotrebe || "Nema načina upotrebe.")}
-          {!isClothing && activeTab === "sastav" && (product.sastav || "Nema sastava.")}
+          {!isClothing &&
+            activeTab === "nacinUpotrebe" &&
+            (product.nacinUpotrebe || "Nema načina upotrebe.")}
+          {!isClothing &&
+            activeTab === "sastav" &&
+            (product.sastav || "Nema sastava.")}
         </div>
 
         {brand && (
@@ -134,7 +160,9 @@ const ProductDetails = ({ product }) => {
             {product.velicine.map((size) => (
               <button
                 key={size}
-                className={`size-button ${selectedSize === size ? "selected" : ""}`}
+                className={`size-button ${
+                  selectedSize === size ? "selected" : ""
+                }`}
                 onClick={() => setSelectedSize(size)}
               >
                 {size}
@@ -146,10 +174,12 @@ const ProductDetails = ({ product }) => {
 
       <div className="product-purchase">
         <div className="price-container">
-          {popust > 0 ? (
+          {popust > 0 && naPopustu ? (
             <>
               <div className="price-rows">
-                <div className="original-price crossed">{cijena.toFixed(2)} BAM</div>
+                <div className="original-price crossed">
+                  {cijena.toFixed(2)} BAM
+                </div>
                 <div className="discounted-price">{novaCijena} BAM</div>
               </div>
               <div className="discount-circle">-{popust}%</div>

@@ -4,41 +4,48 @@ import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext"; // 👈 koristimo kontekst
-import "./CartProductsPage.css"
+import "./CartProductsPage.css";
 
 const CartProductsPage = () => {
-const { cartItems: cart, updateQuantity, removeFromCart, setCartItems } = useCart();
+  const {
+    cartItems: cart,
+    updateQuantity,
+    removeFromCart,
+    setCartItems,
+  } = useCart();
 
-const updateQuantityHandler = (id, delta) => {
-  const item = cart.find(i => i.id === id);
-  if (!item) return;
-  const newQuantity = Math.max(1, item.quantity + delta);
-  updateQuantity(id, newQuantity); // poziv funkcije iz konteksta koja sinhronizuje i Firestore
-};
-
-const removeItemHandler = (id) => {
-  removeFromCart(id); // koristi funkciju iz konteksta
-};
-
-  const calculateItemTotal = (item) => {
-    const price = item.naPopustu
-      ? item.cijena * (1 - item.popustProcenat / 100)
-      : item.cijena;
-    return price * item.quantity;
+  const updateQuantityHandler = (id, delta) => {
+    const item = cart.find((i) => i.id === id);
+    if (!item) return;
+    const newQuantity = Math.max(1, item.quantity + delta);
+    updateQuantity(id, newQuantity); // poziv funkcije iz konteksta koja sinhronizuje i Firestore
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+  const removeItemHandler = (id) => {
+    removeFromCart(id); // koristi funkciju iz konteksta
+  };
+
+  const calculateItemTotal = (item) => {
+    const price = Number(item.cijena); // osigurava da je broj
+    const finalPrice = item.naPopustu
+      ? price * (1 - (item.popustProcenat || 0) / 100)
+      : price;
+    return finalPrice * item.quantity;
+  };
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + calculateItemTotal(item),
+    0
+  );
   const total = subtotal.toFixed(2);
 
   return (
     <div style={{ backgroundColor: "var(--bez)", minHeight: "100vh" }}>
-      <div
-       className="cart-wrapper"
-      >
+      <div className="cart-wrapper">
         {/* Leva strana - proizvodi */}
         <div style={{ flex: "1 1 400px", maxWidth: "600px" }}>
           {cart.map((item) => {
-            const originalPrice = item.cijena;
+            const originalPrice = Number(item.cijena); // <--- obavezno Number
             const discount = item.popustProcenat || 0;
             const finalPrice = item.naPopustu
               ? originalPrice * (1 - discount / 100)
@@ -103,10 +110,16 @@ const removeItemHandler = (id) => {
                     {item.naziv}
                   </h3>
                   {item.selectedSize && (
-  <p style={{ margin: "4px 0", fontSize: "14px", color: "#555" }}>
-    Veličina: {item.selectedSize}
-  </p>
-)}
+                    <p
+                      style={{
+                        margin: "4px 0",
+                        fontSize: "14px",
+                        color: "#555",
+                      }}
+                    >
+                      Veličina: {item.selectedSize}
+                    </p>
+                  )}
                   <div>
                     {item.naPopustu && (
                       <p
@@ -162,7 +175,13 @@ const removeItemHandler = (id) => {
                     gap: "8px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
                     <button
                       onClick={() => updateQuantityHandler(item.id, -1)}
                       style={{
@@ -178,11 +197,17 @@ const removeItemHandler = (id) => {
                     >
                       −
                     </button>
-                    <span style={{ minWidth: "20px", textAlign: "center", fontWeight: "bold" }}>
+                    <span
+                      style={{
+                        minWidth: "20px",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                      }}
+                    >
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() =>  updateQuantityHandler(item.id, 1)}
+                      onClick={() => updateQuantityHandler(item.id, 1)}
                       style={{
                         padding: "4px 12px",
                         fontSize: "16px",
@@ -233,7 +258,9 @@ const removeItemHandler = (id) => {
             top: "20px",
           }}
         >
-          <h2 style={{ marginBottom: "10px", color: "var(--tamnoZelena)" }}>Ukupno</h2>
+          <h2 style={{ marginBottom: "10px", color: "var(--tamnoZelena)" }}>
+            Ukupno
+          </h2>
           <p style={{ margin: 0, color: "#555" }}>
             {cart.reduce((sum, i) => sum + i.quantity, 0)} artikala
           </p>
@@ -253,7 +280,9 @@ const removeItemHandler = (id) => {
                     .reduce(
                       (sum, item) =>
                         sum +
-                        (item.cijena * item.popustProcenat) / 100 * item.quantity,
+                        ((Number(item.cijena) * (item.popustProcenat || 0)) /
+                          100) *
+                          item.quantity,
                       0
                     )
                     .toFixed(2)}{" "}
@@ -262,9 +291,10 @@ const removeItemHandler = (id) => {
               </p>
             )}
 
-        
             <hr />
-            <p style={{ fontWeight: "bold", fontSize: "16px" }}>Ukupno: {total} BAM</p>
+            <p style={{ fontWeight: "bold", fontSize: "16px" }}>
+              Ukupno: {total} BAM
+            </p>
           </div>
 
           <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -273,7 +303,8 @@ const removeItemHandler = (id) => {
               style={{
                 textDecoration: "none",
                 border: "none",
-                background: "linear-gradient(to right, var(--zelena), var(--tamnoZelena))",
+                background:
+                  "linear-gradient(to right, var(--zelena), var(--tamnoZelena))",
                 color: "white",
                 padding: "12px 32px",
                 borderRadius: "30px",
@@ -292,7 +323,6 @@ const removeItemHandler = (id) => {
         </div>
       </div>
 
-      
       <Footer />
     </div>
   );

@@ -16,7 +16,12 @@ import { httpsCallable } from "firebase/functions";
 import "./Orders.css";
 
 /* STATUSI */
-const DELIVERY_STATUSES = ["Poručeno", "Priprema", "Spremno za kurira", "Završeno"];
+const DELIVERY_STATUSES = [
+  "Poručeno",
+  "Priprema",
+  "Spremno za kurira",
+  "Završeno",
+];
 const PICKUP_STATUSES = ["Poručeno", "Pripremljeno", "Preuzeto"];
 
 /* NEXT STATUS – pojedinačno */
@@ -40,8 +45,13 @@ const OrdersTabs = () => {
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [editedItems, setEditedItems] = useState([]);
 
-  const statusOptions = activeMainTab === "DOSTAVA" ? DELIVERY_STATUSES : PICKUP_STATUSES;
+  const statusOptions =
+    activeMainTab === "DOSTAVA" ? DELIVERY_STATUSES : PICKUP_STATUSES;
   const statusTabs = ["Sve", ...statusOptions];
+
+  const [addingProduct, setAddingProduct] = useState(false);
+  const [newProductCode, setNewProductCode] = useState("");
+  const [newProductQuantity, setNewProductQuantity] = useState(1);
 
   /* FETCH */
   const fetchOrders = async (status) => {
@@ -53,7 +63,9 @@ const OrdersTabs = () => {
         where(
           "deliveryMethod",
           "==",
-          activeMainTab === "DOSTAVA" ? "Dostava na adresu" : "Preuzimanje u apoteci"
+          activeMainTab === "DOSTAVA"
+            ? "Dostava na adresu"
+            : "Preuzimanje u apoteci"
         )
       );
       if (status !== "Sve") {
@@ -92,7 +104,9 @@ const OrdersTabs = () => {
 
   const updateItemQuantity = (itemId, quantity) => {
     setEditedItems((prev) =>
-      prev.map((i) => (i.id === itemId ? { ...i, quantity: Math.max(1, quantity) } : i))
+      prev.map((i) =>
+        i.id === itemId ? { ...i, quantity: Math.max(1, quantity) } : i
+      )
     );
   };
 
@@ -127,7 +141,12 @@ const OrdersTabs = () => {
   };
 
   const sendAllToCourier = async () => {
-    if (!window.confirm("Ovo će poslati SVE pripremljene pošiljke kuriru. Nastaviti?")) return;
+    if (
+      !window.confirm(
+        "Ovo će poslati SVE pripremljene pošiljke kuriru. Nastaviti?"
+      )
+    )
+      return;
     try {
       const fn = httpsCallable(functions, "sendAllPreparedToCourier");
       const res = await fn();
@@ -139,79 +158,91 @@ const OrdersTabs = () => {
   };
 
   /* PRIPREMA NARUDŽBINE */
-  
+
   const prepareOrder = async (order) => {
-  try {
-    const { subtotal, shipping, total } = calcTotals(order.items);
+    try {
+      const { subtotal, shipping, total } = calcTotals(order.items);
 
-    if (order.deliveryMethod === "Dostava na adresu") {
-      // Dostava → kreiraj payload i pošalji kuriru
-      const payload = {
-        referentniBroj: order.orderId,
-        vrstaPosiljkeSifra: 1,
-        opisPosiljke: `Porudžbina #${order.orderId}`,
-        tezina: 0.2,
-        brojPaketa: 1,
-        vrednostPosiljke: total,
-        obveznikPlacanja: 0,
-        nacinPlacanja: 1,
-        primalacNaziv: `${order.userInfo.firstName} ${order.userInfo.lastName}`,
-        primalacIme: order.userInfo.firstName,
-        primalacAdresa: order.userInfo.address,
-        primalacPtt: order.userInfo.postalCode,
-        primalacTelefon: order.userInfo.phone,
-        naplataPouzecem: true,
-        iznosNaplatePouzecem: total,
-        nacinNp: 0,
-        osiguranje: false,
-        otvaranjePosiljke: false,
-        napomena: `Porudžbina ${order.orderId}`,
-      };
+      if (order.deliveryMethod === "Dostava na adresu") {
+        // Dostava → kreiraj payload i pošalji kuriru
+        const payload = {
+          referentniBroj: order.orderId,
+          vrstaPosiljkeSifra: 1,
+          opisPosiljke: `Porudžbina #${order.orderId}`,
+          tezina: 0.2,
+          brojPaketa: 1,
+          vrednostPosiljke: total,
+          obveznikPlacanja: 0,
+          nacinPlacanja: 1,
+          primalacNaziv: `${order.userInfo.firstName} ${order.userInfo.lastName}`,
+          primalacIme: order.userInfo.firstName,
+          primalacAdresa: order.userInfo.address,
+          primalacPtt: order.userInfo.postalCode,
+          primalacTelefon: order.userInfo.phone,
+          naplataPouzecem: true,
+          iznosNaplatePouzecem: total,
+          nacinNp: 0,
+          osiguranje: false,
+          otvaranjePosiljke: false,
+          napomena: `Porudžbina ${order.orderId}`,
+        };
 
-      await addDoc(collection(db, "courierOrders"), {
-        orderId: order.id,
-        referentniBroj: order.orderId,
-        status: "priprema",
-        payload,
-        createdAt: serverTimestamp(),
-      });
+        await addDoc(collection(db, "courierOrders"), {
+          orderId: order.id,
+          referentniBroj: order.orderId,
+          status: "priprema",
+          payload,
+          createdAt: serverTimestamp(),
+        });
 
-      await preannounce(payload);
+        await preannounce(payload);
 
-      // update status
-      await updateDoc(doc(db, "orders", order.id), { status: "Priprema" });
-      setOrders((prev) =>
-        prev.map((o) => (o.id === order.id ? { ...o, status: "Priprema" } : o))
-      );
-    } else {
-      // Apoteka → samo update status
-      await updateDoc(doc(db, "orders", order.id), { status: "Pripremljeno" });
-      setOrders((prev) =>
-        prev.map((o) => (o.id === order.id ? { ...o, status: "Pripremljeno" } : o))
-      );
+        // update status
+        await updateDoc(doc(db, "orders", order.id), { status: "Priprema" });
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.id === order.id ? { ...o, status: "Priprema" } : o
+          )
+        );
+      } else {
+        // Apoteka → samo update status
+        await updateDoc(doc(db, "orders", order.id), {
+          status: "Pripremljeno",
+        });
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.id === order.id ? { ...o, status: "Pripremljeno" } : o
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Greška PRIPREMA:", err);
+      alert("Greška pri pripremi narudžbine");
     }
-  } catch (err) {
-    console.error("Greška PRIPREMA:", err);
-    alert("Greška pri pripremi narudžbine");
-  }
-};
+  };
 
   /* BULK → Završeno */
   const finishAll = async () => {
     const batch = writeBatch(db);
     orders
       .filter((o) => o.status === "Spremno za kurira")
-      .forEach((o) => batch.update(doc(db, "orders", o.id), { status: "Završeno" }));
+      .forEach((o) =>
+        batch.update(doc(db, "orders", o.id), { status: "Završeno" })
+      );
     await batch.commit();
     setOrders((prev) =>
-      prev.map((o) => (o.status === "Spremno za kurira" ? { ...o, status: "Završeno" } : o))
+      prev.map((o) =>
+        o.status === "Spremno za kurira" ? { ...o, status: "Završeno" } : o
+      )
     );
   };
 
   /* CIJENE */
   const calcTotals = (items) => {
     const subtotal = items.reduce((sum, i) => {
-      const price = i.naPopustu ? i.cijena * (1 - i.popustProcenat / 100) : i.cijena;
+      const price = i.naPopustu
+        ? i.cijena * (1 - i.popustProcenat / 100)
+        : i.cijena;
       return sum + price * i.quantity;
     }, 0);
     const shipping = subtotal > 0 && subtotal < 60 ? 10 : 0;
@@ -263,11 +294,12 @@ const OrdersTabs = () => {
           Sve označi kao „Spremno za kurira“
         </button>
       )}
-      {activeMainTab === "DOSTAVA" && activeStatusTab === "Spremno za kurira" && (
-        <button className="bulk-btn success" onClick={finishAll}>
-          Sve označi kao „Završeno“
-        </button>
-      )}
+      {activeMainTab === "DOSTAVA" &&
+        activeStatusTab === "Spremno za kurira" && (
+          <button className="bulk-btn success" onClick={finishAll}>
+            Sve označi kao „Završeno“
+          </button>
+        )}
 
       {/* CONTENT */}
       {loading ? (
@@ -288,7 +320,10 @@ const OrdersTabs = () => {
                     <th>ID:</th>
                     <td>{order.orderId}</td>
                     <th>Datum:</th>
-                    <td>{order.createdAt?.toDate?.()?.toLocaleString() || "Nepoznat"}</td>
+                    <td>
+                      {order.createdAt?.toDate?.()?.toLocaleString() ||
+                        "Nepoznat"}
+                    </td>
                   </tr>
                   <tr>
                     <th>Status:</th>
@@ -298,7 +333,9 @@ const OrdersTabs = () => {
                   </tr>
                   <tr>
                     <th>Ime:</th>
-                    <td>{order.userInfo?.firstName} {order.userInfo?.lastName}</td>
+                    <td>
+                      {order.userInfo?.firstName} {order.userInfo?.lastName}
+                    </td>
                     <th>Telefon:</th>
                     <td>{order.userInfo?.phone}</td>
                   </tr>
@@ -308,7 +345,10 @@ const OrdersTabs = () => {
                     {isDelivery ? (
                       <>
                         <th>Adresa:</th>
-                        <td>{order.userInfo?.address}, {order.userInfo?.city}, {order.userInfo?.postalCode}</td>
+                        <td>
+                          {order.userInfo?.address}, {order.userInfo?.city},{" "}
+                          {order.userInfo?.postalCode}
+                        </td>
                       </>
                     ) : (
                       <>
@@ -335,7 +375,9 @@ const OrdersTabs = () => {
                     </thead>
                     <tbody>
                       {editedItems.map((i) => {
-                        const price = i.naPopustu ? i.cijena * (1 - i.popustProcenat / 100) : i.cijena;
+                        const price = i.naPopustu
+                          ? i.cijena * (1 - i.popustProcenat / 100)
+                          : i.cijena;
                         return (
                           <tr key={i.id}>
                             <td>{i.naziv}</td>
@@ -345,20 +387,111 @@ const OrdersTabs = () => {
                                 type="number"
                                 min={1}
                                 value={i.quantity}
-                                onChange={(e) => updateItemQuantity(i.id, Number(e.target.value))}
+                                onChange={(e) =>
+                                  updateItemQuantity(
+                                    i.id,
+                                    Number(e.target.value)
+                                  )
+                                }
                               />
                             </td>
                             <td>{(price * i.quantity).toFixed(2)} KM</td>
                             <td>
-                              <button onClick={() => removeItem(i.id)}>Obriši</button>
+                              <button onClick={() => removeItem(i.id)}>
+                                Obriši
+                              </button>
                             </td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
-                  <button onClick={() => saveEditedOrder(order.id)}>Spremi izmjene</button>
-                  <button onClick={() => setEditingOrderId(null)}>Otkaži</button>
+                  <button onClick={() => saveEditedOrder(order.id)}>
+                    Spremi izmjene
+                  </button>
+                  <button onClick={() => setEditingOrderId(null)}>
+                    Otkaži
+                  </button>
+                  <button onClick={() => setAddingProduct(true)}>
+                    Dodaj proizvod
+                  </button>
+
+                  {/* ADD PRODUCT POPUP */}
+                  {addingProduct && (
+                    <div className="popup-overlay">
+                      <div className="popup-content">
+                        <h2>Dodaj proizvod</h2>
+                        <label>
+                          Šifra proizvoda:
+                          <input
+                            type="text"
+                            value={newProductCode}
+                            onChange={(e) => setNewProductCode(e.target.value)}
+                          />
+                        </label>
+                        <label>
+                          Količina:
+                          <input
+                            type="number"
+                            min={1}
+                            value={newProductQuantity}
+                            onChange={(e) =>
+                              setNewProductQuantity(Number(e.target.value))
+                            }
+                          />
+                        </label>
+                        <div className="popup-buttons">
+                          <button
+                            onClick={async () => {
+                              if (!newProductCode)
+                                return alert("Unesite šifru proizvoda");
+                              try {
+                                const snap = await getDocs(
+                                  query(
+                                    collection(db, "products"),
+                                    where("sifra", "==", newProductCode)
+                                  )
+                                );
+                                if (snap.empty)
+                                  return alert("Proizvod nije pronađen");
+                                const product = snap.docs[0].data();
+
+                                const newItem = {
+                                  id: snap.docs[0].id,
+                                  naziv: product.naziv,
+                                  cijena: product.cijena,
+                                  naPopustu: product.naPopustu || false,
+                                  popustProcenat: product.popustProcenat || 0,
+                                  quantity: newProductQuantity,
+                                };
+
+                                const updatedItems = [...editedItems, newItem];
+                                await updateDoc(
+                                  doc(db, "orders", editingOrderId),
+                                  {
+                                    items: updatedItems,
+                                  }
+                                );
+
+                                setEditedItems(updatedItems);
+                                setAddingProduct(false);
+                                setNewProductCode("");
+                                setNewProductQuantity(1);
+                              } catch (err) {
+                                console.error(err);
+                                alert("Greška pri dodavanju proizvoda");
+                              }
+                            }}
+                          >
+                            Dodaj
+                          </button>
+                          <button onClick={() => setAddingProduct(false)}>
+                            Otkaži
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <table className="items-table">
@@ -372,7 +505,9 @@ const OrdersTabs = () => {
                   </thead>
                   <tbody>
                     {order.items.map((i) => {
-                      const price = i.naPopustu ? i.cijena * (1 - i.popustProcenat / 100) : i.cijena;
+                      const price = i.naPopustu
+                        ? i.cijena * (1 - i.popustProcenat / 100)
+                        : i.cijena;
                       return (
                         <tr key={i.id}>
                           <td>{i.naziv}</td>
@@ -395,13 +530,24 @@ const OrdersTabs = () => {
               {/* ACTION BUTTONS */}
               {order.status === "Poručeno" && editingOrderId !== order.id ? (
                 <>
-                  <button onClick={() => startEditing(order)} className="next-status-btn">Uredi stavke</button>
-                  <button className="next-status-btn" onClick={() => prepareOrder(order)}>
+                  <button
+                    onClick={() => startEditing(order)}
+                    className="next-status-btn"
+                  >
+                    Uredi stavke
+                  </button>
+                  <button
+                    className="next-status-btn"
+                    onClick={() => prepareOrder(order)}
+                  >
                     Pređi u "Pripremi"
                   </button>
                 </>
               ) : next ? (
-                <button className="next-status-btn" onClick={() => handleNextStatus(order)}>
+                <button
+                  className="next-status-btn"
+                  onClick={() => handleNextStatus(order)}
+                >
                   Pređi u „{next}“
                 </button>
               ) : null}

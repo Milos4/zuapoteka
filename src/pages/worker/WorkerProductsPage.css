@@ -1,11 +1,11 @@
 /* WorkerProductsPage.css */
 .products-wrapper {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 2rem;
   background: #fdfdfd;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   margin-top: 50px;
 }
 

@@ -16,6 +16,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     nacinUpotrebe: product.nacinUpotrebe || "",
     sastav: product.sastav || "",
     brandId: product.brandId || "", // za brand
+    novo: product.novo || false,
   });
 
   const [brands, setBrands] = useState([]);
@@ -191,6 +192,14 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           type="checkbox"
           name="naStanju"
           checked={formData.naStanju || false}
+          onChange={handleChange}
+        />
+
+        <label>Novo</label>
+        <input
+          type="checkbox"
+          name="novo"
+          checked={formData.novo || false}
           onChange={handleChange}
         />
 

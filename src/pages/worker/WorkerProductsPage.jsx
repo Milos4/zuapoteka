@@ -30,6 +30,7 @@ const WorkerProductsPage = () => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [filterNew, setFilterNew] = useState(false);
 
   useEffect(() => {
     fetchBrands();
@@ -72,7 +73,8 @@ const WorkerProductsPage = () => {
   };
 
   const deleteProduct = async (productId) => {
-    if (!window.confirm("Da li sigurno želiš da obrišeš ovaj proizvod?")) return;
+    if (!window.confirm("Da li sigurno želiš da obrišeš ovaj proizvod?"))
+      return;
 
     try {
       await deleteDoc(doc(db, "products", productId));
@@ -101,6 +103,9 @@ const WorkerProductsPage = () => {
       }
       if (filterOnSale) {
         filtered = filtered.filter((p) => p.naPopustu);
+      }
+      if (filterNew) {
+        filtered = filtered.filter((p) => p.novo);
       }
       if (filterOutOfStock) {
         filtered = filtered.filter((p) => p.naStanju === false);
@@ -178,6 +183,14 @@ const WorkerProductsPage = () => {
         <label>
           <input
             type="checkbox"
+            checked={filterNew}
+            onChange={() => setFilterNew(!filterNew)}
+          />{" "}
+          Novo
+        </label>
+        <label>
+          <input
+            type="checkbox"
             checked={filterOutOfStock}
             onChange={() => setFilterOutOfStock(!filterOutOfStock)}
           />{" "}
@@ -202,6 +215,7 @@ const WorkerProductsPage = () => {
               <th>Brend</th>
               <th>Popust</th>
               <th>Na stanju</th>
+              <th>Novo</th>
               <th>Akcija</th>
             </tr>
           </thead>
@@ -224,6 +238,7 @@ const WorkerProductsPage = () => {
                 <td>{brandMap[p.brandId] || "Nepoznat"}</td>
                 <td>{p.naPopustu ? `${p.popustProcenat ?? 0}%` : "Ne"}</td>
                 <td>{p.naStanju ? "Da" : "Ne"}</td>
+                <td>{p.novo ? "Da" : "Ne"}</td>
                 <td>
                   <button
                     onClick={() => setSelectedProduct(p)}

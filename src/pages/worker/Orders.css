@@ -151,8 +151,8 @@
   background: #27ae60;
 }
 
-.order-card .editing-items  {
- width: 100%;
+.order-card .editing-items {
+  width: 100%;
 }
 .order-card .editing-items button {
   padding: 6px 12px;
@@ -167,26 +167,26 @@
 /* Spremi izmjene - zelena */
 .order-card .editing-items button:nth-child(1),
 .order-card .editing-items button.save-btn {
-  background-color: #28a745;
+  background-color: #dc3545;
   color: #fff;
   width: 100%;
 }
 
 .order-card .editing-items button:nth-child(1):hover,
 .order-card .editing-items button.save-btn:hover {
-  background-color: #218838;
+  background-color: #dc3545;
 }
 
 /* Otkaži - crvena */
 .order-card .editing-items button:nth-child(2),
 .order-card .editing-items button.cancel-btn {
-  background-color: #dc3545;
+  background-color: #218838;
   color: #fff;
 }
 
 .order-card .editing-items button:nth-child(2):hover,
 .order-card .editing-items button.cancel-btn:hover {
-  background-color: #c82333;
+  background-color: #218838;
 }
 
 /* Uredi stavke - plava */

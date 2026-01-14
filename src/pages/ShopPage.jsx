@@ -24,6 +24,14 @@ const capitalize = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+const normalizeText = (str) => {
+  if (!str) return "";
+  return str
+    .normalize("NFD")           // razdvaja dijakritike
+    .replace(/[\u0300-\u036f]/g, "") // uklanja dijakritike
+    .toLowerCase();             // mala slova
+};
+
 const ShopPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -153,7 +161,7 @@ const [openCategories, setOpenCategories] = useState(false);
   };
 
 const filtered = products.filter((p) => {
-  if (search && !p.naziv.toLowerCase().includes(search.toLowerCase())) return false;
+if (search && !normalizeText(p.naziv).includes(normalizeText(search))) return false;
   if (selectedBrands.length > 0 && !selectedBrands.includes(p.brandId)) return false;
   if (selectedCategories.length > 0 && !selectedCategories.includes(p.kategorija)) return false;
   if (selectedSubcategories.length > 0 && selectedCategories.includes(p.kategorija)) {
@@ -333,7 +341,7 @@ const toggleFilters = () => {
   <div className="brand-list scrollable">
     {brands
       .filter((b) =>
-        b.name.toLowerCase().includes(brandSearch.toLowerCase())
+       normalizeText(b.name).includes(normalizeText(brandSearch))
       )
       .map((b) => (
         <label key={b.id}>

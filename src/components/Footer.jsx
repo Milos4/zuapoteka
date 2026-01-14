@@ -53,7 +53,7 @@ const Footer = () => {
         {/* 4 sekcija: Mapa */}
         <div className="footer-section-4">
           <a
-            href="https://www.google.com/maps/place/Apoteka+Higra+Sari%C4%87/data=!4m2!3m1!1s0x0:0x97a8dcf7eb5e9e8e?sa=X&ved=1t:2428&ictx=111"
+            href="https://www.google.com/maps/place/Apoteka+Higra+Sari%C4%87/@44.763852,19.1789828,18z/data=!4m14!1m7!3m6!1s0x475bef226c1ce505:0x64e06606082d7ed5!2sAgro-tr%C5%BEni+centar+Knez+Ivo+od+Semberije!8m2!3d44.763073!4d19.1783292!16s%2Fg%2F11j0sr7jb0!3m5!1s0x475bef17ac7aeac1:0x97a8dcf7eb5e9e8e!8m2!3d44.763823!4d19.1790147!16s%2Fg%2F11ytxsk7kp?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoASAFQAw%3D%3D"
             target="_blank"
             rel="noopener noreferrer"
             className="footer-map-link"

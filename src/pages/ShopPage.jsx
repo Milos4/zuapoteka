@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useMemo} from "react";
 import {
   collection,
   getDocs,
@@ -46,6 +46,9 @@ const ShopPage = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [openBrands, setOpenBrands] = useState(false);
 const [openCategories, setOpenCategories] = useState(false);
+
+
+
 
 
   const { addToCart } = useCart();
@@ -111,6 +114,7 @@ const [openCategories, setOpenCategories] = useState(false);
 
     return () => unsubscribe();
   }, []);
+  
 
   const fetchProducts = async () => {
     const snapshotProducts = await getDocs(collection(db, "products"));
@@ -162,19 +166,20 @@ const filtered = products.filter((p) => {
   return true;
 });
 
-// 2️⃣ Sortiranje po prioritetu: novo > naPopustu > ostalo random
-const sortedProducts = [...filtered].sort((a, b) => {
-  // prvo 'novo'
-  if (a.novo && !b.novo) return -1;
-  if (!a.novo && b.novo) return 1;
+const sortedProducts = useMemo(() => {
+  return [...filtered].sort((a, b) => {
+    if (a.novo && !b.novo) return -1;
+    if (!a.novo && b.novo) return 1;
 
-  // zatim 'naPopustu'
-  if (a.naPopustu && !b.naPopustu) return -1;
-  if (!a.naPopustu && b.naPopustu) return 1;
+    if (a.naPopustu && !b.naPopustu) return -1;
+    if (!a.naPopustu && b.naPopustu) return 1;
 
-  // ostalo random
-  return Math.random() - 0.5;
-});
+    return a.naziv.localeCompare(b.naziv);
+  });
+}, [
+  filtered,
+]);
+
 
   const handleCategoryToggle = (kat) => {
     setSelectedCategories((prev) =>

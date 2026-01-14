@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useMemo} from "react";
 import {
   collection,
   getDocs,
@@ -46,8 +46,6 @@ const ShopPage = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [openBrands, setOpenBrands] = useState(false);
 const [openCategories, setOpenCategories] = useState(false);
-const [sortedProducts, setSortedProducts] = useState([]);
-
 
 
 
@@ -168,27 +166,18 @@ const filtered = products.filter((p) => {
   return true;
 });
 
-useEffect(() => {
-  const sorted = [...filtered].sort((a, b) => {
+const sortedProducts = useMemo(() => {
+  return [...filtered].sort((a, b) => {
     if (a.novo && !b.novo) return -1;
     if (!a.novo && b.novo) return 1;
 
     if (a.naPopustu && !b.naPopustu) return -1;
     if (!a.naPopustu && b.naPopustu) return 1;
 
-    // STABILAN fallback (nema random!)
     return a.naziv.localeCompare(b.naziv);
   });
-
-  setSortedProducts(sorted);
 }, [
   filtered,
-  search,
-  selectedBrands,
-  selectedCategories,
-  selectedSubcategories,
-  filterDiscount,
-  filterNew,
 ]);
 
 

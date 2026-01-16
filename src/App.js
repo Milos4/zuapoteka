@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { fixProductCategories } from "./fixProductCategories";
 
 // Navbar
 import NavBar from "./components/MainNavbar";
@@ -63,7 +64,36 @@ function App() {
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
 
+//////// ZA izmjenu kateogiraj
+// {role === "admin" && (
+//   <div style={{ padding: 10, background: "#ffefef", textAlign: "center" }}>
+//     <button
+//       onClick={runFix}
+//       style={{
+//         padding: "8px 16px",
+//         background: "red",
+//         color: "white",
+//         fontWeight: "bold",
+//         borderRadius: 6,
+//       }}
+//     >
+//       FIX KATEGORIJE (ADMIN)
+//     </button>
+//   </div>
+// )}
+
+
+
   const location = useLocation();
+
+    const runFix = async () => {
+    if (!window.confirm("Da li si siguran? Ovo mijenja kategorije u bazi!")) {
+      return;
+    }
+
+    await fixProductCategories();
+    alert("Gotovo ✅");
+  };
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (currentUser) => {
@@ -101,7 +131,9 @@ function App() {
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
+    
     <CartProvider>
+
       <ScrollToTop />
 
       {!shouldHideNavbar &&

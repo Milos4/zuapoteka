@@ -1,41 +1,131 @@
+// import {
+//   collection,
+//   getDocs,
+//   updateDoc,
+//   doc,
+// } from "firebase/firestore";
+// import { db } from "./firebase";
+
+// // kategorija → podkategorija (specijalni slučaj)
+// const categoryToSubcategory = {
+//   "Lice čišćenje": {
+//     newCategory: "Dermokozmetika",
+//     subcategory: "Lice čišćenje",
+//   },
+// };
+
+// export async function fixProductCategories() {
+//   const productsSnapshot = await getDocs(collection(db, "products"));
+
+//   for (const productDoc of productsSnapshot.docs) {
+//     const data = productDoc.data();
+//     const currentCategory = data.kategorija || "";
+//     const currentSubcategories = Array.isArray(data.subkategorije)
+//       ? data.subkategorije
+//       : [];
+
+//     // SAMO ovaj slučaj
+//     if (categoryToSubcategory[currentCategory]) {
+//       const { newCategory, subcategory } =
+//         categoryToSubcategory[currentCategory];
+
+//       const newSubcategories = new Set(currentSubcategories);
+//       newSubcategories.add(subcategory);
+
+//       await updateDoc(doc(db, "products", productDoc.id), {
+//         kategorija: newCategory,
+//         subkategorije: Array.from(newSubcategories),
+//       });
+
+//       console.log(
+//         `✔ ${productDoc.id}: "${currentCategory}" → kategorija "${newCategory}", podkategorija "${subcategory}"`
+//       );
+//     }
+//   }
+
+//   console.log("Gotovo ✅");
+// }
+
+
+// import {
+//   collection,
+//   getDocs,
+//   updateDoc,
+//   doc,
+// } from "firebase/firestore";
+// import { db } from "./firebase";
+
+// // kategorija → podkategorija (specijalni slučaj)
+// const categoryToSubcategory = {
+//   "Lice čišćenje": {
+//     newCategory: "Dermokozmetika",
+//     subcategory: "Lice čišćenje",
+//   },
+// };
+
+// export async function fixProductCategories() {
+//   const productsSnapshot = await getDocs(collection(db, "products"));
+
+//   for (const productDoc of productsSnapshot.docs) {
+//     const data = productDoc.data();
+//     const currentCategory = data.kategorija || "";
+//     const currentSubcategories = Array.isArray(data.subkategorije)
+//       ? data.subkategorije
+//       : [];
+
+//     // SAMO ovaj slučaj
+//     if (categoryToSubcategory[currentCategory]) {
+//       const { newCategory, subcategory } =
+//         categoryToSubcategory[currentCategory];
+
+//       const newSubcategories = new Set(currentSubcategories);
+//       newSubcategories.add(subcategory);
+
+//       await updateDoc(doc(db, "products", productDoc.id), {
+//         kategorija: newCategory,
+//         subkategorije: Array.from(newSubcategories),
+//       });
+
+//       console.log(
+//         `✔ ${productDoc.id}: "${currentCategory}" → kategorija "${newCategory}", podkategorija "${subcategory}"`
+//       );
+//     }
+//   }
+
+//   console.log("Gotovo ✅");
+// }
+
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
 
-// mapa starih kategorija → novih kategorija
-const categoryReplacements = {
-  "Higijena,njega i ostalo": "Higijena, njega i ostalo",
-  "Preparati za masažu i regeneraciju9.70":"Preparati za masažu i regeneraciju",
-    "mama i bebe":"Mama i bebe",
-        "higijena,njega i ostalo":"Higijena, njega i ostalo",
-        "dijetetika i samoliječenje":"Dijetetika i samoliječenje",
-"zdrava hrana i čajevi":"Zdrava hrana i čajevi",
-"medicinska pomagala":"Medicinska pomagala"
-
-
-
-  
-  // dodaj koliko god treba
-};
+const TARGET_SUBS = ["Koža", "kosa i nokti"];
+const NEW_SUB = "Koža Kosa Nokti";
 
 export async function fixProductCategories() {
   const productsSnapshot = await getDocs(collection(db, "products"));
 
   for (const productDoc of productsSnapshot.docs) {
     const data = productDoc.data();
-    const currentCategory = data.kategorija;
+    const subs = data.subkategorije || [];
 
-    if (categoryReplacements[currentCategory]) {
-      const newCategory = categoryReplacements[currentCategory];
+    // provjeri da li proizvod ima sve 3 podkategorije
+    const hasAll = TARGET_SUBS.every((s) => subs.includes(s));
+    if (!hasAll) continue;
 
-      await updateDoc(doc(db, "products", productDoc.id), {
-        kategorija: newCategory,
-      });
+    // ukloni Koža/Kosa/Nokti
+    const cleanedSubs = subs.filter((s) => !TARGET_SUBS.includes(s));
 
-      console.log(
-        `Proizvod ${productDoc.id} kategorija promijenjena iz "${currentCategory}" u "${newCategory}"`
-      );
-    }
+    // dodaj novu
+    cleanedSubs.push(NEW_SUB);
+
+    await updateDoc(doc(db, "products", productDoc.id), {
+      subkategorije: cleanedSubs,
+    });
+
+    console.log(
+      `✔ ${productDoc.id} → podkategorije spojene u "${NEW_SUB}"`
+    );
   }
 
-  console.log("Gotovo ✅");
+  console.log("Gotovo – spojene podkategorije Koža/Kosa/Nokti ✅");
 }

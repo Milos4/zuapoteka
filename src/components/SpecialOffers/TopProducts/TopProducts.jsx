@@ -20,7 +20,7 @@ import "./TopProducts.css";
 
 const categoriesFilter = [
   "Imunitet",
-  "Mama i bebe", 
+  "Mame i bebe", 
   "Dijetetika i samoliječenje",
 ];
 

@@ -28,13 +28,6 @@ import vichy from "../assets/banners/vichy.jpg";
 
 const banners = [
   {
-    image:biodermaBanner,
-    alt: "Maybelline Akcija",
-    filters: {
-      brand: "Bioderma",
-      },
-  },
-  {
     image: laRocheBanner,
     alt: "Skincare proizvodi",
     filters: {
@@ -63,12 +56,6 @@ brand: "La Roche-Posay",
     },
   },
     {
-    image: bioderma,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Bioderma",       },
-  },
-    {
     image: vichy,
     alt: "Novo u ponudi",
     filters: {
@@ -88,12 +75,19 @@ brand: "La Roche-Posay",
       
     },
   },
-    {
-    image: bioderma,
+   {
+    image: vichy,
     alt: "Novo u ponudi",
     filters: {
-  brand: "Bioderma",       },
+  brand: "Vichy",       },
   },
+    {
+    image: ceraVe,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "CeraVe",       },
+  },
+   
 ];
 
 const HomePage = () => {
@@ -114,9 +108,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 8)} />
+  <BannerSlider banners={banners.slice(3, 6)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(4, 10)} />
+  <TripleBannerSlider banners={banners.slice(3, 9)} />
 )}
 
      
@@ -125,7 +119,7 @@ const HomePage = () => {
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-         {!isMobile && <BannerSlider banners={banners.slice(0,4)} />}
+         {!isMobile && <BannerSlider banners={banners.slice(0,3)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

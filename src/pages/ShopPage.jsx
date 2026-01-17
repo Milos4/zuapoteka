@@ -148,8 +148,6 @@ const [openCategories, setOpenCategories] = useState(false);
       catObj[data.naziv] = data.subkategorije?.filter((s) => s.trim() !== "") || [];
     });
 
-    // Dodaj "Odjeca" ako ne postoji
-    if (!catObj["Odjeca"]) catObj["Odjeca"] = [];
 
     setCategories(catObj);
   };

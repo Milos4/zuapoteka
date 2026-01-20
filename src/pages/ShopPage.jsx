@@ -124,14 +124,21 @@ const [openCategories, setOpenCategories] = useState(false);
   }, []);
   
 
-  const fetchProducts = async () => {
-    const snapshotProducts = await getDocs(collection(db, "products"));
-    const normalProducts = snapshotProducts.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setProducts(normalProducts);
-  };
+const fetchProducts = async () => {
+  const q = query(
+    collection(db, "products"),
+    where("naStanju", "==", true)
+  );
+
+  const snapshotProducts = await getDocs(q);
+
+  const normalProducts = snapshotProducts.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  setProducts(normalProducts);
+};
 
   const fetchBrands = async () => {
     const snapshot = await getDocs(collection(db, "brands"));
@@ -163,7 +170,7 @@ if (search && !normalizeText(p.naziv).includes(normalizeText(search))) return fa
   if (selectedBrands.length > 0 && !selectedBrands.includes(p.brandId)) return false;
   if (selectedCategories.length > 0 && !selectedCategories.includes(p.kategorija)) return false;
   if (selectedSubcategories.length > 0 && selectedCategories.includes(p.kategorija)) {
-    if (!p.subkategorije || !selectedSubcategories.every((sub) => p.subkategorije.includes(sub))) {
+    if (!p.subkategorije || !selectedSubcategories.some((sub) => p.subkategorije.includes(sub))) {
       return false;
     }
   }
@@ -469,7 +476,6 @@ const toggleFilters = () => {
             </button>
           </div>
         )}
-
         {/* Proizvodi */}
         <div className="products">
 {sortedProducts.slice(0, visibleCount).map(renderProduct)}          {visibleCount < filtered.length && (

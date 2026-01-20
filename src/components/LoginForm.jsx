@@ -76,6 +76,12 @@ useEffect(() => {
         emailToUse,
         password
       );
+// ⛔ BLOKIRAJ NEVERIFIKOVANE
+      if (!userCredential.user.emailVerified) {
+  await signOut(auth);
+  alert("Morate verifikovati email prije prijave. Provjerite inbox.");
+  return;
+}
 
       // Nakon prijave, učitaj rolu iz Firestore
       const userDocRef = doc(db, "users", userCredential.user.uid);

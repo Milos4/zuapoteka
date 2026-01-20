@@ -60,31 +60,47 @@ const WorkerBrandDiscountPage = () => {
   };
 
   /* APPLY DISCOUNT */
-  const applyDiscount = async () => {
-    if (!discount || selectedProducts.length === 0) {
-      alert("Izaberi proizvode i popust");
-      return;
-    }
+const applyDiscount = async () => {
+  if (selectedProducts.length === 0) {
+    alert("Izaberi proizvode");
+    return;
+  }
 
-    if (discount < 1 || discount > 90) {
-      alert("Popust mora biti između 1 i 90%");
-      return;
-    }
+  const discountNumber = Number(discount);
 
-    const batch = writeBatch(db);
+  if (isNaN(discountNumber) || discountNumber < 0 || discountNumber > 90) {
+    alert("Popust mora biti između 0 i 90%");
+    return;
+  }
 
-    selectedProducts.forEach((id) => {
+  const batch = writeBatch(db);
+
+  selectedProducts.forEach((id) => {
+    if (discountNumber === 0) {
+      // UKLANJANJE POPUSTA
+      batch.update(doc(db, "products", id), {
+        naPopustu: false,
+        popustProcenat: 0,
+      });
+    } else {
+      // POSTAVLJANJE POPUSTA
       batch.update(doc(db, "products", id), {
         naPopustu: true,
-        popustProcenat: Number(discount),
+        popustProcenat: discountNumber,
       });
-    });
+    }
+  });
 
-    await batch.commit();
-    alert("Popust uspešno primenjen");
+  await batch.commit();
 
-    fetchProducts(selectedBrand);
-  };
+  alert(
+    discountNumber === 0
+      ? "Popust uklonjen sa proizvoda"
+      : "Popust uspešno primenjen"
+  );
+
+  fetchProducts(selectedBrand);
+};
 
   return (
     <div className="brand-discount-wrapper">
@@ -117,12 +133,12 @@ const WorkerBrandDiscountPage = () => {
               Poništi selekciju
             </button>
 
-            <input
-              type="number"
-              placeholder="Popust %"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-            />
+           <input
+  type="number"
+  placeholder="Popust % (0 = nema)"
+  value={discount}
+  onChange={(e) => setDiscount(e.target.value)}
+/>
 
             <button onClick={applyDiscount} className="apply">
               Primeni popust

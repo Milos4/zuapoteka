@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc , collection, addDoc, serverTimestamp} from "firebase/firestore";
+
 import { db } from "../../firebase";
 import "./ProductDetails.css";
 import { useCart } from "../../context/CartContext";
@@ -28,6 +29,42 @@ const ProductDetails = ({ product }) => {
   const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
 
   const isClothing = product.kategorija?.toLowerCase() === "odjeca";
+
+
+const [showInquiry, setShowInquiry] = useState(false);
+const [inquiryEmail, setInquiryEmail] = useState("");
+const [sendingInquiry, setSendingInquiry] = useState(false);
+
+const handleSendInquiry = async () => {
+  if (!inquiryEmail || !inquiryEmail.includes("@")) {
+    setPopupMessage("Unesite ispravan email.");
+    setPopupOpen(true);
+    return;
+  }
+
+  try {
+    setSendingInquiry(true);
+
+    await addDoc(collection(db, "productInquiries"), {
+      productId: product.id,
+      productName: product.naziv,
+      email: inquiryEmail,
+      answered: false,
+      createdAt: serverTimestamp(),
+    });
+
+    setPopupMessage("Upit je poslan. Javićemo vam se na email.");
+    setPopupOpen(true);
+    setShowInquiry(false);
+    setInquiryEmail("");
+  } catch (err) {
+    console.error(err);
+    setPopupMessage("Greška prilikom slanja upita.");
+    setPopupOpen(true);
+  } finally {
+    setSendingInquiry(false);
+  }
+};
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -222,7 +259,35 @@ const ProductDetails = ({ product }) => {
               </button>
             </>
           ) : (
-            <div className="out-of-stock">Nema na stanju</div>
+           <div className="out-of-stock-wrapper">
+  <div className="out-of-stock">Nema na stanju</div>
+
+  <div className="out-of-stock-txt">Popunite formular sa Vašim e-mailom kako bismo Vas obavijestili o dostupnosti i cijeni ovog proizvoda.</div>
+
+  {!showInquiry ? (
+    <button
+      className="inquiry-btn"
+      onClick={() => setShowInquiry(true)}
+    >
+      Pošalji upit
+    </button>
+  ) : (
+    <div className="inquiry-form">
+      <input
+        type="email"
+        placeholder="Vaš email"
+        value={inquiryEmail}
+        onChange={(e) => setInquiryEmail(e.target.value)}
+      />
+      <button
+        onClick={handleSendInquiry}
+        disabled={sendingInquiry}
+      >
+        {sendingInquiry ? "Slanje..." : "Pošalji"}
+      </button>
+    </div>
+  )}
+</div>
           )}
         </div>
       </div>

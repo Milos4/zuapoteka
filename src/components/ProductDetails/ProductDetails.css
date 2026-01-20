@@ -15,16 +15,20 @@
 .product-image-container {
   flex: 1;
   display: flex;
-  align-items: center;  /* 👈 vertikalno centriranje */
-  justify-content: center; /* 👈 horizontalno centriranje ako treba */
-  height: 100%;  /* ili fiksna visina, npr. 300px */
-  background-color: white; /* ako želiš da se pozadina ističe */
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  max-height: 100%;      /* ⬅️ DODAJ */
+  overflow: hidden;     /* ⬅️ KLJUČNO */
+
+  background-color: white;
 }
 
 .product-image-container img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+  max-width: 100%;      /* ⬅️ umjesto width */
+  max-height: 100%;     /* ⬅️ ograniči visinu */
+  object-fit: contain; /* ⬅️ nikad ne izlazi */
 }
 
 .product-main-info {
@@ -381,3 +385,64 @@ width: 100%;}
   border-color: #007bff;
 }
 
+
+.out-of-stock-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.inquiry-btn {
+  background-color: var(--zelena);
+  border: 1px solid var(--tamnoZelena);
+  color: var(--svijetloZelena);
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.inquiry-btn:hover {
+  background-color: var(--tamnoZelena);
+}
+
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inquiry-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.inquiry-form button {
+  background-color: var(--zelena);
+  border: 1px solid var(--tamnoZelena);
+  color: var(--svijetloZelena);
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+.inquiry-form button:hover {
+  background-color: var(--tamnoZelena);
+}
+.out-of-stock-txt {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid  var(--tamnoZelena); /* svijetlo zelena */
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-top: 8px;
+}

@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./RegistrationForm.css";
 import { auth, db } from "../firebase"; // putanja do firebase.js
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword ,sendEmailVerification,} from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  query,
+  where,
+  collection,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -23,41 +31,68 @@ const RegistrationForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const { username, email, password, confirmPassword } = formData;
+  const { username, email, password, confirmPassword } = formData;
 
-    if (password !== confirmPassword) {
-      alert("Šifre se ne poklapaju!");
+  // 1. Provjera šifri
+  if (password !== confirmPassword) {
+    alert("Šifre se ne poklapaju!");
+    return;
+  }
+
+  try {
+    // 3. Provjera da li korisničko ime već postoji
+    const q = query(
+      collection(db, "users"),
+      where("username", "==", username)
+    );
+    const snap = await getDocs(q);
+
+    if (!snap.empty) {
+      alert("Korisničko ime već postoji!");
       return;
     }
 
-    try {
-      // Kreiraj korisnika u Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
+    // 4. Kreiranje korisnika
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-      // Sačuvaj podatke u Firestore (username + email + role)
-      await setDoc(doc(db, "users", user.uid), {
-        username,
-        email,
-        role: "korisnik",
-        banovan: false,
-      });
+    const user = userCredential.user;
 
-      alert("Registracija uspešna!");
-      navigate("/prijava");
-      // opcionalno: redirect na login stranicu
-    } catch (err) {
-      console.error("Greška:", err.message);
-      alert("Greška pri registraciji: " + err.message);
+    // 5. Slanje email verifikacije
+    await sendEmailVerification(user);
+
+    // 6. Čuvanje korisnika u Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      username,
+      email,
+      role: "korisnik",
+      banovan: false,
+      emailVerifikovan: false,
+      createdAt: new Date(),
+    });
+
+    alert(
+      "Registracija uspešna! Poslali smo vam email za verifikaciju naloga."
+    );
+
+    navigate("/prijava");
+  } catch (err) {
+    console.error(err);
+
+    if (err.code === "auth/email-already-in-use") {
+      alert("Email već postoji!");
+    } else if (err.code === "auth/weak-password") {
+      alert("Šifra mora imati najmanje 6 karaktera!");
+    } else {
+      alert("Greška pri registraciji.");
     }
-  };
-
+  }
+};
   return (
     <div className="registration-container">
       <div className="registration-form">

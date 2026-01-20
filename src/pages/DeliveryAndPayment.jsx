@@ -45,7 +45,7 @@ const DeliveryAndPayment = () => {
     0
   );
   const shipping =
-    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 10 : 0;
+    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11 : 0;
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
@@ -116,7 +116,7 @@ const DeliveryAndPayment = () => {
         ? "Preuzimanje u apoteci"
         : "Dostava na adresu";
     const shippingCost =
-      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 10 : 0;
+      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11 : 0;
     const totalAmount = subtotal + shippingCost;
 
     const orderId = Math.floor(100000 + Math.random() * 9000000).toString(); // npr. 7-cifren broj
@@ -124,7 +124,7 @@ const DeliveryAndPayment = () => {
     const orderData = {
       orderId,
       items,
-      total: parseFloat(totalAmount.toFixed(2)),
+      subtotal: parseFloat(subtotal.toFixed(2)),
       shippingCost: parseFloat(shippingCost.toFixed(2)),
       deliveryMethod,
       status: "Poručeno",

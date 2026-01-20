@@ -238,3 +238,107 @@
     width: 50px;
   }
 }
+.weight-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Popup sadržaj */
+.weight-popup-content {
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  width: 320px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: popup-fade 0.3s ease-out;
+}
+
+/* Naslov */
+.weight-popup-title {
+  font-size: 1.4rem;
+  color: #16a34a; /* tamno zelena */
+  margin-bottom: 20px;
+}
+
+/* Label i input */
+.weight-popup-label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.weight-popup-input {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.2s;
+}
+
+.weight-popup-input:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 5px rgba(22, 163, 74, 0.3);
+}
+
+/* Dugmići */
+.weight-popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.weight-popup-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.95rem;
+}
+
+.weight-popup-btn.confirm {
+  background-color: #16a34a;
+  color: white;
+}
+
+.weight-popup-btn.confirm:hover {
+  background-color: #15803d;
+}
+
+.weight-popup-btn.cancel {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.weight-popup-btn.cancel:hover {
+  background-color: #d1d5db;
+}
+
+/* Animacija */
+@keyframes popup-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

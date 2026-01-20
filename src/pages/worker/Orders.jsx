@@ -37,6 +37,11 @@ const getNextStatus = (status, tab) => {
 };
 
 const OrdersTabs = () => {
+const [showWeightModal, setShowWeightModal] = useState(false);
+const [weightValue, setWeightValue] = useState("");
+const [selectedOrder, setSelectedOrder] = useState(null);
+
+
   const [activeMainTab, setActiveMainTab] = useState("DOSTAVA");
   const [activeStatusTab, setActiveStatusTab] = useState("Sve");
   const [orders, setOrders] = useState([]);
@@ -164,23 +169,31 @@ const OrdersTabs = () => {
       const { subtotal, shipping, total } = calcTotals(order.items);
 
       if (order.deliveryMethod === "Dostava na adresu") {
+
+     const obveznikPlacanja = subtotal < 60 ? 1 : 0;
+      const nacinPlacanja = subtotal < 60 ? 0 : 1;
         // Dostava → kreiraj payload i pošalji kuriru
         const payload = {
           referentniBroj: order.orderId,
           vrstaPosiljkeSifra: 1,
           opisPosiljke: `Porudžbina #${order.orderId}`,
-          tezina: 0.2,
+          tezina: order.packageWeight,
           brojPaketa: 1,
           vrednostPosiljke: total,
-          obveznikPlacanja: 0,
-          nacinPlacanja: 1,
+          //---------------------
+          obveznikPlacanja:obveznikPlacanja,
+         //---------------------
+          nacinPlacanja: nacinPlacanja,
+          //---------------------
           primalacNaziv: `${order.userInfo.firstName} ${order.userInfo.lastName}`,
           primalacIme: order.userInfo.firstName,
           primalacAdresa: order.userInfo.address,
           primalacPtt: order.userInfo.postalCode,
           primalacTelefon: order.userInfo.phone,
           naplataPouzecem: true,
+          //---------------------
           iznosNaplatePouzecem: total,
+          //---------------------
           nacinNp: 0,
           osiguranje: false,
           otvaranjePosiljke: false,
@@ -245,7 +258,7 @@ const OrdersTabs = () => {
         : i.cijena;
       return sum + price * i.quantity;
     }, 0);
-    const shipping = subtotal > 0 && subtotal < 60 ? 10 : 0;
+    const shipping = subtotal > 0 && subtotal < 60 ? 11 : 0;
     return { subtotal, shipping, total: subtotal + shipping };
   };
 
@@ -536,12 +549,16 @@ const OrdersTabs = () => {
                   >
                     Uredi stavke
                   </button>
-                  <button
-                    className="next-status-btn"
-                    onClick={() => prepareOrder(order)}
-                  >
-                    Pređi u "Pripremi"
-                  </button>
+                 <button
+  className="next-status-btn"
+  onClick={() => {
+    setSelectedOrder(order);
+    setWeightValue("");
+    setShowWeightModal(true);
+  }}
+>
+  Pređi u "Pripremi"
+</button>
                 </>
               ) : next ? (
                 <button
@@ -555,6 +572,59 @@ const OrdersTabs = () => {
           );
         })
       )}
+
+{showWeightModal && (
+  <div className="weight-popup-overlay">
+    <div className="weight-popup-content">
+      <h2 className="weight-popup-title">Unos težine pošiljke</h2>
+
+      <label className="weight-popup-label">
+        Težina (kg):
+        <input
+          type="number"
+          min="0.01"
+          step="0.01"
+          value={weightValue}
+          onChange={(e) => setWeightValue(e.target.value)}
+          className="weight-popup-input"
+        />
+      </label>
+
+      <div className="weight-popup-buttons">
+        <button
+          className="weight-popup-btn confirm"
+          onClick={() => {
+            if (!weightValue || Number(weightValue) <= 0) {
+              alert("Morate unijeti validnu težinu");
+              return;
+            }
+
+            prepareOrder({
+              ...selectedOrder,
+              packageWeight: Number(weightValue),
+            });
+
+            setShowWeightModal(false);
+            setSelectedOrder(null);
+          }}
+        >
+          Potvrdi
+        </button>
+
+        <button
+          className="weight-popup-btn cancel"
+          onClick={() => {
+            setShowWeightModal(false);
+            setSelectedOrder(null);
+          }}
+        >
+          Otkaži
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

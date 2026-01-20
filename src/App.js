@@ -116,18 +116,8 @@ function App() {
 
   if (loading) return null;
 
-  // JAVNE RUTE (bez logina)
-  if (!user) {
-    if (
-      location.pathname !== "/prijava" &&
-      location.pathname !== "/registracija" &&
-      location.pathname !== "/zaboravljenja-sifra"
-    ) {
-      return <Navigate to="/prijava" replace />;
-    }
-  }
 
-  const hideNavbarRoutes = ["/prijava", "/registracija"];
+  const hideNavbarRoutes = ["/prijava", "/registracija","/zaboravljenja-sifra"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (

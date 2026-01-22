@@ -1,0 +1,130 @@
+[debug] [2026-01-21T21:31:43.616Z] ----------------------------------------------------------------------
+[debug] [2026-01-21T21:31:43.618Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Administrator.ADMIN\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2026-01-21T21:31:43.618Z] CLI Version:   15.1.0
+[debug] [2026-01-21T21:31:43.618Z] Platform:      win32
+[debug] [2026-01-21T21:31:43.618Z] Node Version:  v22.15.0
+[debug] [2026-01-21T21:31:43.619Z] Time:          Wed Jan 21 2026 22:31:43 GMT+0100 (srednjoeuropsko standardno vrijeme)
+[debug] [2026-01-21T21:31:43.619Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-21T21:31:43.621Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-01-21T21:31:45.820Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-21T21:31:45.820Z] > authorizing via signed-in user (nikola1231m@gmail.com)
+[debug] [2026-01-21T21:31:45.820Z] [iam] checking project apotekahigra-42d45 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-01-21T21:31:45.821Z] Checked if tokens are valid: false, expires at: 1768431048015
+[debug] [2026-01-21T21:31:45.821Z] Checked if tokens are valid: false, expires at: 1768431048015
+[debug] [2026-01-21T21:31:45.821Z] > refreshing access token with scopes: []
+[debug] [2026-01-21T21:31:45.822Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-01-21T21:31:45.822Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-21T21:31:46.009Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-01-21T21:31:46.009Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-21T21:31:46.014Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45:testIamPermissions [none]
+[debug] [2026-01-21T21:31:46.014Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45:testIamPermissions x-goog-quota-user=projects/apotekahigra-42d45
+[debug] [2026-01-21T21:31:46.015Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-21T21:31:46.139Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-01-21T21:31:46.139Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-01-21T21:31:46.339Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45:testIamPermissions 200
+[debug] [2026-01-21T21:31:46.339Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-21T21:31:46.340Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:46.340Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:46.340Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/apotekahigra-42d45/serviceAccounts/apotekahigra-42d45@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-01-21T21:31:46.340Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/apotekahigra-42d45/serviceAccounts/apotekahigra-42d45@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-01-21T21:31:46.660Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/apotekahigra-42d45/serviceAccounts/apotekahigra-42d45@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2026-01-21T21:31:46.660Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/apotekahigra-42d45/serviceAccounts/apotekahigra-42d45@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-01-21T21:31:46.661Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:46.661Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:46.661Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45 [none]
+[debug] [2026-01-21T21:31:47.071Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45 200
+[debug] [2026-01-21T21:31:47.071Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45 {"projectId":"apotekahigra-42d45","projectNumber":"340471167604","displayName":"ApotekaHigra","name":"projects/apotekahigra-42d45","resources":{"hostingSite":"apotekahigra-42d45"},"state":"ACTIVE","etag":"1_188dff6d-bedc-4f2f-94d7-05f087c6a4d7"}
+[info] 
+[info] === Deploying to 'apotekahigra-42d45'...
+[info] 
+[info] i  deploying functions, hosting 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] +  functions: Finished running predeploy script. 
+[debug] [2026-01-21T21:31:47.410Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:47.411Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:47.411Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45 [none]
+[debug] [2026-01-21T21:31:47.633Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45 200
+[debug] [2026-01-21T21:31:47.633Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/apotekahigra-42d45 {"projectNumber":"340471167604","projectId":"apotekahigra-42d45","lifecycleState":"ACTIVE","name":"ApotekaHigra","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-06-28T12:21:50.082807Z"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2026-01-21T21:31:47.636Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:47.636Z] Checked if tokens are valid: true, expires at: 1769034705009
+[debug] [2026-01-21T21:31:47.636Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45/adminSdkConfig [none]
+[debug] [2026-01-21T21:31:48.114Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45/adminSdkConfig 200
+[debug] [2026-01-21T21:31:48.114Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/apotekahigra-42d45/adminSdkConfig {"projectId":"apotekahigra-42d45","storageBucket":"apotekahigra-42d45.firebasestorage.app"}
+[debug] [2026-01-21T21:31:48.115Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2026-01-21T21:31:48.910Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "echo 'lint disabled'",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^7.0.12"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.4.1"
+  },
+  "private": true
+}
+[debug] [2026-01-21T21:31:48.910Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2026-01-21T21:31:48.911Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-21T21:31:48.920Z] Found firebase-functions binary at 'C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8161
+
+[error] Error: Cannot find module 'nodemailer'
+Require stack:
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\email\mailer.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\index.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\node_modules\firebase-functions\lib\runtime\loader.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\node_modules\firebase-functions\lib\bin\firebase-functions.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.<anonymous> (C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\email\mailer.js:1:20)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\Administrator.ADMIN\\Desktop\\Nikola\\Apoteka\\zuapoteka\\functions\\email\\mailer.js',
+    'C:\\Users\\Administrator.ADMIN\\Desktop\\Nikola\\Apoteka\\zuapoteka\\functions\\index.js',
+    'C:\\Users\\Administrator.ADMIN\\Desktop\\Nikola\\Apoteka\\zuapoteka\\functions\\node_modules\\firebase-functions\\lib\\runtime\\loader.js',
+    'C:\\Users\\Administrator.ADMIN\\Desktop\\Nikola\\Apoteka\\zuapoteka\\functions\\node_modules\\firebase-functions\\lib\\bin\\firebase-functions.js'
+  ]
+}
+
+[debug] [2026-01-21T21:31:49.551Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module 'nodemailer'
+Require stack:
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\email\mailer.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\index.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\node_modules\firebase-functions\lib\runtime\loader.js
+- C:\Users\Administrator.ADMIN\Desktop\Nikola\Apoteka\zuapoteka\functions\node_modules\firebase-functions\lib\bin\firebase-functions.js
+[debug] [2026-01-21T21:31:58.586Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\Administrator.ADMIN\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:275:49)
+    at listOnTimeout (node:internal/timers:588:17)
+    at process.processTimers (node:internal/timers:523:7)
+[error] 
+[error] Error: An unexpected error has occurred.

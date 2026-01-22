@@ -30,6 +30,8 @@
   align-items: center;
   justify-content: center;
   user-select: none;
+  width: 160px;
+  height: 100px;
 }
 
 .brand-image {

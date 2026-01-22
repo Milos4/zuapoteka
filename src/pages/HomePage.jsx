@@ -4,19 +4,13 @@ import Footer from "../components/Footer";
 import BannerSlider from "../components/BannerSlider";
 import PharmacyCategories from "../components/PharmacyCategories";
 import SpecialOffers from "../components/SpecialOffers/SpecialOffers";
-import ComboOffer from "../components/SpecialOffers/ComboOffer";
-import BigComboProduct from "../components/SpecialOffers/BigComboOffer";
-import MiniProduct from "../components/MiniProduct";
 import TopProducts from "../components/SpecialOffers/TopProducts/TopProducts";
 import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
-import BrandSlider from "../components/BrandSlider";
 import BrandCarousel from "../components/BrandCarousel";
 
-import UpdateMissingFields from "./UpdateMissingFields";
 
-
-import biodermaBanner from "../assets/banners/Bioderma20.jpg";
+import biodermaBanner from "../assets/banners/Bioderma10.jpg";
 import laRocheBanner from "../assets/banners/LaRoche10.jpg";
 import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
@@ -27,6 +21,14 @@ import vichy from "../assets/banners/vichy.jpg";
 
 
 const banners = [
+
+  {
+    image:biodermaBanner,
+    alt: "Maybelline Akcija",
+    filters: {
+      brand: "Bioderma",
+      },
+  },
   {
     image: laRocheBanner,
     alt: "Skincare proizvodi",
@@ -47,6 +49,13 @@ const banners = [
     filters: {
   brand: "CeraVe",       },
   },
+    {
+    image: bioderma,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Bioderma",  
+     },
+    },
     {
     image: laR,
     alt: "Novo u ponudi",
@@ -108,9 +117,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(3, 6)} />
+  <BannerSlider banners={banners.slice(4, 8)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(3, 9)} />
+  <TripleBannerSlider banners={banners.slice(4, 10)} />
 )}
 
      
@@ -119,7 +128,7 @@ const HomePage = () => {
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-         {!isMobile && <BannerSlider banners={banners.slice(0,3)} />}
+         {!isMobile && <BannerSlider banners={banners.slice(0,4)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

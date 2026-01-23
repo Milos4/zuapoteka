@@ -75,7 +75,7 @@
 @media (max-width: 600px) {
   .banner-slider1 {
     width: 90%;
-    aspect-ratio: 4 / 4; /* kvadrat */
+    aspect-ratio: 4 / 5; /* kvadrat */
     max-height: none; /* pusti da aspect-ratio diktira visinu */
   }
 }

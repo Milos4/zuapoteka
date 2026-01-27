@@ -78,10 +78,13 @@ const TopProducts = () => {
           ...doc.data(),
         }));
 
+        const availableProducts = allProducts.filter(
+  (product) => product.naStanju === true
+);
         const filtered = {};
         categoriesFilter.forEach(cat => filtered[cat] = []);
 
-        allProducts.forEach(product => {
+        availableProducts.forEach(product => {
           const kategorija = product.kategorija || product.category || "";
           if (categoriesFilter.includes(kategorija)) {
             filtered[kategorija].push(product);
@@ -90,7 +93,8 @@ const TopProducts = () => {
 
         // Ograničavamo na 5 proizvoda po kategoriji
         Object.keys(filtered).forEach(key => {
-          filtered[key] = filtered[key].slice(0, 5);
+          filtered[key] = filtered[key]
+            .sort(() => 0.5 - Math.random()).slice(0, 5);
         });
 
         setProductsByCategory(filtered);

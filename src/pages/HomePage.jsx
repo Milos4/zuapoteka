@@ -8,6 +8,8 @@ import TopProducts from "../components/SpecialOffers/TopProducts/TopProducts";
 import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
 import BrandCarousel from "../components/BrandCarousel";
+import FreeShippingBanner from "../components/FreeShippingBanner";
+
 
 
 import biodermaBanner from "../assets/banners/Bioderma10.jpg";
@@ -122,7 +124,8 @@ const HomePage = () => {
   <TripleBannerSlider banners={banners.slice(4, 10)} />
 )}
 
-     
+  
+
       <PharmacyCategories />
       <SpecialOffers />
       
@@ -133,6 +136,8 @@ const HomePage = () => {
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (
          <TripleBannerSlider banners={banners.slice(3, 6)} />*/}
+                  <FreeShippingBanner />
+
       <FeaturesSection />
       <TopProducts />
       {/*<ComboOffer

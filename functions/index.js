@@ -19,20 +19,22 @@ exports.preannounceCourier = onCall(async (request) => {
       throw new Error("Payload mora biti niz pošiljki");
     }
 
-    const username = "higra_api_test";
-    const password = "test1234!";
+    const username = "higra_api_pro";
+    const password = "K52@7XcD!#";
+    const apiKey = "MwqpzbRJ2tBRIygONGR08QAhTviaQp5u";
     const auth = Buffer.from(`${username}:${password}`).toString("base64");
 
     console.log("Auth header (Base64):", auth);
     console.log("Full header:", { Authorization: `Basic ${auth}` });
 
     const response = await fetch(
-      "https://gateway.euroexpress.ba/test/shipment/preannounce?lokacija=0",
+      "https://gateway.euroexpress.ba/b2b/shipment/preannounce?lokacija=0",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Basic ${auth}`,
+          "x-api-key": apiKey,
         },
         body: JSON.stringify(payload),
       }
@@ -66,8 +68,9 @@ exports.sendAllPreparedToCourier = onCall(async (_, context) => {
 
     const db = admin.firestore();
 
-    const username = "higra_api_test";
-    const password = "test1234!";
+    const username = "higra_api_pro";
+    const password = "K52@7XcD!#";
+    const apiKey = "MwqpzbRJ2tBRIygONGR08QAhTviaQp5u";
     const auth = Buffer.from(`${username}:${password}`).toString("base64");
 
     // 1️⃣ Nađi orders u pripremi
@@ -123,12 +126,13 @@ exports.sendAllPreparedToCourier = onCall(async (_, context) => {
 
     // 5️⃣ Pošalji kuriru (test/prod endpoint)
     const response = await fetch(
-      "https://gateway.euroexpress.ba/test/shipment/announce?lokacija=0",
+      "https://gateway.euroexpress.ba/b2b/shipment/announce?lokacija=0",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Basic ${auth}`,
+           "x-api-key": apiKey,
         },
         body: JSON.stringify(shipments),
       }

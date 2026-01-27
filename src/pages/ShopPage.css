@@ -188,12 +188,9 @@
     width: 100%;
     height: auto;
   }
+  /* Poboljšan hover efekat na dugme */
 }
 
-/* Poboljšan hover efekat na dugme */
-.btn-load-more:hover {
-  background-color: var(--zelena);
-}
 
 /* Scrollbar za brand listu */
 .brand-list.scrollable {
@@ -297,6 +294,8 @@
   transform: scale(1.05);
 }
 
+
+
 @media (max-width: 768px) {
   .sidebar-wrapper .sidebar {
     display: none; /* default sakriveno */
@@ -367,4 +366,16 @@
 
 .underline-input::placeholder {
   color: #777;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    z-index: 1;   /* ⬅️ SKINI 10 */
+  }
+
+  .products {
+    position: relative;
+    z-index: 2;   /* ⬅️ IZNAD SIDEBARA */
+  }
 }

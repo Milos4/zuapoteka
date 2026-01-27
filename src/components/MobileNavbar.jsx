@@ -127,10 +127,8 @@ const MobileNavbar = () => {
                         className="search-show-all"
                         onClick={() => {
                           navigate(
-                            `/prodavnica?zou are =${encodeURIComponent(
-                              searchQuery.trim()
-                            )}`
-                          );
+                             `/prodavnica?search=${encodeURIComponent(searchQuery.trim())}`
+);
                           setShowResults(false);
                         }}
                       >

@@ -80,6 +80,16 @@ const [openCategories, setOpenCategories] = useState(false);
   }, []);
 
   useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const searchParam = params.get("search");
+
+  if (searchParam) {
+    setSearch(searchParam);
+    setVisibleCount(PAGE_SIZE); // reset paginacije
+  }
+}, [location.search]);
+
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
 
     const brandParams = params.getAll("brand");

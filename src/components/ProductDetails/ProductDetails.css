@@ -78,21 +78,22 @@
 }
 
 .price-container {
-  margin-bottom: 10px;
+margin-top: 10px; /* 🔑 ovo pravi razmak ispod badge-a */
+  margin-bottom: 10px;  
   width: 100%;
-  justify-content: space-between ;
 }
 
 .price-rows {
   display: flex;
   flex-direction: column;
 }
-
 .original-price {
   font-size: 22px;
   font-weight: 500;
   color: #333;
+  margin-top: 10px;
 }
+
 
 .original-price.crossed {
   text-decoration: line-through;
@@ -103,22 +104,24 @@
 }
 
 .discounted-price {
-  font-size: 24px;
-  color: #e53935; /* Crvena */
-  font-weight: bold;
+  font-size: 26px;
+  color: #e53935;
+  font-weight: 700;
+  margin-top: 6px;
 }
 
 .discount-circle {
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 10px;
+  left: 10px;
   background-color: #e53935; /* Crvena */
   color: white;
   padding: 8px;
   border-radius: 50%;
   font-weight: bold;
-  max-width: 40px;
-  max-height: 40px;
+  max-width: 46px;
+  max-height: 46px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -228,24 +231,27 @@
   align-items: center;
   gap: 12px;
 }
-
 .favorite-icon-btn {
-  background-color: white;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  z-index: 5;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .favorite-icon-btn:hover {
   background-color: #ffe6e6;
+  transform: scale(1.08);
 }
 
 .tab-buttons {
@@ -346,10 +352,6 @@
   position: relative;
 width: 100%;}
 
-  .discount-circle {
-    top: 10px;
-    left: 10px;
-  }
 
 }
 
@@ -445,4 +447,29 @@ width: 100%;}
   padding: 12px 14px;
   border-radius: 8px;
   margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .favorite-icon-btn {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .discount-circle {
+    width: 46px;
+    height: 46px;
+    font-size: 13px;
+  }
+
+  .price-container {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .original-price,
+  .discounted-price {
+    text-align: center;
+  }
 }

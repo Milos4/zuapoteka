@@ -63,7 +63,7 @@ export default function PharmacyCategories() {
     },
     {
       id: 4,
-      name: "Mama i bebe",
+      name: "Mame i bebe",
       icon: Baby,
       desc: "",
       details: ["Nježna njega", "Bezbedno za bebe"],

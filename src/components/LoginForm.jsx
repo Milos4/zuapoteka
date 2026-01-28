@@ -22,17 +22,8 @@ const LoginForm = () => {
   });
   const navigate = useNavigate();
 
-  const countProducts = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "products"));
-    console.log("Ukupno proizvoda:", querySnapshot.size);
-  } catch (error) {
-    console.error("Greška pri brojanju proizvoda:", error);
-  }
-};
 
 useEffect(() => {
-  countProducts();
 }, []);
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -111,8 +102,17 @@ useEffect(() => {
         navigate("/pocetna");
       }
     } catch (error) {
-      alert("Greška pri prijavi: " + error.message);
-    }
+  if (
+    error.code === "auth/wrong-password" ||
+    error.code === "auth/user-not-found"
+  ) {
+    alert("Korisničko ime ili šifra nisu tačni.");
+  } else if (error.code === "auth/invalid-email") {
+    alert("Email nije validan.");
+  } else {
+    alert("Korisničko ime ili šifra nisu tačni.");
+  }
+}
   };
   return (
     <div className="login-container">

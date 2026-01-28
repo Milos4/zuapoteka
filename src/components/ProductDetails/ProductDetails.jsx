@@ -210,30 +210,32 @@ const handleSendInquiry = async () => {
       </div>
 
       <div className="product-purchase">
-        <div className="price-container">
-          {popust > 0 && naPopustu ? (
-            <>
-              <div className="price-rows">
-                <div className="original-price crossed">
-                  {cijena.toFixed(2)} BAM
-                </div>
-                <div className="discounted-price">{novaCijena} BAM</div>
-              </div>
-              <div className="discount-circle">-{popust}%</div>
-            </>
-          ) : (
-            <div className="original-price">{cijena.toFixed(2)} BAM</div>
-          )}
-
-          <button
-            className="favorite-icon-btn"
-            onClick={handleAddToFavorites}
-            aria-label="Dodaj u favorite"
-            title="Dodaj u favorite"
-          >
-            <HeartIcon />
-          </button>
+        {product.naStanju && (
+  <div className="price-container">
+    {popust > 0 && naPopustu ? (
+      <>
+        <div className="price-rows">
+          <div className="original-price crossed">
+            {cijena.toFixed(2)} BAM
+          </div>
+          <div className="discounted-price">{novaCijena} BAM</div>
         </div>
+        <div className="discount-circle">-{popust}%</div>
+      </>
+    ) : (
+      <div className="original-price">{cijena.toFixed(2)} BAM</div>
+    )}
+
+    <button
+      className="favorite-icon-btn"
+      onClick={handleAddToFavorites}
+      aria-label="Dodaj u favorite"
+      title="Dodaj u favorite"
+    >
+      <HeartIcon />
+    </button>
+  </div>
+)}
 
         <div className="purchase-controls">
           {product.naStanju ? (

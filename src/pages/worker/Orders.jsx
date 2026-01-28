@@ -218,10 +218,22 @@ const [selectedOrder, setSelectedOrder] = useState(null);
           )
         );
       } else {
-        // Apoteka → samo update status
         await updateDoc(doc(db, "orders", order.id), {
-          status: "Pripremljeno",
-        });
+  status: "Pripremljeno",
+});
+
+const sendPickupEmail = httpsCallable(
+  functions,
+  "sendPickupPreparedEmail"
+);
+
+if (order.userInfo?.email) {
+  await sendPickupEmail({
+    email: order.userInfo.email,
+    ime: order.userInfo.firstName,
+    orderId: order.orderId,
+  });
+}
         setOrders((prev) =>
           prev.map((o) =>
             o.id === order.id ? { ...o, status: "Pripremljeno" } : o
@@ -549,15 +561,23 @@ const [selectedOrder, setSelectedOrder] = useState(null);
                   >
                     Uredi stavke
                   </button>
-                 <button
+           <button
   className="next-status-btn"
   onClick={() => {
-    setSelectedOrder(order);
-    setWeightValue("");
-    setShowWeightModal(true);
+    if (order.deliveryMethod === "Dostava na adresu") {
+      // 🚚 Dostava → traži težinu
+      setSelectedOrder(order);
+      setWeightValue("");
+      setShowWeightModal(true);
+    } else {
+      // 🏪 Apoteka → direktno pripremljeno
+      prepareOrder(order);
+    }
   }}
 >
-  Pređi u "Pripremi"
+  {order.deliveryMethod === "Dostava na adresu"
+    ? 'Pređi u "Pripremu"'
+    : 'Označi kao "Pripremljeno"'}
 </button>
                 </>
               ) : next ? (

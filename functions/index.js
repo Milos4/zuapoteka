@@ -223,3 +223,30 @@ exports.sendContactReply = onCall(async (request) => {
     throw err;
   }
 });
+
+const { pickupPreparedEmail } = require("./email/pickupPreparedEmail");
+
+exports.sendPickupPreparedEmail = onCall(async (request) => {
+  try {
+    const { email, ime, orderId } = request.data;
+
+    if (!email || !orderId) {
+      throw new Error("Nedostaju podaci za slanje maila");
+    }
+
+    await transporter.sendMail({
+      from: '"Apoteka Higra Šarić" <info@apoteka-higrasaric.ba>',
+      to: email,
+      subject: `Vaša porudžbina #${orderId} je spremna za preuzimanje`,
+      html: pickupPreparedEmail({
+        orderId,
+        ime: ime || "Kupče",
+      }),
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("❌ sendPickupPreparedEmail ERROR:", err);
+    throw err;
+  }
+});

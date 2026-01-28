@@ -174,7 +174,7 @@ exports.sendAllPreparedToCourier = onCall(async (_, context) => {
         console.log("📧 Šaljem mail:", order.email, order.orderId);
 
         await transporter.sendMail({
-          from: '"Apoteka Higra Šarić" <info@apoteka-higrasaric.ba>',
+          from: '"Apoteka Higra Sarić" <info@apoteka-higrasaric.ba>',
           to: order.email,
           subject: `Vaša porudžbina #${order.orderId} je poslata`,
           html: courierPreparedEmail({
@@ -208,7 +208,7 @@ exports.sendContactReply = onCall(async (request) => {
     }
 
     await transporter.sendMail({
-      from: '"Apoteka Higra Šarić" <info@apoteka-higrasaric.ba>',
+      from: '"Apoteka Higra Sarić" <info@apoteka-higrasaric.ba>',
       to: email,
       subject: "Odgovor na Vašu poruku",
       html: contactReplyEmail({
@@ -235,7 +235,7 @@ exports.sendPickupPreparedEmail = onCall(async (request) => {
     }
 
     await transporter.sendMail({
-      from: '"Apoteka Higra Šarić" <info@apoteka-higrasaric.ba>',
+      from: '"Apoteka Higra Sarić" <info@apoteka-higrasaric.ba>',
       to: email,
       subject: `Vaša porudžbina #${orderId} je spremna za preuzimanje`,
       html: pickupPreparedEmail({

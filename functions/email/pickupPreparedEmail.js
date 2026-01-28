@@ -13,7 +13,7 @@ const pickupPreparedEmail = ({ orderId, ime }) => {
       Možete doći po svoju porudžbinu u toku radnog vremena apoteke.
     </p>
 
-    <p>Hvala na povjerenju,<br/>Apoteka Higra Šarić</p>
+    <p>Hvala na povjerenju,<br/>Apoteka Higra Sarić</p>
   `;
 
   return emailLayout(content);

@@ -22,6 +22,14 @@ import { useCart } from "../context/CartContext";
 const DeliveryAndPayment = () => {
   const { cartItems, clearCart } = useCart();
 
+const getItemPrice = (item) => {
+  if (item.naPopustu && item.popustProcenat > 0) {
+    return Number(item.cijena) * (1 - item.popustProcenat / 100);
+  }
+
+  return Number(item.cijena);
+};
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,12 +48,12 @@ const DeliveryAndPayment = () => {
 
   const navigate = useNavigate();
   const items = cartItems;
-  const subtotal = items.reduce(
-    (sum, item) => sum + Number(item.cijena) * item.quantity,
-    0
-  );
+const subtotal = items.reduce(
+  (sum, item) => sum + getItemPrice(item) * item.quantity,
+  0
+);
   const shipping =
-    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11 : 0;
+    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.09 : 0;
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
@@ -116,7 +124,7 @@ const DeliveryAndPayment = () => {
         ? "Preuzimanje u apoteci"
         : "Dostava na adresu";
     const shippingCost =
-      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11 : 0;
+      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.09 : 0;
     const totalAmount = subtotal + shippingCost;
 
     const orderId = Math.floor(100000 + Math.random() * 9000000).toString(); // npr. 7-cifren broj
@@ -332,7 +340,7 @@ const DeliveryAndPayment = () => {
                           Proizvod će biti dostavljen na vašu adresu putem
                           pošte. Plaćanje pri preuzimanju{" "}
                           {subtotal < 60
-                            ? `(+10 BAM dostava)`
+                            ? `(+11.09 BAM dostava)`
                             : `(Besplatna dostava)`}
                           .
                         </div>
@@ -413,9 +421,20 @@ const DeliveryAndPayment = () => {
                     />
                     <div className="item-info">
                       <h4 className="item-name">{item.naziv}</h4>
-                      <p className="item-price">
-                        {Number(item.cijena).toFixed(2)} BAM
-                      </p>
+                   <p className="item-price">
+  {item.naPopustu && item.popustProcenat > 0 ? (
+    <>
+      <span className="old-price">
+        {Number(item.cijena).toFixed(2)} BAM
+      </span>
+      <span className="discount-price">
+        {getItemPrice(item).toFixed(2)} BAM
+      </span>
+    </>
+  ) : (
+    <span>{Number(item.cijena).toFixed(2)} BAM</span>
+  )}
+</p>
                       <p className="item-quantity">Količina: {item.quantity}</p>
                     </div>
                   </div>

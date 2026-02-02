@@ -362,3 +362,13 @@
     grid-template-columns: 1fr;
   }
 }
+.old-price {
+  text-decoration: line-through;
+  color: #9ca3af;
+  margin-right: 6px;
+}
+
+.discount-price {
+  color: #dc2626;
+  font-weight: 600;
+}

@@ -191,18 +191,26 @@ if (search && !normalizeText(p.naziv).includes(normalizeText(search))) return fa
 
 const sortedProducts = useMemo(() => {
   return [...filtered].sort((a, b) => {
+    // 1️⃣ prvo najveći popust
+    const discountA = a.naPopustu ? Number(a.popustProcenat || 0) : 0;
+    const discountB = b.naPopustu ? Number(b.popustProcenat || 0) : 0;
+
+    if (discountA !== discountB) {
+      return discountB - discountA; // veći popust ide gore
+    }
+
+    // 2️⃣ novo ide iznad ostalih
     if (a.novo && !b.novo) return -1;
     if (!a.novo && b.novo) return 1;
 
+    // 3️⃣ ako su oba bez popusta / ista logika
     if (a.naPopustu && !b.naPopustu) return -1;
     if (!a.naPopustu && b.naPopustu) return 1;
 
+    // 4️⃣ fallback – naziv
     return a.naziv.localeCompare(b.naziv);
   });
-}, [
-  filtered,
-]);
-
+}, [filtered]);
 
   const handleCategoryToggle = (kat) => {
     setSelectedCategories((prev) =>

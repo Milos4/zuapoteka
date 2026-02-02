@@ -304,14 +304,26 @@ const toggleFilters = () => {
               onClick: isMobile ? () => handleToggleActive(p.id) :  () => handleViewProduct(p.id),
                 id: `product-${p.id}`,
   };
+if (p.naPopustu) {
+  const originalPrice = Number(
+    typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
+  );
 
-  if (p.naPopustu) {
-    const parsedCijena = Number(
-      typeof p.cijena === "string" ? p.cijena.replace(",", ".") : p.cijena
-    );
-    const stara = parsedCijena / (1 - (p.popustProcenat || 0) / 100);
-    return <DiscountProduct {...common} oldPrice={stara.toFixed(2)} />;
-  }
+  const discount = Number(p.popustProcenat || 0);
+
+  const discountedPrice =
+    discount > 0
+      ? originalPrice * (1 - discount / 100)
+      : originalPrice;
+
+  return (
+    <DiscountProduct
+      {...common}
+      price={discountedPrice.toFixed(2)}   // SNIŽENA (velika)
+      oldPrice={originalPrice.toFixed(2)}  // ORIGINALNA (precrtana)
+    />
+  );
+}
 
   if (p.novo) {
     return <NewProduct {...common} />;

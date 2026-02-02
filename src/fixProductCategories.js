@@ -98,8 +98,9 @@
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
 
-const TARGET_SUBS = ["Koža", "kosa i nokti"];
-const NEW_SUB = "Koža Kosa Nokti";
+// podkategorije koje tražimo
+const TARGET_SUBS = ["preparati za san", "umirenje i relaksaciju"];
+const NEW_SUB = "Preparati za umirenje san i relaksaciju";
 
 export async function fixProductCategories() {
   const productsSnapshot = await getDocs(collection(db, "products"));
@@ -108,24 +109,19 @@ export async function fixProductCategories() {
     const data = productDoc.data();
     const subs = data.subkategorije || [];
 
-    // provjeri da li proizvod ima sve 3 podkategorije
+    // provjeri da li proizvod ima obje podkategorije
     const hasAll = TARGET_SUBS.every((s) => subs.includes(s));
     if (!hasAll) continue;
 
-    // ukloni Koža/Kosa/Nokti
-    const cleanedSubs = subs.filter((s) => !TARGET_SUBS.includes(s));
-
-    // dodaj novu
-    cleanedSubs.push(NEW_SUB);
-
+    // zamijeni sve podkategorije samo sa novom
     await updateDoc(doc(db, "products", productDoc.id), {
-      subkategorije: cleanedSubs,
+      subkategorije: [NEW_SUB],
     });
 
     console.log(
-      `✔ ${productDoc.id} → podkategorije spojene u "${NEW_SUB}"`
+      `✔ ${productDoc.id} → sve podkategorije zamijenjene sa "${NEW_SUB}"`
     );
   }
 
-  console.log("Gotovo – spojene podkategorije Koža/Kosa/Nokti ✅");
+  console.log(`Gotovo – podkategorije zamijenjene ✅`);
 }

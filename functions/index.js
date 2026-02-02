@@ -250,3 +250,56 @@ exports.sendPickupPreparedEmail = onCall(async (request) => {
     throw err;
   }
 });
+
+
+exports.printEuroExpressLabel = onCall(async (request) => {
+  try {
+    const { refBroj, printFormat = "DEFAULT" } = request.data;
+
+    if (!refBroj) {
+      throw new Error("Nedostaje refBroj");
+    }
+
+    const username = "higra_api_pro";
+    const password = "K52@7XcD!#";
+    const apiKey = "MwqpzbRJ2tBRIygONGR08QAhTviaQp5u";
+
+    const auth = Buffer.from(`${username}:${password}`).toString("base64");
+
+    const url = new URL(
+      "https://gateway.euroexpress.ba/b2b/shipment/print"
+    );
+
+    url.searchParams.append("refBroj", refBroj);
+    url.searchParams.append("printFormat", printFormat); // DEFAULT | BC
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "x-api-key": apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(
+        `EuroExpress error ${response.status}: ${text}`
+      );
+    }
+
+    // 👇 PDF → base64
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const base64Pdf = buffer.toString("base64");
+
+    return {
+      success: true,
+      fileName: `opremnica_${refBroj}.pdf`,
+      mimeType: "application/pdf",
+      base64: base64Pdf,
+    };
+  } catch (err) {
+    console.error("❌ printEuroExpressLabel ERROR:", err);
+    throw err;
+  }
+});

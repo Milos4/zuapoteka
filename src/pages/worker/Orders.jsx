@@ -58,6 +58,44 @@ const [selectedOrder, setSelectedOrder] = useState(null);
   const [newProductCode, setNewProductCode] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(1);
 
+const printOpremnica = async (order) => {
+  try {
+    const fn = httpsCallable(functions, "printEuroExpressLabel");
+
+    const res = await fn({
+      refBroj: order.orderId,
+      printFormat: "DEFAULT", // ili "BC"
+    });
+
+    const { base64, fileName, mimeType } = res.data;
+
+    // base64 → Blob
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    const blob = new Blob([byteArray], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error(err);
+    alert("Greška pri štampi opremnice");
+  }
+};
+
+
+
   /* FETCH */
   const fetchOrders = async (status) => {
     setLoading(true);
@@ -588,6 +626,16 @@ if (order.userInfo?.email) {
                   Pređi u „{next}“
                 </button>
               ) : null}
+
+              {order.status === "Priprema" &&
+  order.deliveryMethod === "Dostava na adresu" && (
+    <button
+      className="next-status-btn secondary"
+      onClick={() => printOpremnica(order)}
+    >
+      🖨️ Štampaj opremnicu
+    </button>
+)}
             </div>
           );
         })

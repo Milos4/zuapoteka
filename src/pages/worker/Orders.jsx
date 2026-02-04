@@ -308,7 +308,7 @@ if (order.userInfo?.email) {
         : i.cijena;
       return sum + price * i.quantity;
     }, 0);
-    const shipping = subtotal > 0 && subtotal < 60 ? 11 : 0;
+    const shipping = subtotal > 0 && subtotal < 60 ? 11.09 : 0;
     return { subtotal, shipping, total: subtotal + shipping };
   };
 
@@ -443,7 +443,10 @@ if (order.userInfo?.email) {
                           : i.cijena;
                         return (
                           <tr key={i.id}>
-                            <td>{i.naziv}</td>
+                            <td>{i.naziv}
+                             
+                            </td>
+
                             <td>{price.toFixed(2)} KM</td>
                             <td>
                               <input
@@ -573,7 +576,9 @@ if (order.userInfo?.email) {
                         : i.cijena;
                       return (
                         <tr key={i.id}>
-                          <td>{i.naziv}</td>
+                          <td>{i.naziv}
+                             {i.selectedSize ? ` (${i.selectedSize})` : ""}
+                          </td>
                           <td>{price.toFixed(2)} KM</td>
                           <td>{i.quantity}</td>
                           <td>{(price * i.quantity).toFixed(2)} KM</td>
@@ -584,12 +589,18 @@ if (order.userInfo?.email) {
                 </table>
               )}
 
-              <div className="totals">
-                <p>Artikli: {subtotal.toFixed(2)} KM</p>
-                <p>Dostava: {shipping.toFixed(2)} KM</p>
-                <p className="total">Ukupno: {total.toFixed(2)} KM</p>
-              </div>
-
+         <div className="totals">
+  <p>Artikli: {subtotal.toFixed(2)} KM</p>
+  {order.deliveryMethod === "Dostava na adresu" && (
+    <p>Dostava: {shipping.toFixed(2)} KM</p>
+  )}
+  <p className="total">
+    Ukupno: 
+    {order.deliveryMethod === "Dostava na adresu"
+      ? (subtotal + shipping).toFixed(2)
+      : subtotal.toFixed(2)} KM
+  </p>
+</div>
               {/* ACTION BUTTONS */}
               {order.status === "Poručeno" && editingOrderId !== order.id ? (
                 <>

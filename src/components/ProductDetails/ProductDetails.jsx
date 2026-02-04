@@ -11,7 +11,7 @@ import Popup from "../Popup";
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(product.velicine?.[0] || "");
+const [selectedSize, setSelectedSize] = useState("");
   const [brand, setBrand] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -28,8 +28,8 @@ const ProductDetails = ({ product }) => {
   const popust = parseFloat(freshProduct.popustProcenat || 0);
   const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
 
-  const isClothing = product.kategorija?.toLowerCase() === "odjeca";
-
+const kategorijaLower = product.kategorija?.toLowerCase();
+const hasSizes = kategorijaLower === "odjeca" || kategorijaLower === "obuca";
 
 const [showInquiry, setShowInquiry] = useState(false);
 const [inquiryEmail, setInquiryEmail] = useState("");
@@ -99,17 +99,29 @@ const handleSendInquiry = async () => {
   }, [product.brandId]);
 
   const handleAddToCart = () => {
-    console.log(freshProduct);
-    if (isClothing && !selectedSize) {
-      setPopupMessage("Molimo odaberite veličinu.");
-      setPopupOpen(true);
-      return;
-    }
+  console.log(freshProduct);
 
-    addToCart({ ...product, selectedSize }, quantity);
-    setPopupMessage(`Dodano ${quantity} kom u korpu!`);
+  if (hasSizes && !selectedSize) {
+    setPopupMessage(
+      kategorijaLower === "obuca"
+        ? "Molimo odaberite broj."
+        : "Molimo odaberite veličinu."
+    );
     setPopupOpen(true);
-  };
+    return;
+  }
+
+  addToCart(
+    {
+      ...product,
+      selectedSize: hasSizes ? selectedSize : null,
+    },
+    quantity
+  );
+
+  setPopupMessage(`Dodano ${quantity} kom u korpu!`);
+  setPopupOpen(true);
+};
 
   const handleAddToFavorites = async () => {
     if (!user) {
@@ -147,7 +159,7 @@ const handleSendInquiry = async () => {
         </div>
 
         {/* Tabovi se prikazuju samo ako nije odjeća */}
-        {!isClothing && (
+        {!hasSizes && (
           <div className="tab-buttons">
             <button
               className={activeTab === "opis" ? "active-tab" : ""}
@@ -172,11 +184,9 @@ const handleSendInquiry = async () => {
 
         <div className="description">
           {activeTab === "opis" && (product.opis || "Nema opisa.")}
-          {!isClothing &&
-            activeTab === "nacinUpotrebe" &&
+          {!hasSizes && activeTab === "nacinUpotrebe" &&
             (product.nacinUpotrebe || "Nema načina upotrebe.")}
-          {!isClothing &&
-            activeTab === "sastav" &&
+          {!hasSizes && activeTab === "sastav" && 
             (product.sastav || "Nema sastava.")}
         </div>
 
@@ -191,22 +201,31 @@ const handleSendInquiry = async () => {
         )}
 
         {/* Prikaz veličina samo za odjeću */}
-        {isClothing && product.velicine?.length > 0 && (
-          <div className="size-selector">
-            <span>Veličina: </span>
-            {product.velicine.map((size) => (
-              <button
-                key={size}
-                className={`size-button ${
-                  selectedSize === size ? "selected" : ""
-                }`}
-                onClick={() => setSelectedSize(size)}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        )}
+       {hasSizes && product.velicine?.length > 0 && (
+  <div className="size-selector">
+    <span>
+      {kategorijaLower === "obuca" ? "Broj:" : "Veličina:"}
+    </span>
+
+    {product.velicine.map((size) => (
+      <button
+        key={size}
+        className={`size-button ${
+          selectedSize === size ? "selected" : ""
+        }`}
+        onClick={() => setSelectedSize(size)}
+      >
+        {size}
+      </button>
+    ))}
+
+    {!selectedSize && (
+      <div className="size-warning">
+        Odaberite {kategorijaLower === "obuca" ? "broj" : "veličinu"}
+      </div>
+    )}
+  </div>
+)}
       </div>
 
       <div className="product-purchase">

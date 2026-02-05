@@ -120,6 +120,18 @@ const CartProductsPage = () => {
                       Veličina: {item.selectedSize}
                     </p>
                   )}
+                  {item.selectedColor && (
+  <p
+    style={{
+      margin: "4px 0",
+      fontSize: "14px",
+      color: "#555",
+      textTransform: "capitalize",
+    }}
+  >
+    Boja: {item.selectedColor}
+  </p>
+)}
                   <div>
                     {item.naPopustu && (
                       <p

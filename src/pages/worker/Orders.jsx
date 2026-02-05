@@ -578,6 +578,7 @@ if (order.userInfo?.email) {
                         <tr key={i.id}>
                           <td>{i.naziv}
                              {i.selectedSize ? ` (${i.selectedSize})` : ""}
+                             {i.selectedColor ? ` - ${i.selectedColor}` : ""}
                           </td>
                           <td>{price.toFixed(2)} KM</td>
                           <td>{i.quantity}</td>

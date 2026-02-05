@@ -19,6 +19,7 @@ const AddProductClothing = () => {
     opis: "",
     slika: null,
     velicine: "",
+    boja: "",
   });
 
   const [preview, setPreview] = useState(null);
@@ -27,6 +28,7 @@ const AddProductClothing = () => {
 
   const kategorijaLower = form.kategorija.toLowerCase();
   const imaVelicine = kategorijaLower === "odjeca" || kategorijaLower === "obuca";
+  const jeObuca = kategorijaLower === "obuca";
 
   /* ====== FETCH BRANDOVI ====== */
   useEffect(() => {
@@ -110,7 +112,12 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
                 .map(v => v.trim().toUpperCase())
                 .filter(v => v !== "")
             : [],
+           boje:
+  jeObuca && form.boja
+    ? form.boja.split(",").map(b => b.trim().toLowerCase())
+    : [],
       };
+  
 
       await addDoc(collection(db, "products"), newProduct);
       alert("Proizvod uspješno dodat!");
@@ -129,6 +136,7 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         opis: "",
         slika: null,
         velicine: "",
+        boja: "",
       });
       setPreview(null);
     } catch (err) {
@@ -184,6 +192,15 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
             required
           />
         )}
+        {jeObuca && (
+  <input
+    name="boja"
+    placeholder="Boje (npr. crna, bijela)"
+    value={form.boja}
+    onChange={handleChange}
+    required
+  />
+)}
 
         <input type="number" name="cijena" placeholder="Cijena" value={form.cijena} onChange={handleChange} required />
 

@@ -12,6 +12,7 @@ import Popup from "../Popup";
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 const [selectedSize, setSelectedSize] = useState("");
+const [selectedColor, setSelectedColor] = useState("");
   const [brand, setBrand] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -30,10 +31,24 @@ const [selectedSize, setSelectedSize] = useState("");
 
 const kategorijaLower = product.kategorija?.toLowerCase();
 const hasSizes = kategorijaLower === "odjeca" || kategorijaLower === "obuca";
+const isObuca = kategorijaLower === "obuca";
 
 const [showInquiry, setShowInquiry] = useState(false);
 const [inquiryEmail, setInquiryEmail] = useState("");
 const [sendingInquiry, setSendingInquiry] = useState(false);
+
+const COLOR_MAP = {
+  crna: "#000000",
+  bijela: "#ffffff",
+  siva: "#9e9e9e",
+  plava: "#1976d2",
+  crvena: "#d32f2f",
+  zelena: "#388e3c",
+  žuta: "#fbc02d",
+  braon: "#6d4c41",
+};
+const getColorValue = (color) =>
+  COLOR_MAP[color?.toLowerCase()] || "#cccccc";
 
 const handleSendInquiry = async () => {
   if (!inquiryEmail || !inquiryEmail.includes("@")) {
@@ -110,11 +125,17 @@ const handleSendInquiry = async () => {
     setPopupOpen(true);
     return;
   }
+  if (isObuca && !selectedColor) {
+  setPopupMessage("Molimo odaberite boju.");
+  setPopupOpen(true);
+  return;
+}
 
   addToCart(
     {
       ...product,
       selectedSize: hasSizes ? selectedSize : null,
+        selectedColor: isObuca ? selectedColor : null,
     },
     quantity
   );
@@ -226,7 +247,38 @@ const handleSendInquiry = async () => {
     )}
   </div>
 )}
+    {/* ====== BOJA (SAMO ZA OBUĆU) ====== */}
+{isObuca && product.boje?.length > 0 && (
+  <div className="color-selector">
+    <span>Boja:</span>
+
+    <div className="color-buttons">
+      {product.boje.map((color) => (
+       <button
+  key={color}
+  className={`color-button ${
+    selectedColor === color ? "selected" : ""
+  }`}
+  onClick={() => setSelectedColor(color)}
+>
+  <span
+    className="color-dot"
+    style={{ backgroundColor: getColorValue(color) }}
+  />
+  {color}
+</button>
+      ))}
+    </div>
+
+    {!selectedColor && (
+      <div className="color-warning">
+        Odaberite boju
       </div>
+    )}
+  </div>
+)}
+      </div>
+      
 
       <div className="product-purchase">
         {product.naStanju && (

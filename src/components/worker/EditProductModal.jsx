@@ -13,6 +13,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     velicine: Array.isArray(product.velicine)
       ? product.velicine.join(", ")
       : product.velicine || "", // dodano polje za velicine
+        boje: Array.isArray(product.boje)
+    ? product.boje.join(", ")
+    : product.boje || "",
     nacinUpotrebe: product.nacinUpotrebe || "",
     sastav: product.sastav || "",
     brandId: product.brandId || "", // za brand
@@ -83,6 +86,13 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           .map((v) => v.trim())
           .filter((v) => v.length > 0);
       }
+
+      if (typeof updatedData.boje === "string") {
+  updatedData.boje = updatedData.boje
+    .split(",")
+    .map((b) => b.trim())
+    .filter((b) => b.length > 0);
+}
 
       const productRef = doc(db, "products", product.id);
       await updateDoc(productRef, updatedData);
@@ -156,6 +166,19 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             />
           </>
         )}
+
+        {formData.kategorija?.toLowerCase() === "obuca" && (
+  <>
+    <label>Boje (odvojene zarezom)</label>
+    <input
+      type="text"
+      name="boje"
+      value={formData.boje}
+      onChange={handleChange}
+      placeholder="npr. crna, bijela, red, blue"
+    />
+  </>
+)}
 
         <label>Brand</label>
         <select name="brandId" value={formData.brandId} onChange={handleChange}>

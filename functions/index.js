@@ -1,4 +1,4 @@
-const { onCall } = require("firebase-functions/v2/https");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const fetch = require("node-fetch");
 const admin = require("firebase-admin");
 
@@ -204,8 +204,17 @@ exports.sendContactReply = onCall(async (request) => {
     const { email, ime, odgovor } = request.data;
 
     if (!email || !odgovor) {
-      throw new Error("Nedostaju podaci za slanje odgovora");
+      throw new HttpsError(
+        "invalid-argument",
+        "Nedostaju podaci za slanje odgovora"
+      );
     }
+
+    console.log("📩 email:", email);
+    console.log("🧩 ime:", ime);
+    console.log("✉️ odgovor:", odgovor);
+    console.log("🚚 transporter:", !!transporter);
+    console.log("🧱 emailLayout fn:", typeof contactReplyEmail);
 
     await transporter.sendMail({
       from: '"Apoteka Higra Sarić" <info@apoteka-higrasaric.ba>',
@@ -220,7 +229,16 @@ exports.sendContactReply = onCall(async (request) => {
     return { success: true };
   } catch (err) {
     console.error("❌ sendContactReply ERROR:", err);
-    throw err;
+
+    // 👇 AKO VEĆ NIJE HttpsError
+    if (err instanceof HttpsError) {
+      throw err;
+    }
+
+    throw new HttpsError(
+      "internal",
+      "Greška pri slanju emaila"
+    );
   }
 });
 

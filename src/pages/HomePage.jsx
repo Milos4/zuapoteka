@@ -20,6 +20,8 @@ import ceraVe from "../assets/banners/cerave.jpg";
 import laR from "../assets/banners/LaR.jpg";
 import bioderma from "../assets/banners/bioderma.jpg";
 import vichy from "../assets/banners/vichy.jpg";
+import miniPoklon from "../assets/banners/MiniPoklon.png";
+
 
 
 const banners = [
@@ -58,14 +60,13 @@ const banners = [
   brand: "Bioderma",  
      },
     },
-    {
-    image: laR,
+       {
+    image: ceraVe,
     alt: "Novo u ponudi",
     filters: {
-brand: "La Roche-Posay", 
-      
-    },
+  brand: "CeraVe",       },
   },
+   
     {
     image: vichy,
     alt: "Novo u ponudi",
@@ -73,10 +74,11 @@ brand: "La Roche-Posay",
   brand: "Vichy",       },
   },
     {
-    image: ceraVe,
+    image: miniPoklon,
     alt: "Novo u ponudi",
     filters: {
-  brand: "CeraVe",       },
+     discount: true
+},
   },
     {
     image: laR,
@@ -92,11 +94,14 @@ brand: "La Roche-Posay",
     filters: {
   brand: "Vichy",       },
   },
-    {
-    image: ceraVe,
+ 
+   {
+    image: laR,
     alt: "Novo u ponudi",
     filters: {
-  brand: "CeraVe",       },
+brand: "La Roche-Posay", 
+      
+    },
   },
    
 ];
@@ -119,7 +124,7 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 8)} />
+  <BannerSlider banners={banners.slice(4, 9)} />
 ) : (
   <TripleBannerSlider banners={banners.slice(4, 10)} />
 )}

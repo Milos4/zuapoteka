@@ -5,6 +5,18 @@ import { db, storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const EditProductModal = ({ product, onClose, onSave }) => {
+
+
+  const COLOR_MAP = {
+  crna: "#000000",
+  bijela: "#ffffff",
+  siva: "#9e9e9e",
+  plava: "#1976d2",
+  crvena: "#d32f2f",
+  zelena: "#388e3c",
+  žuta: "#fbc02d",
+  braon: "#6d4c41",
+};
   const [formData, setFormData] = useState({
     ...product,
     subkategorije: Array.isArray(product.subkategorije)
@@ -22,6 +34,13 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     novo: product.novo || false,
   });
 
+  const [selectedSizes, setSelectedSizes] = useState(
+  Array.isArray(product.velicine) ? product.velicine : []
+);
+
+const [selectedColors, setSelectedColors] = useState(
+  Array.isArray(product.boje) ? product.boje : []
+);
   const [brands, setBrands] = useState([]);
   const [newImageFile, setNewImageFile] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -49,6 +68,22 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     const file = e.target.files[0];
     if (file) setNewImageFile(file);
   };
+
+  const toggleSize = (size) => {
+  setSelectedSizes((prev) =>
+    prev.includes(size)
+      ? prev.filter((s) => s !== size)
+      : [...prev, size]
+  );
+};
+
+const toggleColor = (color) => {
+  setSelectedColors((prev) =>
+    prev.includes(color)
+      ? prev.filter((c) => c !== color)
+      : [...prev, color]
+  );
+};
 
   const handleSave = async () => {
     setSaving(true);
@@ -79,19 +114,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           .filter((s) => s.length > 0);
       }
 
-      // Konvertuj velicine iz stringa u niz
-      if (typeof updatedData.velicine === "string") {
-        updatedData.velicine = updatedData.velicine
-          .split(",")
-          .map((v) => v.trim())
-          .filter((v) => v.length > 0);
-      }
-
-      if (typeof updatedData.boje === "string") {
-  updatedData.boje = updatedData.boje
-    .split(",")
-    .map((b) => b.trim())
-    .filter((b) => b.length > 0);
+     // Ako je obuća — uzmi vrijednosti iz UI state-a
+if (updatedData.kategorija?.toLowerCase() === "obuća") {
+  updatedData.velicine = selectedSizes;
+  updatedData.boje = selectedColors;
 }
 
       const productRef = doc(db, "products", product.id);
@@ -152,31 +178,45 @@ const EditProductModal = ({ product, onClose, onSave }) => {
           placeholder="npr. podkategorija1, podkategorija2"
         />
 
-        {/* Samo ako je kategorija odjeca ili obuca */}
-        {(formData.kategorija?.toLowerCase() === "odjeca" ||
-          formData.kategorija?.toLowerCase() === "obuca") && (
-          <>
-            <label>Veličine (odvojene zarezom)</label>
-            <input
-              type="text"
-              name="velicine"
-              value={formData.velicine}
-              onChange={handleChange}
-              placeholder="npr. S, M, L, XL ili 40, 41, 42"
-            />
-          </>
-        )}
-
-        {formData.kategorija?.toLowerCase() === "obuca" && (
+       {formData.kategorija?.toLowerCase() === "obuća" && (
   <>
-    <label>Boje (odvojene zarezom)</label>
-    <input
-      type="text"
-      name="boje"
-      value={formData.boje}
-      onChange={handleChange}
-      placeholder="npr. crna, bijela, red, blue"
-    />
+    {/* ===== VELIČINE ===== */}
+    <label>Veličine (klikni da označiš)</label>
+    <div className="size-list">
+      {["36", "37", "38","39", "40", "41", "42", "43", "44", "45" ," 46" , "47", "48",
+        "49", "50"
+      ].map((size) => (
+        <button
+          type="button"
+          key={size}
+          className={`size-btn ${
+            selectedSizes.includes(size) ? "selected" : ""
+          }`}
+          onClick={() => toggleSize(size)}
+        >
+          {size}
+        </button>
+      ))}
+    </div>
+
+    {/* ===== BOJE ===== */}
+    <label>Boje</label>
+    <div className="color-list">
+      {Object.entries(COLOR_MAP).map(([name, hex]) => (
+        <label key={name} className="color-item">
+          <input
+            type="checkbox"
+            checked={selectedColors.includes(name)}
+            onChange={() => toggleColor(name)}
+          />
+          <span
+            className="color-dot"
+            style={{ backgroundColor: hex }}
+          />
+          {name}
+        </label>
+      ))}
+    </div>
   </>
 )}
 

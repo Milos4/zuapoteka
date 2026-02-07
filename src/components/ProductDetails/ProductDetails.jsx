@@ -30,8 +30,8 @@ const [selectedColor, setSelectedColor] = useState("");
   const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
 
 const kategorijaLower = product.kategorija?.toLowerCase();
-const hasSizes = kategorijaLower === "odjeca" || kategorijaLower === "obuca";
-const isObuca = kategorijaLower === "obuca";
+const hasSizes = kategorijaLower === "odjeca" || kategorijaLower === "obuća";
+const isObuca = kategorijaLower === "obuća";
 
 const [showInquiry, setShowInquiry] = useState(false);
 const [inquiryEmail, setInquiryEmail] = useState("");
@@ -118,7 +118,7 @@ const handleSendInquiry = async () => {
 
   if (hasSizes && !selectedSize) {
     setPopupMessage(
-      kategorijaLower === "obuca"
+      kategorijaLower === "obuća"
         ? "Molimo odaberite broj."
         : "Molimo odaberite veličinu."
     );
@@ -222,38 +222,32 @@ const handleSendInquiry = async () => {
         )}
 
         {/* Prikaz veličina samo za odjeću */}
-       {hasSizes && product.velicine?.length > 0 && (
+   {hasSizes && freshProduct.velicine?.length > 0 && (
   <div className="size-selector">
-    <span>
-      {kategorijaLower === "obuca" ? "Broj:" : "Veličina:"}
-    </span>
-
-    {product.velicine.map((size) => (
+    <span>{kategorijaLower === "obuća" ? "Broj:" : "Veličina:"}</span>
+    {freshProduct.velicine.map((size) => (
       <button
         key={size}
-        className={`size-button ${
-          selectedSize === size ? "selected" : ""
-        }`}
+        className={`size-button ${selectedSize === size ? "selected" : ""}`}
         onClick={() => setSelectedSize(size)}
       >
         {size}
       </button>
     ))}
-
     {!selectedSize && (
       <div className="size-warning">
-        Odaberite {kategorijaLower === "obuca" ? "broj" : "veličinu"}
+        Odaberite {kategorijaLower === "obuća" ? "broj" : "veličinu"}
       </div>
     )}
   </div>
 )}
     {/* ====== BOJA (SAMO ZA OBUĆU) ====== */}
-{isObuca && product.boje?.length > 0 && (
+{isObuca && freshProduct.boje?.length > 0 && (
   <div className="color-selector">
     <span>Boja:</span>
 
     <div className="color-buttons">
-      {product.boje.map((color) => (
+      {freshProduct.boje.map((color) => (
        <button
   key={color}
   className={`color-button ${

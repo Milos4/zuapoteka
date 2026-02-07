@@ -4,12 +4,23 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./AddProduct.css";
 
+const COLOR_MAP = {
+  crna: "#000000",
+  bijela: "#ffffff",
+  siva: "#9e9e9e",
+  plava: "#1976d2",
+  crvena: "#d32f2f",
+  zelena: "#388e3c",
+  žuta: "#fbc02d",
+  braon: "#6d4c41",
+};
+
 const AddProductClothing = () => {
   const [form, setForm] = useState({
     sifra: "",
     naziv: "",
     brandId: "",
-    kategorija: "",
+    kategorija: "Obuća",
     subkategorije: "",
     cijena: "",
     naStanju: false,
@@ -18,17 +29,13 @@ const AddProductClothing = () => {
     novo: false,
     opis: "",
     slika: null,
-    velicine: "",
-    boja: "",
   });
 
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
   const [preview, setPreview] = useState(null);
   const [brandovi, setBrandovi] = useState([]);
   const [uploading, setUploading] = useState(false);
-
-  const kategorijaLower = form.kategorija.toLowerCase();
-  const imaVelicine = kategorijaLower === "odjeca" || kategorijaLower === "obuca";
-  const jeObuca = kategorijaLower === "obuca";
 
   /* ====== FETCH BRANDOVI ====== */
   useEffect(() => {
@@ -42,7 +49,6 @@ const AddProductClothing = () => {
   /* ====== IMAGE PREVIEW ====== */
   useEffect(() => {
     if (!form.slika) return setPreview(null);
-
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result);
     reader.readAsDataURL(form.slika);
@@ -51,7 +57,6 @@ const AddProductClothing = () => {
   /* ====== HANDLE CHANGE ====== */
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-
     if (type === "checkbox") {
       setForm(prev => ({ ...prev, [name]: checked }));
     } else if (type === "file") {
@@ -61,12 +66,34 @@ const AddProductClothing = () => {
     }
   };
 
+  const toggleSize = (size) => {
+    setSelectedSizes(prev =>
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    );
+  };
+
+  const toggleColor = (color) => {
+    setSelectedColors(prev =>
+      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
+    );
+  };
+
   /* ====== SUBMIT ====== */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.naPopustu && (form.popustProcenat < 0 || form.popustProcenat > 100)) {
       alert("Popust mora biti između 0% i 100%");
+      return;
+    }
+
+    if (selectedSizes.length === 0) {
+      alert("Odaberite veličine!");
+      return;
+    }
+
+    if (selectedColors.length === 0) {
+      alert("Odaberite boje!");
       return;
     }
 
@@ -81,12 +108,11 @@ const AddProductClothing = () => {
       }
 
       const cijenaBroj = Number(form.cijena);
-
-if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
-  alert("Unesite ispravnu cijenu");
-  setUploading(false);
-  return;
-}
+      if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
+        alert("Unesite ispravnu cijenu");
+        setUploading(false);
+        return;
+      }
 
       const newProduct = {
         sifra: form.sifra,
@@ -105,19 +131,9 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         slikaURL,
         brojNarudzbinaUkupno: 0,
         brojNarudzbinaMjesec: 0,
-        velicine:
-          imaVelicine && form.velicine
-            ? form.velicine
-                .split(",")
-                .map(v => v.trim().toUpperCase())
-                .filter(v => v !== "")
-            : [],
-           boje:
-  jeObuca && form.boja
-    ? form.boja.split(",").map(b => b.trim().toLowerCase())
-    : [],
+        velicine: selectedSizes,
+        boje: selectedColors,
       };
-  
 
       await addDoc(collection(db, "products"), newProduct);
       alert("Proizvod uspješno dodat!");
@@ -126,7 +142,7 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         sifra: "",
         naziv: "",
         brandId: "",
-        kategorija: "",
+        kategorija: "Obuća",
         subkategorije: "",
         cijena: "",
         naStanju: false,
@@ -135,9 +151,9 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         novo: false,
         opis: "",
         slika: null,
-        velicine: "",
-        boja: "",
       });
+      setSelectedSizes([]);
+      setSelectedColors([]);
       setPreview(null);
     } catch (err) {
       console.error(err);
@@ -150,8 +166,7 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
   /* ====== JSX ====== */
   return (
     <div className="add-product-container">
-      <h2>Dodaj Proizvod</h2>
-
+      <h2>Dodaj Obuću</h2>
       <form onSubmit={handleSubmit} className="add-product-form">
         <input name="sifra" placeholder="Šifra proizvoda" value={form.sifra} onChange={handleChange} required />
         <input name="naziv" placeholder="Naziv proizvoda" value={form.naziv} onChange={handleChange} required />
@@ -164,14 +179,6 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         </select>
 
         <input
-          name="kategorija"
-          placeholder="Kategorija (odjeca ili obuca)"
-          value={form.kategorija}
-          onChange={handleChange}
-          required
-        />
-
-        <input
           name="subkategorije"
           placeholder="Subkategorije (zarez)"
           value={form.subkategorije}
@@ -179,28 +186,35 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         />
 
         {/* ====== VELIČINE ====== */}
-        {imaVelicine && (
-          <input
-            name="velicine"
-            placeholder={
-              kategorijaLower === "obuca"
-                ? "Veličine (npr. 40,41,42)"
-                : "Veličine (npr. S,M,L)"
-            }
-            value={form.velicine}
-            onChange={handleChange}
-            required
-          />
-        )}
-        {jeObuca && (
-  <input
-    name="boja"
-    placeholder="Boje (npr. crna, bijela)"
-    value={form.boja}
-    onChange={handleChange}
-    required
-  />
-)}
+        <label>Veličine</label>
+        <div className="size-list">
+          {["36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"].map(size => (
+            <button
+              type="button"
+              key={size}
+              className={`size-btn ${selectedSizes.includes(size) ? "selected" : ""}`}
+              onClick={() => toggleSize(size)}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+
+        {/* ====== BOJE ====== */}
+        <label>Boje</label>
+        <div className="color-list">
+          {Object.entries(COLOR_MAP).map(([name, hex]) => (
+            <label key={name} className="color-item">
+              <input
+                type="checkbox"
+                checked={selectedColors.includes(name)}
+                onChange={() => toggleColor(name)}
+              />
+              <span className="color-dot" style={{ backgroundColor: hex }} />
+              {name}
+            </label>
+          ))}
+        </div>
 
         <input type="number" name="cijena" placeholder="Cijena" value={form.cijena} onChange={handleChange} required />
 
@@ -208,15 +222,7 @@ if (isNaN(cijenaBroj) || cijenaBroj <= 0) {
         <label><input type="checkbox" name="naPopustu" checked={form.naPopustu} onChange={handleChange} /> Na popustu</label>
 
         {form.naPopustu && (
-          <input
-            type="number"
-            name="popustProcenat"
-            placeholder="Popust %"
-            value={form.popustProcenat}
-            onChange={handleChange}
-            min={0}
-            max={100}
-          />
+          <input type="number" name="popustProcenat" placeholder="Popust %" value={form.popustProcenat} onChange={handleChange} min={0} max={100} />
         )}
 
         <label><input type="checkbox" name="novo" checked={form.novo} onChange={handleChange} /> Novo</label>

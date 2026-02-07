@@ -5,6 +5,11 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./AddProduct.css";
 
 const AddProduct = () => {
+
+  const [categories, setCategories] = useState([]);
+const [selectedCategory, setSelectedCategory] = useState("");
+const [availableSubcategories, setAvailableSubcategories] = useState([]);
+const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [form, setForm] = useState({
     sifra: "",
     naziv: "",
@@ -33,6 +38,19 @@ const AddProduct = () => {
     };
     fetchBrandovi();
   }, []);
+
+  useEffect(() => {
+  const fetchCategories = async () => {
+    const snapshot = await getDocs(collection(db, "kategorije"));
+    const list = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setCategories(list);
+  };
+
+  fetchCategories();
+}, []);
 
   useEffect(() => {
     if (form.slika) {
@@ -73,27 +91,30 @@ const AddProduct = () => {
         slikaURL = await getDownloadURL(storageRef);
       }
 
-      const newProduct = {
-        sifra: form.sifra,
-        naziv: form.naziv,
-        brandId: form.brandId,
-        kategorija: form.kategorija,
-        subkategorije: form.subkategorije
-          .split(",")
-          .map((s) => s.trim().toLowerCase()),
-        cijena: parseFloat(form.cijena),
-        naStanju: form.naStanju,
-        naPopustu: form.naPopustu,
-        popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
-        novo: form.novo,
-        opis: form.opis,
-        nacinUpotrebe: form.nacinUpotrebe,
-        sastav: form.sastav,
-        slikaURL,
-        brojNarudzbinaUkupno: 0,
-        brojNarudzbinaMjesec: 0,
-      };
+      const categoryObj = categories.find(c => c.id === selectedCategory);
 
+const newProduct = {
+  sifra: form.sifra,
+  naziv: form.naziv,
+  brandId: form.brandId,
+
+  kategorijaId: selectedCategory,
+  kategorija: categoryObj?.naziv || "",
+
+  subkategorije: selectedSubcategories,
+
+  cijena: parseFloat(form.cijena),
+  naStanju: form.naStanju,
+  naPopustu: form.naPopustu,
+  popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
+  novo: form.novo,
+  opis: form.opis,
+  nacinUpotrebe: form.nacinUpotrebe,
+  sastav: form.sastav,
+  slikaURL,
+  brojNarudzbinaUkupno: 0,
+  brojNarudzbinaMjesec: 0,
+};
       await addDoc(collection(db, "products"), newProduct);
       alert("Proizvod uspešno dodat!");
 
@@ -111,7 +132,8 @@ const AddProduct = () => {
         opis: "",
         nacinUpotrebe: "",
         sastav: "",
-        slika: null,
+        slika: null,    
+        
       });
       setPreview(null);
     } catch (error) {
@@ -158,23 +180,48 @@ const AddProduct = () => {
           ))}
         </select>
 
-        <input
-          type="text"
-          name="kategorija"
-          placeholder="Kategorija"
-          value={form.kategorija}
-          onChange={handleChange}
-          required
-        />
+      <select
+  value={selectedCategory}
+  required
+  onChange={(e) => {
+    const catId = e.target.value;
+    setSelectedCategory(catId);
 
-        <input
-          type="text"
-          name="subkategorije"
-          placeholder="Subkategorije (odvojene zarezom)"
-          value={form.subkategorije}
-          onChange={handleChange}
-        />
+    const cat = categories.find(c => c.id === catId);
+    setAvailableSubcategories(cat?.subkategorije || []);
+    setSelectedSubcategories([]);
+  }}
+>
+  <option value="">Izaberi kategoriju</option>
+  {categories.map(c => (
+    <option key={c.id} value={c.id}>
+      {c.naziv}
+    </option>
+  ))}
+</select>
 
+{availableSubcategories.length > 0 && (
+  <div className="subcategories-box">
+    {availableSubcategories.map(sub => (
+      <label key={sub}>
+        <input
+          type="checkbox"
+          checked={selectedSubcategories.includes(sub)}
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectedSubcategories(prev => [...prev, sub]);
+            } else {
+              setSelectedSubcategories(prev =>
+                prev.filter(s => s !== sub)
+              );
+            }
+          }}
+        />
+        {sub}
+      </label>
+    ))}
+  </div>
+)}
         <input
           type="number"
           name="cijena"

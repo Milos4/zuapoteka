@@ -42,11 +42,16 @@ const COLOR_MAP = {
   bijela: "#ffffff",
   siva: "#9e9e9e",
   plava: "#1976d2",
+   "tamno plava": "#0d47a1",
   crvena: "#d32f2f",
   zelena: "#388e3c",
   žuta: "#fbc02d",
   braon: "#6d4c41",
+  roze: "#d81b60",
+   "svjetlo roze": "#f8bbd0",
+  ljubicasta: "#7b1fa2",
 };
+
 const getColorValue = (color) =>
   COLOR_MAP[color?.toLowerCase()] || "#cccccc";
 

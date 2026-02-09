@@ -3,16 +3,19 @@ import { db, storage } from "../../../firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./AddProduct.css";
-
 const COLOR_MAP = {
   crna: "#000000",
   bijela: "#ffffff",
   siva: "#9e9e9e",
   plava: "#1976d2",
+   "tamno plava": "#0d47a1",
   crvena: "#d32f2f",
   zelena: "#388e3c",
   žuta: "#fbc02d",
   braon: "#6d4c41",
+  roze: "#d81b60",
+   "svjetlo roze": "#f8bbd0",
+  ljubicasta: "#7b1fa2",
 };
 
 const AddProductClothing = () => {
@@ -72,11 +75,11 @@ const AddProductClothing = () => {
     );
   };
 
-  const toggleColor = (color) => {
-    setSelectedColors(prev =>
-      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
-    );
-  };
+const toggleColor = (color) => {
+  setSelectedColors(prev =>
+    prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
+  );
+};
 
   /* ====== SUBMIT ====== */
   const handleSubmit = async (e) => {

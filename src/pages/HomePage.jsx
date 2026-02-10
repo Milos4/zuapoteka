@@ -23,6 +23,7 @@ import vichy from "../assets/banners/vichy.jpg";
 import miniPoklon from "../assets/banners/MiniPoklon.png";
 import hydro from "../assets/banners/Hydrocollagen.png";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
+import martiDerm from "../assets/banners/MartiDerm25.png";
 
 
 
@@ -107,10 +108,10 @@ productName: "Hydrocollagen Novelius",
   },
 
     {
-    image: vichy,
+    image: martiDerm,
     alt: "Novo u ponudi",
     filters: {
-  brand: "Vichy",       },
+  brand: "MartiDerm",       },
   },
     {
     image: miniPoklon,

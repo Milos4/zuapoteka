@@ -70,13 +70,18 @@ const handleClick = () => {
   const filters = banners[realIndex].filters || {};
   const query = new URLSearchParams();
 
-  if (filters.brand) query.append("brand", filters.brand);
-  if (filters.category) query.append("kategorija", filters.category);
-  if (filters.discount) query.append("naPopustu", "true");
-  if (filters.new) query.append("novo", "true");
+  if (filters.productName) {
+    query.append("productName", filters.productName);
+  } else {
+    if (filters.brand) query.append("brand", filters.brand);
+    if (filters.category) query.append("kategorija", filters.category);
+    if (filters.discount) query.append("naPopustu", "true");
+    if (filters.new) query.append("novo", "true");
+  }
 
   navigate(`/prodavnica?${query.toString()}`);
 };
+
   return (
     <div className="banner-slider1" ref={sliderRef}>
       <div

@@ -21,6 +21,9 @@ import laR from "../assets/banners/LaR.jpg";
 import bioderma from "../assets/banners/bioderma.jpg";
 import vichy from "../assets/banners/vichy.jpg";
 import miniPoklon from "../assets/banners/MiniPoklon.png";
+import hydro from "../assets/banners/Hydrocollagen.png";
+import novalac from "../assets/banners/NovalacPromocija5+1.png";
+
 
 
 
@@ -89,19 +92,33 @@ brand: "La Roche-Posay",
     },
   },
    {
+    image: novalac,
+    alt: "Novo u ponudi",
+    filters: {
+ productName: "5+1",
+     },
+  },
+ 
+   {
+    image: hydro,
+    alt: "Novo u ponudi",
+    filters: {
+productName: "Hydrocollagen Novelius",      
+    },
+  },
+
+    {
     image: vichy,
     alt: "Novo u ponudi",
     filters: {
   brand: "Vichy",       },
   },
- 
-   {
-    image: laR,
+    {
+    image: miniPoklon,
     alt: "Novo u ponudi",
     filters: {
-brand: "La Roche-Posay", 
-      
-    },
+     discount: true
+},
   },
    
 ];
@@ -124,9 +141,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 9)} />
+  <BannerSlider banners={banners.slice(4, 12)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(4, 10)} />
+  <TripleBannerSlider banners={banners.slice(4, 13)} />
 )}
 
   

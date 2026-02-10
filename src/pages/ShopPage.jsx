@@ -169,6 +169,22 @@ const fetchProducts = async () => {
     setCategories(catObj);
   };
 
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const searchParam = params.get("search");
+  const productNameParam = params.get("productName"); // ovo dodaj
+
+  if (searchParam) {
+    setSearch(searchParam);
+    setVisibleCount(PAGE_SIZE); // reset paginacije
+  }
+
+  if (productNameParam) {
+    setSearch(productNameParam); // koristi search filter za tačno ime proizvoda
+    setVisibleCount(PAGE_SIZE);
+  }
+}, [location.search]);
+
   const shortenDescription = (text) => {
     if (!text) return "";
     const words = text.split(" ");

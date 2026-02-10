@@ -26,12 +26,11 @@ import miniPoklon from "../assets/banners/MiniPoklon.png";
 
 const banners = [
 
-  {
-    image:biodermaBanner,
-    alt: "Maybelline Akcija",
+    {
+    image: vichyBanner,
+    alt: "Novo u ponudi",
     filters: {
-      brand: "Bioderma",
-      },
+  brand: "Vichy",    },
   },
   {
     image: laRocheBanner,

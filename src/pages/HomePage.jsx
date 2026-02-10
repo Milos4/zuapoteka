@@ -29,12 +29,11 @@ import novalac from "../assets/banners/NovalacPromocija5+1.png";
 
 const banners = [
 
-  {
-    image:biodermaBanner,
-    alt: "Maybelline Akcija",
+    {
+    image: vichyBanner,
+    alt: "Novo u ponudi",
     filters: {
-      brand: "Bioderma",
-      },
+  brand: "Vichy",    },
   },
   {
     image: laRocheBanner,

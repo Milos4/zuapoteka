@@ -63,7 +63,7 @@ const NavBarAdmin = () => {
                 to="/admin/dodaj-odjecu"
                 onClick={() => setDropdownOpen(false)}
               >
-                Dodaj Odjecu
+                Dodaj Obucu
               </Link>
             </div>
           )}

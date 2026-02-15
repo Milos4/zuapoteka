@@ -25,6 +25,7 @@ import hydro from "../assets/banners/Hydrocollagen.png";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
 import martiDerm from "../assets/banners/MartiDerm25.png";
 
+import martiDermB from "../assets/banners/MartiDermBanner.png";
 
 
 
@@ -44,10 +45,10 @@ const banners = [
     },
   },
   {
-    image: vichyBanner,
+    image: martiDermB,
     alt: "Novo u ponudi",
     filters: {
-  brand: "Vichy",    },
+  brand: "MartiDerm",    },
   },
 
    {
@@ -57,56 +58,13 @@ const banners = [
   brand: "CeraVe",       },
   },
     {
-    image: bioderma,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Bioderma",  
-     },
-    },
-       {
-    image: ceraVe,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "CeraVe",       },
-  },
-   
-    {
     image: vichy,
     alt: "Novo u ponudi",
     filters: {
   brand: "Vichy",       },
   },
-    {
-    image: miniPoklon,
-    alt: "Novo u ponudi",
-    filters: {
-     discount: true
-},
-  },
-    {
-    image: laR,
-    alt: "Novo u ponudi",
-    filters: {
-brand: "La Roche-Posay", 
-      
-    },
-  },
-   {
-    image: novalac,
-    alt: "Novo u ponudi",
-    filters: {
- productName: "5+1",
-     },
-  },
- 
-   {
-    image: hydro,
-    alt: "Novo u ponudi",
-    filters: {
-productName: "Hydrocollagen Novelius",      
-    },
-  },
 
+  
     {
     image: martiDerm,
     alt: "Novo u ponudi",
@@ -120,7 +78,29 @@ productName: "Hydrocollagen Novelius",
      discount: true
 },
   },
-   
+
+   {
+    image: novalac,
+    alt: "Novo u ponudi",
+    filters: {
+ productName: "5+1",
+     },
+  },
+      {
+    image: laR,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "La Roche-Posay", 
+      
+    },
+  },
+
+        {
+    image: ceraVe,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "CeraVe",       },
+  },
 ];
 
 const HomePage = () => {
@@ -141,9 +121,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 12)} />
+  <BannerSlider banners={banners.slice(4, 10)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(4, 13)} />
+  <TripleBannerSlider banners={banners.slice(4, 10)} />
 )}
 
   

@@ -21,6 +21,21 @@ const COLOR_MAP = {
   ljubicasta: "#7b1fa2",
 };
 
+  const getSizeList = (velicine) =>
+    Array.isArray(velicine)
+      ? velicine
+          .map((v) => (typeof v === "object" ? v.broj : v))
+          .filter(Boolean)
+      : [];
+
+  const getDoplataForRange = (velicine, predicate) => {
+    if (!Array.isArray(velicine)) return "";
+    const match = velicine.find(
+      (v) => typeof v === "object" && predicate(Number(v.broj))
+    );
+    return match ? String(Number(match.doplata || 0)) : "";
+  };
+
   const [formData, setFormData] = useState({
     ...product,
     subkategorije: Array.isArray(product.subkategorije)
@@ -36,10 +51,12 @@ const COLOR_MAP = {
     sastav: product.sastav || "",
     brandId: product.brandId || "", // za brand
     novo: product.novo || false,
+    doplata4748: getDoplataForRange(product.velicine, (n) => n >= 47 && n <= 48),
+    doplata4950: getDoplataForRange(product.velicine, (n) => n >= 49 && n <= 50),
   });
 
   const [selectedSizes, setSelectedSizes] = useState(
-  Array.isArray(product.velicine) ? product.velicine : []
+  getSizeList(product.velicine)
 );
 
 const [selectedColors, setSelectedColors] = useState(
@@ -120,7 +137,16 @@ const toggleColor = (color) => {
 
      // Ako je obuća — uzmi vrijednosti iz UI state-a
 if (updatedData.kategorija?.toLowerCase() === "obuća") {
-  updatedData.velicine = selectedSizes;
+  updatedData.velicine = selectedSizes.map((size) => {
+    const sizeNum = Number(size);
+    const doplata =
+      sizeNum >= 49
+        ? Number(formData.doplata4950 || 0)
+        : sizeNum >= 47
+          ? Number(formData.doplata4748 || 0)
+          : 0;
+    return { broj: size, doplata };
+  });
   updatedData.boje = selectedColors;
 }
 
@@ -187,7 +213,7 @@ if (updatedData.kategorija?.toLowerCase() === "obuća") {
     {/* ===== VELIČINE ===== */}
     <label>Veličine (klikni da označiš)</label>
     <div className="size-list">
-      {["36", "37", "38","39", "40", "41", "42", "43", "44", "45" ," 46" , "47", "48",
+      {["36", "37", "38","39", "40", "41", "42", "43", "44", "45" , "46" , "47", "48",
         "49", "50"
       ].map((size) => (
         <button
@@ -202,6 +228,27 @@ if (updatedData.kategorija?.toLowerCase() === "obuća") {
         </button>
       ))}
     </div>
+
+    {/* ===== DOPLATE ===== */}
+    <label>Doplata za brojeve 47-48 (BAM)</label>
+    <input
+      type="number"
+      name="doplata4748"
+      value={formData.doplata4748 || ""}
+      onChange={handleChange}
+      min="0"
+      step="0.01"
+    />
+
+    <label>Doplata za brojeve 49-50 (BAM)</label>
+    <input
+      type="number"
+      name="doplata4950"
+      value={formData.doplata4950 || ""}
+      onChange={handleChange}
+      min="0"
+      step="0.01"
+    />
 
     {/* ===== BOJE ===== */}
     <label>Boje</label>
@@ -308,3 +355,5 @@ if (updatedData.kategorija?.toLowerCase() === "obuća") {
 };
 
 export default EditProductModal;
+
+

@@ -11,8 +11,8 @@ import Popup from "../Popup";
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-const [selectedSize, setSelectedSize] = useState("");
-const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState("");
   const [brand, setBrand] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -24,10 +24,14 @@ const [selectedColor, setSelectedColor] = useState("");
   const user = auth.currentUser;
   const { addToCart } = useCart();
 
-  const cijena = parseFloat(freshProduct.cijena || 0);
+  const baseCijena = parseFloat(freshProduct.cijena || 0);
   const naPopustu = freshProduct.naPopustu === true;
   const popust = parseFloat(freshProduct.popustProcenat || 0);
-  const novaCijena = (cijena * (1 - popust / 100)).toFixed(2);
+  const sizeDoplata = selectedSize?.doplata ? Number(selectedSize.doplata) : 0;
+  const cijenaSaDoplatom = baseCijena + sizeDoplata;
+  const novaCijena = (cijenaSaDoplatom * (1 - popust / 100)).toFixed(2);
+
+  
 
 const kategorijaLower = product.kategorija?.toLowerCase();
 const hasSizes = kategorijaLower === "odjeca" || kategorijaLower === "obuća";
@@ -136,11 +140,15 @@ const handleSendInquiry = async () => {
   return;
 }
 
+  const selectedSizeValue = hasSizes ? selectedSize?.broj || selectedSize : null;
+
   addToCart(
     {
-      ...product,
-      selectedSize: hasSizes ? selectedSize : null,
-        selectedColor: isObuca ? selectedColor : null,
+      ...freshProduct,
+      cijena: Number.isFinite(cijenaSaDoplatom) ? cijenaSaDoplatom : baseCijena,
+      selectedSize: selectedSizeValue,
+      selectedColor: isObuca ? selectedColor : null,
+      sizeDoplata: sizeDoplata,
     },
     quantity
   );
@@ -230,15 +238,22 @@ const handleSendInquiry = async () => {
    {hasSizes && freshProduct.velicine?.length > 0 && (
   <div className="size-selector">
     <span>{kategorijaLower === "obuća" ? "Broj:" : "Veličina:"}</span>
-    {freshProduct.velicine.map((size) => (
-      <button
-        key={size}
-        className={`size-button ${selectedSize === size ? "selected" : ""}`}
-        onClick={() => setSelectedSize(size)}
-      >
-        {size}
-      </button>
-    ))}
+   {freshProduct.velicine.map((sizeObj) => {
+     const sizeValue = typeof sizeObj === "object" ? sizeObj.broj : sizeObj;
+     const sizeExtra = typeof sizeObj === "object" ? Number(sizeObj.doplata || 0) : 0;
+     return (
+       <button
+         key={sizeValue}
+         className={`size-button ${
+           selectedSize?.broj === sizeValue ? "selected" : ""
+         }`}
+         onClick={() => setSelectedSize({ broj: sizeValue, doplata: sizeExtra })}
+       >
+         {sizeValue}
+         {sizeExtra > 0 && ` (+${sizeExtra} BAM)`}
+       </button>
+     );
+   })}
     {!selectedSize && (
       <div className="size-warning">
         Odaberite {kategorijaLower === "obuća" ? "broj" : "veličinu"}
@@ -286,14 +301,14 @@ const handleSendInquiry = async () => {
       <>
         <div className="price-rows">
           <div className="original-price crossed">
-            {cijena.toFixed(2)} BAM
+            {cijenaSaDoplatom.toFixed(2)} BAM
           </div>
           <div className="discounted-price">{novaCijena} BAM</div>
         </div>
         <div className="discount-circle">-{popust}%</div>
       </>
     ) : (
-      <div className="original-price">{cijena.toFixed(2)} BAM</div>
+      <div className="original-price">{cijenaSaDoplatom.toFixed(2)} BAM</div>
     )}
 
     <button

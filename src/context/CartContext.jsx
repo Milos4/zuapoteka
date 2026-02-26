@@ -80,10 +80,16 @@ const mergeLocalCartToFirestore = async (user) => {
 
 
 const addToCart = async (product, quantity = 1) => {
+  const normalizeSize = (size) =>
+    size && typeof size === "object" ? size.broj : size;
+  const normalizeColor = (color) =>
+    color && typeof color === "object" ? color.name || color : color;
+
   const existingIndex = cartItems.findIndex(
     (item) =>
       item.id === product.id &&
-      item.selectedSize === product.selectedSize // ista veličina = ista stavka
+      normalizeSize(item.selectedSize) === normalizeSize(product.selectedSize) &&
+      normalizeColor(item.selectedColor) === normalizeColor(product.selectedColor)
   );
 
   let updatedCart = [...cartItems];
@@ -169,3 +175,4 @@ const updateQuantity = async (productId, newQuantity) => {
 };
 
 export const useCart = () => useContext(CartContext);
+

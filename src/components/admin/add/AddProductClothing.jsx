@@ -32,6 +32,8 @@ const AddProductClothing = () => {
     novo: false,
     opis: "",
     slika: null,
+    doplata4748: "",
+    doplata4950: "",
   });
 
   const [selectedSizes, setSelectedSizes] = useState([]);
@@ -134,7 +136,16 @@ const toggleColor = (color) => {
         slikaURL,
         brojNarudzbinaUkupno: 0,
         brojNarudzbinaMjesec: 0,
-        velicine: selectedSizes,
+        velicine: selectedSizes.map(size => {
+          const sizeNum = Number(size);
+          const doplata =
+            sizeNum >= 49
+              ? Number(form.doplata4950 || 0)
+              : sizeNum >= 47
+                ? Number(form.doplata4748 || 0)
+                : 0;
+          return { broj: size, doplata };
+        }),
         boje: selectedColors,
       };
 
@@ -154,6 +165,8 @@ const toggleColor = (color) => {
         novo: false,
         opis: "",
         slika: null,
+        doplata4748: "",
+        doplata4950: "",
       });
       setSelectedSizes([]);
       setSelectedColors([]);
@@ -220,6 +233,24 @@ const toggleColor = (color) => {
         </div>
 
         <input type="number" name="cijena" placeholder="Cijena" value={form.cijena} onChange={handleChange} required />
+        <input
+          type="number"
+          name="doplata4748"
+          placeholder="Doplata za brojeve 47-48 (BAM)"
+          value={form.doplata4748}
+          onChange={handleChange}
+          min="0"
+          step="0.01"
+        />
+        <input
+          type="number"
+          name="doplata4950"
+          placeholder="Doplata za brojeve 49-50 (BAM)"
+          value={form.doplata4950}
+          onChange={handleChange}
+          min="0"
+          step="0.01"
+        />
 
         <label><input type="checkbox" name="naStanju" checked={form.naStanju} onChange={handleChange} /> Na stanju</label>
         <label><input type="checkbox" name="naPopustu" checked={form.naPopustu} onChange={handleChange} /> Na popustu</label>

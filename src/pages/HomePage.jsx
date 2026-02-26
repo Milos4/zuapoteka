@@ -11,21 +11,20 @@ import BrandCarousel from "../components/BrandCarousel";
 import FreeShippingBanner from "../components/FreeShippingBanner";
 
 
-
-import biodermaBanner from "../assets/banners/Bioderma10.jpg";
 import laRocheBanner from "../assets/banners/LaRoche10.jpg";
 import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
 import ceraVe from "../assets/banners/cerave.jpg";
 import laR from "../assets/banners/LaR.jpg";
-import bioderma from "../assets/banners/bioderma.jpg";
 import vichy from "../assets/banners/vichy.jpg";
 import miniPoklon from "../assets/banners/MiniPoklon.png";
-import hydro from "../assets/banners/Hydrocollagen.png";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
-import martiDerm from "../assets/banners/MartiDerm25.png";
+import dr from "../assets/banners/DrLuigi.jpg";
+import martiDerm from "../assets/banners/Martiderm_akcija_Dan žena_02.03.-09.03.png";
+import bioderma from "../assets/banners/bioderma.png"
+import drB from "../assets/banners/DrLuigiBanner.png";
+import eucerin from "../assets/banners/Eucerin9.3.png";
 
-import martiDermB from "../assets/banners/MartiDermBanner.png";
 
 
 
@@ -37,18 +36,20 @@ const banners = [
     filters: {
   brand: "Vichy",    },
   },
+  
+    {
+    image: drB,
+    alt: "Skincare proizvodi",
+    filters: {
+      brand: "Dr. Luigi",
+    },
+  },
   {
     image: laRocheBanner,
     alt: "Skincare proizvodi",
     filters: {
       brand: "La Roche-Posay",
     },
-  },
-  {
-    image: martiDermB,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "MartiDerm",    },
   },
 
    {
@@ -57,20 +58,39 @@ const banners = [
     filters: {
   brand: "CeraVe",       },
   },
-    {
-    image: vichy,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Vichy",       },
-  },
 
-  
-    {
+
+      {
     image: martiDerm,
     alt: "Novo u ponudi",
     filters: {
-  brand: "MartiDerm",       },
+brand: "MartiDerm", 
+      
+    },
   },
+    {
+    image: bioderma,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Bioderma", 
+  },
+},
+
+
+      {
+    image: eucerin,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Eucerin",       },
+  },
+        {
+    image: dr,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Dr. Luigi",},
+  },
+
+
     {
     image: miniPoklon,
     alt: "Novo u ponudi",
@@ -86,7 +106,8 @@ const banners = [
  productName: "5+1",
      },
   },
-      {
+
+        {
     image: laR,
     alt: "Novo u ponudi",
     filters: {
@@ -95,12 +116,21 @@ brand: "La Roche-Posay",
     },
   },
 
+     {
+    image: vichy,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Vichy",       },
+  },
+
         {
     image: ceraVe,
     alt: "Novo u ponudi",
     filters: {
   brand: "CeraVe",       },
   },
+
+  
 ];
 
 const HomePage = () => {
@@ -121,9 +151,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 10)} />
+  <BannerSlider banners={banners.slice(4, 14)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(4, 10)} />
+  <TripleBannerSlider banners={banners.slice(4, 14)} />
 )}
 
   

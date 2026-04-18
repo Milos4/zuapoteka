@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import MiniProduct from "../components/MiniProduct";
 import "../styles/colors.css";
@@ -12,7 +12,12 @@ const CartProductsPage = () => {
     updateQuantity,
     removeFromCart,
     setCartItems,
+    refreshCart,
   } = useCart();
+
+  useEffect(() => {
+    refreshCart();
+  }, [refreshCart]);
 
   const updateQuantityHandler = (id, delta) => {
     const item = cart.find((i) => i.id === id);

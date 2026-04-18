@@ -16,27 +16,17 @@ import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
 import ceraVe from "../assets/banners/cerave.jpg";
 import laR from "../assets/banners/LaR.jpg";
-import vichy from "../assets/banners/vichy.jpg";
-import miniPoklon from "../assets/banners/MiniPoklon.png";
+import vichy from "../assets/banners/vichy25.jpg";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
 import dr from "../assets/banners/DrLuigi.jpg";
-import martiDerm from "../assets/banners/Martiderm_akcija_Dan žena_02.03.-09.03.png";
-import bioderma from "../assets/banners/bioderma.png"
 import drB from "../assets/banners/DrLuigiBanner.png";
-import eucerin from "../assets/banners/Eucerin9.3.png";
-
-
+import eucerin from "../assets/banners/Eucerin.png";
+import sok from "../assets/banners/sok.png"
+import dl from "../assets/banners/dl2.png"
 
 
 const banners = [
 
-    {
-    image: vichyBanner,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Vichy",    },
-  },
-  
     {
     image: drB,
     alt: "Skincare proizvodi",
@@ -60,50 +50,26 @@ const banners = [
   },
 
 
-      {
-    image: martiDerm,
+  
+    {
+    image: vichy,
     alt: "Novo u ponudi",
     filters: {
-brand: "MartiDerm", 
-      
+    brand: "Vichy", 
     },
-  },
-    {
-    image: bioderma,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Bioderma", 
-  },
 },
-
-
-      {
-    image: eucerin,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Eucerin",       },
-  },
-        {
-    image: dr,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Dr. Luigi",},
-  },
-
-
-    {
-    image: miniPoklon,
-    alt: "Novo u ponudi",
-    filters: {
-     discount: true
-},
-  },
-
    {
     image: novalac,
     alt: "Novo u ponudi",
     filters: {
  productName: "5+1",
+     },
+  },
+   {
+    image: dl,
+    alt: "Novo u ponudi",
+    filters: {
+    brand: "Body drzim liniju", 
      },
   },
 
@@ -115,12 +81,29 @@ brand: "La Roche-Posay",
       
     },
   },
+  
+        {
+    image: sok,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "Rabenhorst", 
+      
+    },
+  },
 
-     {
+      {
     image: vichy,
     alt: "Novo u ponudi",
     filters: {
-  brand: "Vichy",       },
+    brand: "Vichy", 
+    },
+},
+
+        {
+    image: dr,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "Dr. Luigi",},
   },
 
         {
@@ -130,7 +113,14 @@ brand: "La Roche-Posay",
   brand: "CeraVe",       },
   },
 
-  
+     {
+    image: novalac,
+    alt: "Novo u ponudi",
+    filters: {
+ productName: "5+1",
+     },
+  },
+
 ];
 
 const HomePage = () => {
@@ -151,9 +141,9 @@ const HomePage = () => {
       }}
     >
 {isMobile ? (
-  <BannerSlider banners={banners.slice(4, 14)} />
+  <BannerSlider banners={banners.slice(3, 13)} />
 ) : (
-  <TripleBannerSlider banners={banners.slice(4, 14)} />
+  <TripleBannerSlider banners={banners.slice(3, 13)} />
 )}
 
   
@@ -163,7 +153,7 @@ const HomePage = () => {
       
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-         {!isMobile && <BannerSlider banners={banners.slice(0,4)} />}
+         {!isMobile && <BannerSlider banners={banners.slice(0,3)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

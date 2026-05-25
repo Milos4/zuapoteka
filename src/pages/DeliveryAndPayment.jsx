@@ -53,7 +53,7 @@ const subtotal = items.reduce(
   0
 );
   const shipping =
-    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.09 : 0;
+    formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.70 : 0;
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
@@ -124,7 +124,7 @@ const subtotal = items.reduce(
         ? "Preuzimanje u apoteci"
         : "Dostava na adresu";
     const shippingCost =
-      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.09 : 0;
+      formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.70 : 0;
     const totalAmount = subtotal + shippingCost;
 
     const orderId = Math.floor(100000 + Math.random() * 9000000).toString(); // npr. 7-cifren broj
@@ -340,7 +340,7 @@ const subtotal = items.reduce(
                           Proizvod će biti dostavljen na vašu adresu putem
                           pošte. Plaćanje pri preuzimanju{" "}
                           {subtotal < 60
-                            ? `(+11.09 BAM dostava)`
+                            ? `(+11.70 BAM dostava)`
                             : `(Besplatna dostava)`}
                           .
                         </div>

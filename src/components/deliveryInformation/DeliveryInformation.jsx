@@ -22,7 +22,7 @@ const DeliveryInformation = () => {
       <section className="complaints-section">
         <h2>2. Troškovi dostave</h2>
         <p>
-          Trošak dostave iznosi <strong>11 KM</strong> za porudžbine ispod 60
+          Trošak dostave iznosi <strong>11.70 KM</strong> za porudžbine ispod 60
           KM. Za porudžbine iznad 60 KM, dostava je <strong>besplatna</strong>.
         </p>
        </section>

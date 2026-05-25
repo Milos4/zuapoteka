@@ -14,16 +14,17 @@ import FreeShippingBanner from "../components/FreeShippingBanner";
 import laRocheBanner from "../assets/banners/LaRoche10.jpg";
 import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
-import ceraVe from "../assets/banners/cerave.jpg";
-import laR from "../assets/banners/LaR.jpg";
+import ceraVe from "../assets/banners/cerave.png";
+import laR from "../assets/banners/LaR.png";
 import vichy from "../assets/banners/vichy25.jpg";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
 import dr from "../assets/banners/DrLuigi.jpg";
 import drB from "../assets/banners/DrLuigiBanner.png";
-import eucerin from "../assets/banners/Eucerin.png";
 import sok from "../assets/banners/sok.png"
 import dl from "../assets/banners/dl2.png"
-
+import lad from "../assets/banners/lad.png"
+import v from "../assets/banners/POPUST.png"
+import eucerin from "../assets/banners/eucerin30.png"
 
 const banners = [
 
@@ -49,15 +50,50 @@ const banners = [
   brand: "CeraVe",       },
   },
 
-
-  
-    {
-    image: vichy,
+       {
+    image: v,
     alt: "Novo u ponudi",
     filters: {
-    brand: "Vichy", 
+        brand: "Vichy",   
+     },
+  },
+  
+
+   {
+    image: lad,
+    alt: "Novo u ponudi",
+    filters: {
+    brand: "Hemofarm", 
+     },
+  },
+
+        {
+    image: eucerin,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "Eucerin", 
+      
     },
-},
+  },
+  
+
+  
+       {
+    image: v,
+    alt: "Novo u ponudi",
+    filters: {
+        brand: "Vichy",   
+     },
+  },
+  
+        {
+    image: ceraVe,
+    alt: "Novo u ponudi",
+    filters: {
+  brand: "CeraVe",       },
+  },
+
+
    {
     image: novalac,
     alt: "Novo u ponudi",
@@ -65,12 +101,25 @@ const banners = [
  productName: "5+1",
      },
   },
-   {
-    image: dl,
+
+
+        {
+    image: sok,
     alt: "Novo u ponudi",
     filters: {
-    brand: "Body drzim liniju", 
-     },
+brand: "Rabenhorst", 
+      
+    },
+  },
+
+
+        {
+    image: eucerin,
+    alt: "Novo u ponudi",
+    filters: {
+brand: "Eucerin", 
+      
+    },
   },
 
         {
@@ -81,45 +130,9 @@ brand: "La Roche-Posay",
       
     },
   },
+
+
   
-        {
-    image: sok,
-    alt: "Novo u ponudi",
-    filters: {
-brand: "Rabenhorst", 
-      
-    },
-  },
-
-      {
-    image: vichy,
-    alt: "Novo u ponudi",
-    filters: {
-    brand: "Vichy", 
-    },
-},
-
-        {
-    image: dr,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "Dr. Luigi",},
-  },
-
-        {
-    image: ceraVe,
-    alt: "Novo u ponudi",
-    filters: {
-  brand: "CeraVe",       },
-  },
-
-     {
-    image: novalac,
-    alt: "Novo u ponudi",
-    filters: {
- productName: "5+1",
-     },
-  },
 
 ];
 

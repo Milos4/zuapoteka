@@ -308,7 +308,7 @@ if (order.userInfo?.email) {
         : i.cijena;
       return sum + price * i.quantity;
     }, 0);
-    const shipping = subtotal > 0 && subtotal < 60 ? 11.09 : 0;
+    const shipping = subtotal > 0 && subtotal < 60 ? 11.70 : 0;
     return { subtotal, shipping, total: subtotal + shipping };
   };
 

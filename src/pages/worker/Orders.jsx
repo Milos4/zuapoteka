@@ -8,12 +8,14 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   writeBatch,
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import "./Orders.css";
+import { getCartSubtotal, getDiscountedPrice } from "../../utils/discounts";
 
 /* STATUSI */
 const DELIVERY_STATUSES = [
@@ -35,6 +37,9 @@ const getNextStatus = (status, tab) => {
     return null;
   }
 };
+
+const roundMoney = (value) => Math.round(Number(value || 0) * 100) / 100;
+const canDeleteOrder = (order) => (order.status || "").trim() === "Poručeno";
 
 const OrdersTabs = () => {
 const [showWeightModal, setShowWeightModal] = useState(false);
@@ -170,6 +175,32 @@ const printOpremnica = async (order) => {
     }
   };
 
+  const deleteOrder = async (order) => {
+    if (!canDeleteOrder(order)) {
+      alert("Narudzbinu mozete obrisati samo dok je u statusu Poruceno.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Da li sigurno zelis obrisati narudzbinu #${order.orderId || order.id}?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deleteDoc(doc(db, "orders", order.id));
+      setOrders((prev) => prev.filter((o) => o.id !== order.id));
+
+      if (editingOrderId === order.id) {
+        setEditingOrderId(null);
+        setEditedItems([]);
+      }
+    } catch (err) {
+      console.error("Greska pri brisanju narudzbine:", err);
+      alert("Greska pri brisanju narudzbine");
+    }
+  };
+
   /* SLANJE KURIRU */
   const preannounce = async (payload) => {
     const preannounceCourier = httpsCallable(functions, "preannounceCourier");
@@ -302,14 +333,9 @@ if (order.userInfo?.email) {
 
   /* CIJENE */
   const calcTotals = (items) => {
-    const subtotal = items.reduce((sum, i) => {
-      const price = i.naPopustu
-        ? i.cijena * (1 - i.popustProcenat / 100)
-        : i.cijena;
-      return sum + price * i.quantity;
-    }, 0);
+    const subtotal = roundMoney(getCartSubtotal(items));
     const shipping = subtotal > 0 && subtotal < 60 ? 11.70 : 0;
-    return { subtotal, shipping, total: subtotal + shipping };
+    return { subtotal, shipping, total: roundMoney(subtotal + shipping) };
   };
 
   return (
@@ -438,9 +464,7 @@ if (order.userInfo?.email) {
                     </thead>
                     <tbody>
                       {editedItems.map((i) => {
-                        const price = i.naPopustu
-                          ? i.cijena * (1 - i.popustProcenat / 100)
-                          : i.cijena;
+                        const price = getDiscountedPrice(i, editedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0));
                         return (
                           <tr key={i.id}>
                             <td>{i.naziv}
@@ -528,6 +552,10 @@ if (order.userInfo?.email) {
                                   cijena: product.cijena,
                                   naPopustu: product.naPopustu || false,
                                   popustProcenat: product.popustProcenat || 0,
+                                  naAkciji: product.naAkciji || false,
+                                  akcijaOdKolicine: product.akcijaOdKolicine || 4,
+                                  akcijaPopustPovecani:
+                                    product.akcijaPopustPovecani || 25,
                                   quantity: newProductQuantity,
                                 };
 
@@ -571,9 +599,7 @@ if (order.userInfo?.email) {
                   </thead>
                   <tbody>
                     {order.items.map((i) => {
-                      const price = i.naPopustu
-                        ? i.cijena * (1 - i.popustProcenat / 100)
-                        : i.cijena;
+                      const price = getDiscountedPrice(i, order.items.reduce((sum, item) => sum + Number(item.quantity || 0), 0));
                       return (
                         <tr key={i.id}>
                           <td>{i.naziv}
@@ -603,8 +629,15 @@ if (order.userInfo?.email) {
   </p>
 </div>
               {/* ACTION BUTTONS */}
-              {order.status === "Poručeno" && editingOrderId !== order.id ? (
+              {canDeleteOrder(order) && editingOrderId !== order.id ? (
                 <>
+                  <button
+                    type="button"
+                    className="delete-order-btn delete-order-btn-action"
+                    onClick={() => deleteOrder(order)}
+                  >
+                    Obrisi
+                  </button>
                   <button
                     onClick={() => startEditing(order)}
                     className="next-status-btn"

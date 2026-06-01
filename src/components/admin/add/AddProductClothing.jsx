@@ -29,6 +29,9 @@ const AddProductClothing = () => {
     naStanju: false,
     naPopustu: false,
     popustProcenat: "",
+    naAkciji: false,
+    akcijaOdKolicine: 4,
+    akcijaPopustPovecani: 25,
     novo: false,
     opis: "",
     slika: null,
@@ -63,7 +66,11 @@ const AddProductClothing = () => {
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
     if (type === "checkbox") {
-      setForm(prev => ({ ...prev, [name]: checked }));
+      setForm(prev => ({
+        ...prev,
+        [name]: checked,
+        ...(name === "naPopustu" && !checked ? { naAkciji: false } : {}),
+      }));
     } else if (type === "file") {
       setForm(prev => ({ ...prev, slika: files[0] }));
     } else {
@@ -89,6 +96,17 @@ const toggleColor = (color) => {
 
     if (form.naPopustu && (form.popustProcenat < 0 || form.popustProcenat > 100)) {
       alert("Popust mora biti između 0% i 100%");
+      return;
+    }
+
+    if (
+      form.naPopustu &&
+      form.naAkciji &&
+      (form.akcijaPopustPovecani < 0 ||
+        form.akcijaPopustPovecani > 100 ||
+        form.akcijaOdKolicine < 1)
+    ) {
+      alert("Akcijski popust mora biti izmedju 0% i 100%, a kolicina najmanje 1.");
       return;
     }
 
@@ -131,6 +149,11 @@ const toggleColor = (color) => {
         naStanju: form.naStanju,
         naPopustu: form.naPopustu,
         popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
+        naAkciji: form.naPopustu && form.naAkciji,
+        akcijaOdKolicine:
+          form.naPopustu && form.naAkciji ? parseInt(form.akcijaOdKolicine) : 4,
+        akcijaPopustPovecani:
+          form.naPopustu && form.naAkciji ? parseFloat(form.akcijaPopustPovecani) : 25,
         novo: form.novo,
         opis: form.opis,
         slikaURL,
@@ -162,6 +185,9 @@ const toggleColor = (color) => {
         naStanju: false,
         naPopustu: false,
         popustProcenat: "",
+        naAkciji: false,
+        akcijaOdKolicine: 4,
+        akcijaPopustPovecani: 25,
         novo: false,
         opis: "",
         slika: null,
@@ -257,6 +283,23 @@ const toggleColor = (color) => {
 
         {form.naPopustu && (
           <input type="number" name="popustProcenat" placeholder="Popust %" value={form.popustProcenat} onChange={handleChange} min={0} max={100} />
+        )}
+
+        <label>
+          <input
+            type="checkbox"
+            name="naAkciji"
+            checked={form.naPopustu && form.naAkciji}
+            onChange={handleChange}
+            disabled={!form.naPopustu}
+          /> Akcija na kolicinu
+        </label>
+
+        {form.naPopustu && form.naAkciji && (
+          <>
+            <input type="number" name="akcijaOdKolicine" placeholder="Veci popust od kolicine" value={form.akcijaOdKolicine} onChange={handleChange} min={1} />
+            <input type="number" name="akcijaPopustPovecani" placeholder="Novi popust od te kolicine %" value={form.akcijaPopustPovecani} onChange={handleChange} min={0} max={100} />
+          </>
         )}
 
         <label><input type="checkbox" name="novo" checked={form.novo} onChange={handleChange} /> Novo</label>

@@ -18,17 +18,15 @@ import { getAuth } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import {
+  getCartQuantity,
+  getCartSubtotal,
+  getDiscountedPrice,
+  getProductDiscount,
+} from "../utils/discounts";
 
 const DeliveryAndPayment = () => {
   const { cartItems, clearCart } = useCart();
-
-const getItemPrice = (item) => {
-  if (item.naPopustu && item.popustProcenat > 0) {
-    return Number(item.cijena) * (1 - item.popustProcenat / 100);
-  }
-
-  return Number(item.cijena);
-};
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -48,10 +46,8 @@ const getItemPrice = (item) => {
 
   const navigate = useNavigate();
   const items = cartItems;
-const subtotal = items.reduce(
-  (sum, item) => sum + getItemPrice(item) * item.quantity,
-  0
-);
+  const cartQuantity = getCartQuantity(items);
+  const subtotal = getCartSubtotal(items);
   const shipping =
     formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.70 : 0;
   const total = subtotal + shipping;
@@ -134,6 +130,7 @@ const subtotal = items.reduce(
       items,
       subtotal: parseFloat(subtotal.toFixed(2)),
       shippingCost: parseFloat(shippingCost.toFixed(2)),
+      total: parseFloat(totalAmount.toFixed(2)),
       deliveryMethod,
       status: "Poručeno",
       createdAt: serverTimestamp(),
@@ -412,7 +409,11 @@ const subtotal = items.reduce(
               </h3>
 
               <div>
-                {items.map((item) => (
+                {items.map((item) => {
+                  const discount = getProductDiscount(item, cartQuantity);
+                  const itemPrice = getDiscountedPrice(item, cartQuantity);
+
+                  return (
                   <div key={item.id} className="cart-item">
                     <img
                       src={item.slikaURL}
@@ -422,13 +423,13 @@ const subtotal = items.reduce(
                     <div className="item-info">
                       <h4 className="item-name">{item.naziv}</h4>
                    <p className="item-price">
-  {item.naPopustu && item.popustProcenat > 0 ? (
+  {discount.percent > 0 ? (
     <>
       <span className="old-price">
         {Number(item.cijena).toFixed(2)} BAM
       </span>
       <span className="discount-price">
-        {getItemPrice(item).toFixed(2)} BAM
+        {itemPrice.toFixed(2)} BAM
       </span>
     </>
   ) : (
@@ -438,7 +439,8 @@ const subtotal = items.reduce(
                       <p className="item-quantity">Količina: {item.quantity}</p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="summary">

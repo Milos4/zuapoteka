@@ -78,6 +78,26 @@
   border: 1px solid #ccc;
 }
 
+.delete-order-btn {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-order-btn:hover {
+  background-color: #bb2d3b;
+}
+
+.delete-order-btn-action {
+  float: right;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
 .items-table {
   width: 100%;
   border-collapse: collapse;

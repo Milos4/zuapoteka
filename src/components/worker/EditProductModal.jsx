@@ -51,6 +51,9 @@ const COLOR_MAP = {
     sastav: product.sastav || "",
     brandId: product.brandId || "", // za brand
     novo: product.novo || false,
+    naAkciji: product.naAkciji || false,
+    akcijaOdKolicine: product.akcijaOdKolicine || 4,
+    akcijaPopustPovecani: product.akcijaPopustPovecani || 25,
     doplata4748: getDoplataForRange(product.velicine, (n) => n >= 47 && n <= 48),
     doplata4950: getDoplataForRange(product.velicine, (n) => n >= 49 && n <= 50),
   });
@@ -82,7 +85,11 @@ const [selectedColors, setSelectedColors] = useState(
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const val = type === "checkbox" ? checked : value;
-    setFormData((prev) => ({ ...prev, [name]: val }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: val,
+      ...(name === "naPopustu" && !checked ? { naAkciji: false } : {}),
+    }));
   };
 
   const handleImageChange = (e) => {
@@ -117,6 +124,20 @@ const toggleColor = (color) => {
         // Ako je na popustu, obezbedi da bude broj
         updatedData.popustProcenat =
           parseFloat(updatedData.popustProcenat) || 0;
+      }
+
+      if (!updatedData.naPopustu) {
+        updatedData.naAkciji = false;
+      }
+
+      if (!updatedData.naAkciji) {
+        updatedData.akcijaOdKolicine = 4;
+        updatedData.akcijaPopustPovecani = 25;
+      } else {
+        updatedData.akcijaOdKolicine =
+          parseInt(updatedData.akcijaOdKolicine, 10) || 4;
+        updatedData.akcijaPopustPovecani =
+          parseFloat(updatedData.akcijaPopustPovecani) || 25;
       }
 
       // Upload nove slike ako postoji
@@ -297,6 +318,38 @@ if (updatedData.kategorija?.toLowerCase() === "obuća") {
               name="popustProcenat"
               value={formData.popustProcenat || ""}
               onChange={handleChange}
+            />
+          </>
+        )}
+
+        <label>Akcija na kolicinu</label>
+        <input
+          type="checkbox"
+          name="naAkciji"
+          checked={formData.naPopustu && (formData.naAkciji || false)}
+          onChange={handleChange}
+          disabled={!formData.naPopustu}
+        />
+
+        {formData.naPopustu && formData.naAkciji && (
+          <>
+            <label>Veci popust od kolicine</label>
+            <input
+              type="number"
+              name="akcijaOdKolicine"
+              value={formData.akcijaOdKolicine || 4}
+              onChange={handleChange}
+              min="1"
+            />
+
+            <label>Novi popust od te kolicine (%)</label>
+            <input
+              type="number"
+              name="akcijaPopustPovecani"
+              value={formData.akcijaPopustPovecani || ""}
+              onChange={handleChange}
+              min="0"
+              max="100"
             />
           </>
         )}

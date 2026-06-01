@@ -3,6 +3,12 @@ import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import "./OrderHistory.css";
+import {
+  getCartSubtotal,
+  getCartQuantity,
+  getDiscountedPrice,
+  getProductDiscount,
+} from "../../utils/discounts";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -167,14 +173,8 @@ const OrderHistory = () => {
 
   const calculateTotalPrice = (items) => {
     if (!items || !Array.isArray(items)) return 0;
-    
-    return items.reduce((total, item) => {
-      const price = item.naPopustu 
-        ? item.cijena * (1 - item.popustProcenat / 100)
-        : item.cijena;
-      const quantity = parseInt(item.quantity) || 0;
-      return total + (price * quantity);
-    }, 0);
+
+    return getCartSubtotal(items);
   };
 
   if (loading) {
@@ -252,9 +252,9 @@ const OrderHistory = () => {
             <div className="products-popup">
               {selectedOrder.items && selectedOrder.items.length > 0 ? (
                 selectedOrder.items.map((item, i) => {
-                  const pricePerItem = item.naPopustu
-                    ? item.cijena * (1 - item.popustProcenat / 100)
-                    : item.cijena;
+                  const orderQuantity = getCartQuantity(selectedOrder.items);
+                  const discount = getProductDiscount(item, orderQuantity);
+                  const pricePerItem = getDiscountedPrice(item, orderQuantity);
                   
                   return (
                     <div key={i} className="product-line">
@@ -264,9 +264,9 @@ const OrderHistory = () => {
                         <span className="product-meta">
                           Cijena: {pricePerItem.toFixed(2)} BAM
                         </span>
-                        {item.naPopustu && (
+                        {discount.percent > 0 && (
                           <span className="product-meta discount">
-                            Popust: {item.popustProcenat}%
+                            Popust: {discount.percent}%
                           </span>
                         )}
                       </div>

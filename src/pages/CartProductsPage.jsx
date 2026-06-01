@@ -5,6 +5,13 @@ import "../styles/colors.css";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext"; // 👈 koristimo kontekst
 import "./CartProductsPage.css";
+import {
+  getCartQuantity,
+  getCartSavings,
+  getCartSubtotal,
+  getDiscountedPrice,
+  getProductDiscount,
+} from "../utils/discounts";
 
 const CartProductsPage = () => {
   const {
@@ -30,18 +37,9 @@ const CartProductsPage = () => {
     removeFromCart(id); // koristi funkciju iz konteksta
   };
 
-  const calculateItemTotal = (item) => {
-    const price = Number(item.cijena); // osigurava da je broj
-    const finalPrice = item.naPopustu
-      ? price * (1 - (item.popustProcenat || 0) / 100)
-      : price;
-    return finalPrice * item.quantity;
-  };
-
-  const subtotal = cart.reduce(
-    (sum, item) => sum + calculateItemTotal(item),
-    0
-  );
+  const cartQuantity = getCartQuantity(cart);
+  const subtotal = getCartSubtotal(cart);
+  const savings = getCartSavings(cart);
   const total = subtotal.toFixed(2);
 
   return (
@@ -51,10 +49,8 @@ const CartProductsPage = () => {
         <div style={{ flex: "1 1 400px", maxWidth: "600px" }}>
           {cart.map((item) => {
             const originalPrice = Number(item.cijena); // <--- obavezno Number
-            const discount = item.popustProcenat || 0;
-            const finalPrice = item.naPopustu
-              ? originalPrice * (1 - discount / 100)
-              : originalPrice;
+            const discount = getProductDiscount(item, cartQuantity);
+            const finalPrice = getDiscountedPrice(item, cartQuantity);
 
             return (
               <div
@@ -72,7 +68,7 @@ const CartProductsPage = () => {
                 }}
                 className="proizvodi"
               >
-                {item.naPopustu && (
+                {discount.percent > 0 && (
                   <div
                     style={{
                       position: "absolute",
@@ -87,7 +83,7 @@ const CartProductsPage = () => {
                       zIndex: 1,
                     }}
                   >
-                    POPUST
+                    {discount.type === "action" ? "AKCIJA" : "POPUST"}
                   </div>
                 )}
 
@@ -138,7 +134,7 @@ const CartProductsPage = () => {
   </p>
 )}
                   <div>
-                    {item.naPopustu && (
+                    {discount.percent > 0 && (
                       <p
                         style={{
                           margin: "4px 0",
@@ -154,12 +150,12 @@ const CartProductsPage = () => {
                       style={{
                         margin: "4px 0",
                         fontWeight: "bold",
-                        color: item.naPopustu ? "var(--crvena)" : "inherit",
-                        fontSize: item.naPopustu ? "18px" : "16px",
+                        color: discount.percent > 0 ? "var(--crvena)" : "inherit",
+                        fontSize: discount.percent > 0 ? "18px" : "16px",
                       }}
                     >
                       {(finalPrice * item.quantity).toFixed(2)} BAM
-                      {item.naPopustu && (
+                      {discount.percent > 0 && (
                         <span
                           style={{
                             marginLeft: "8px",
@@ -288,21 +284,11 @@ const CartProductsPage = () => {
             <p>
               Iznos artikala: <strong>{subtotal.toFixed(2)} BAM</strong>
             </p>
-            {cart.some((item) => item.naPopustu) && (
+            {savings > 0 && (
               <p style={{ color: "var(--crvena)", marginTop: "8px" }}>
                 Ušteda:{" "}
                 <strong>
-                  {cart
-                    .filter((item) => item.naPopustu)
-                    .reduce(
-                      (sum, item) =>
-                        sum +
-                        ((Number(item.cijena) * (item.popustProcenat || 0)) /
-                          100) *
-                          item.quantity,
-                      0
-                    )
-                    .toFixed(2)}{" "}
+                  {savings.toFixed(2)}{" "}
                   BAM
                 </strong>
               </p>

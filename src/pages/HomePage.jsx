@@ -10,7 +10,6 @@ import FeaturesSection from "../components/FeaturesSection";
 import BrandCarousel from "../components/BrandCarousel";
 import FreeShippingBanner from "../components/FreeShippingBanner";
 
-
 import laRocheBanner from "../assets/banners/LaRoche10.jpg";
 import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
@@ -20,15 +19,15 @@ import vichy from "../assets/banners/vichy25.jpg";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
 import dr from "../assets/banners/DrLuigi.jpg";
 import drB from "../assets/banners/DrLuigiBanner.png";
-import sok from "../assets/banners/sok.png"
-import dl from "../assets/banners/dl2.png"
-import lad from "../assets/banners/lad.png"
-import v from "../assets/banners/POPUST.png"
-import eucerin from "../assets/banners/eucerin30.png"
+import sok from "../assets/banners/sok.png";
+import dl from "../assets/banners/dl2.png";
+import lad from "../assets/banners/lad.png";
+import v from "../assets/banners/POPUST.png";
+import eucerin from "../assets/banners/eucerin30.png";
+import hydroA from "../assets/banners/hydroA.png";
 
 const banners = [
-
-    {
+  {
     image: drB,
     alt: "Skincare proizvodi",
     filters: {
@@ -43,101 +42,65 @@ const banners = [
     },
   },
 
-   {
+  {
     image: ceraVeBanner,
     alt: "Novo u ponudi",
     filters: {
-  brand: "CeraVe",       },
-  },
-
-       {
-    image: v,
-    alt: "Novo u ponudi",
-    filters: {
-        brand: "Vichy",   
-     },
-  },
-  
-
-   {
-    image: lad,
-    alt: "Novo u ponudi",
-    filters: {
-    brand: "Hemofarm", 
-     },
-  },
-
-        {
-    image: eucerin,
-    alt: "Novo u ponudi",
-    filters: {
-brand: "Eucerin", 
-      
+      brand: "CeraVe",
     },
   },
-  
 
-  
-       {
-    image: v,
+  {
+    image: hydroA,
     alt: "Novo u ponudi",
     filters: {
-        brand: "Vichy",   
-     },
+      brand: "Novelius Medical",
+    },
   },
-  
-        {
+
+  {
     image: ceraVe,
     alt: "Novo u ponudi",
     filters: {
-  brand: "CeraVe",       },
+      brand: "CeraVe",
+    },
   },
 
-
-   {
+  {
     image: novalac,
     alt: "Novo u ponudi",
     filters: {
- productName: "5+1",
-     },
+      productName: "5+1",
+    },
   },
 
-
-        {
+  {
     image: sok,
     alt: "Novo u ponudi",
     filters: {
-brand: "Rabenhorst", 
-      
+      brand: "Rabenhorst",
     },
   },
 
-
-        {
-    image: eucerin,
+  {
+    image: hydroA,
     alt: "Novo u ponudi",
     filters: {
-brand: "Eucerin", 
-      
+      brand: "Novelius Medical",
     },
   },
 
-        {
+  {
     image: laR,
     alt: "Novo u ponudi",
     filters: {
-brand: "La Roche-Posay", 
-      
+      brand: "La Roche-Posay",
     },
   },
-
-
-  
-
 ];
 
 const HomePage = () => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -153,25 +116,23 @@ const HomePage = () => {
         backgroundColor: "#FAF1E6",
       }}
     >
-{isMobile ? (
-  <BannerSlider banners={banners.slice(3, 13)} />
-) : (
-  <TripleBannerSlider banners={banners.slice(3, 13)} />
-)}
-
-  
+      {isMobile ? (
+        <BannerSlider banners={banners.slice(3, 10)} />
+      ) : (
+        <TripleBannerSlider banners={banners.slice(3, 10)} />
+      )}
 
       <PharmacyCategories />
       <SpecialOffers />
-      
+
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-         {!isMobile && <BannerSlider banners={banners.slice(0,3)} />}
+      {!isMobile && <BannerSlider banners={banners.slice(0, 3)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (
          <TripleBannerSlider banners={banners.slice(3, 6)} />*/}
-                  <FreeShippingBanner />
+      <FreeShippingBanner />
 
       <FeaturesSection />
       <TopProducts />

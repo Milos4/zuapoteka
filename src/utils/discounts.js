@@ -9,7 +9,8 @@ const toNumber = (value, fallback = 0) => {
 export const getCartQuantity = (items = []) =>
   items.reduce((sum, item) => sum + toNumber(item.quantity), 0);
 
-export const getProductDiscount = (item, totalQuantity = 0) => {
+export const getProductDiscount = (item) => {
+  const itemQuantity = toNumber(item.quantity);
   const regularDiscount =
     item.naPopustu && toNumber(item.popustProcenat) > 0
       ? toNumber(item.popustProcenat)
@@ -24,7 +25,7 @@ export const getProductDiscount = (item, totalQuantity = 0) => {
     DEFAULT_ACTION_DISCOUNT_FROM_THRESHOLD
   );
   const actionDiscount = item.naAkciji && regularDiscount > 0
-    ? totalQuantity >= actionThreshold
+    ? itemQuantity >= actionThreshold
       ? actionThresholdDiscount
       : regularDiscount
     : 0;
@@ -37,7 +38,7 @@ export const getProductDiscount = (item, totalQuantity = 0) => {
       percent > 0 &&
       actionDiscount > regularDiscount &&
       item.naAkciji &&
-      totalQuantity >= actionThreshold
+      itemQuantity >= actionThreshold
         ? "action"
         : percent > 0
           ? "regular"
@@ -46,28 +47,26 @@ export const getProductDiscount = (item, totalQuantity = 0) => {
   };
 };
 
-export const getDiscountedPrice = (item, totalQuantity = 0) => {
+export const getDiscountedPrice = (item) => {
   const price = toNumber(item.cijena);
-  const { percent } = getProductDiscount(item, totalQuantity);
+  const { percent } = getProductDiscount(item);
 
   return price * (1 - percent / 100);
 };
 
-export const getLineTotal = (item, totalQuantity = 0) =>
-  getDiscountedPrice(item, totalQuantity) * toNumber(item.quantity);
+export const getLineTotal = (item) =>
+  getDiscountedPrice(item) * toNumber(item.quantity);
 
 export const getCartSubtotal = (items = []) => {
-  const totalQuantity = getCartQuantity(items);
   return items.reduce(
-    (sum, item) => sum + getLineTotal(item, totalQuantity),
+    (sum, item) => sum + getLineTotal(item),
     0
   );
 };
 
 export const getCartSavings = (items = []) => {
-  const totalQuantity = getCartQuantity(items);
   return items.reduce((sum, item) => {
     const original = toNumber(item.cijena) * toNumber(item.quantity);
-    return sum + (original - getLineTotal(item, totalQuantity));
+    return sum + (original - getLineTotal(item));
   }, 0);
 };

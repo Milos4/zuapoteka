@@ -5,7 +5,6 @@ import { auth, db } from "../../firebase";
 import "./OrderHistory.css";
 import {
   getCartSubtotal,
-  getCartQuantity,
   getDiscountedPrice,
   getProductDiscount,
 } from "../../utils/discounts";
@@ -252,9 +251,8 @@ const OrderHistory = () => {
             <div className="products-popup">
               {selectedOrder.items && selectedOrder.items.length > 0 ? (
                 selectedOrder.items.map((item, i) => {
-                  const orderQuantity = getCartQuantity(selectedOrder.items);
-                  const discount = getProductDiscount(item, orderQuantity);
-                  const pricePerItem = getDiscountedPrice(item, orderQuantity);
+                  const discount = getProductDiscount(item);
+                  const pricePerItem = getDiscountedPrice(item);
                   
                   return (
                     <div key={i} className="product-line">

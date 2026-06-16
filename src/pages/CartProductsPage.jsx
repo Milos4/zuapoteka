@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext"; // 👈 koristimo kontekst
 import "./CartProductsPage.css";
 import {
-  getCartQuantity,
   getCartSavings,
   getCartSubtotal,
   getDiscountedPrice,
@@ -37,7 +36,6 @@ const CartProductsPage = () => {
     removeFromCart(id); // koristi funkciju iz konteksta
   };
 
-  const cartQuantity = getCartQuantity(cart);
   const subtotal = getCartSubtotal(cart);
   const savings = getCartSavings(cart);
   const total = subtotal.toFixed(2);
@@ -49,8 +47,8 @@ const CartProductsPage = () => {
         <div style={{ flex: "1 1 400px", maxWidth: "600px" }}>
           {cart.map((item) => {
             const originalPrice = Number(item.cijena); // <--- obavezno Number
-            const discount = getProductDiscount(item, cartQuantity);
-            const finalPrice = getDiscountedPrice(item, cartQuantity);
+            const discount = getProductDiscount(item);
+            const finalPrice = getDiscountedPrice(item);
 
             return (
               <div

@@ -464,7 +464,7 @@ if (order.userInfo?.email) {
                     </thead>
                     <tbody>
                       {editedItems.map((i) => {
-                        const price = getDiscountedPrice(i, editedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0));
+                        const price = getDiscountedPrice(i);
                         return (
                           <tr key={i.id}>
                             <td>{i.naziv}
@@ -599,7 +599,7 @@ if (order.userInfo?.email) {
                   </thead>
                   <tbody>
                     {order.items.map((i) => {
-                      const price = getDiscountedPrice(i, order.items.reduce((sum, item) => sum + Number(item.quantity || 0), 0));
+                      const price = getDiscountedPrice(i);
                       return (
                         <tr key={i.id}>
                           <td>{i.naziv}

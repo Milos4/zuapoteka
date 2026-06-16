@@ -19,7 +19,6 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import {
-  getCartQuantity,
   getCartSubtotal,
   getDiscountedPrice,
   getProductDiscount,
@@ -46,7 +45,6 @@ const DeliveryAndPayment = () => {
 
   const navigate = useNavigate();
   const items = cartItems;
-  const cartQuantity = getCartQuantity(items);
   const subtotal = getCartSubtotal(items);
   const shipping =
     formData.paymentMethod === "pickup" ? 0 : subtotal < 60 ? 11.70 : 0;
@@ -410,8 +408,8 @@ const DeliveryAndPayment = () => {
 
               <div>
                 {items.map((item) => {
-                  const discount = getProductDiscount(item, cartQuantity);
-                  const itemPrice = getDiscountedPrice(item, cartQuantity);
+                  const discount = getProductDiscount(item);
+                  const itemPrice = getDiscountedPrice(item);
 
                   return (
                   <div key={item.id} className="cart-item">

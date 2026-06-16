@@ -15,16 +15,13 @@ import vichyBanner from "../assets/banners/Vichy10.jpg";
 import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
 import ceraVe from "../assets/banners/cerave.png";
 import laR from "../assets/banners/LaR.png";
-import vichy from "../assets/banners/vichy25.jpg";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
 import dr from "../assets/banners/DrLuigi.jpg";
 import drB from "../assets/banners/DrLuigiBanner.png";
 import sok from "../assets/banners/sok.png";
-import dl from "../assets/banners/dl2.png";
-import lad from "../assets/banners/lad.png";
-import v from "../assets/banners/POPUST.png";
-import eucerin from "../assets/banners/eucerin30.png";
 import hydroA from "../assets/banners/hydroA.png";
+import bio from "../assets/banners/bio.jpg";
+import kd from "../assets/banners/kd.jpg";
 
 const banners = [
   {
@@ -49,7 +46,7 @@ const banners = [
       brand: "CeraVe",
     },
   },
-
+///////////////////////////////////////////////////////////////////////////////////////
   {
     image: hydroA,
     alt: "Novo u ponudi",
@@ -59,10 +56,10 @@ const banners = [
   },
 
   {
-    image: ceraVe,
+    image: bio,
     alt: "Novo u ponudi",
     filters: {
-      brand: "CeraVe",
+      brand: "Bioderma",
     },
   },
 
@@ -83,10 +80,10 @@ const banners = [
   },
 
   {
-    image: hydroA,
+    image: kd,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Novelius Medical",
+      brand: "Abela Pharm",
     },
   },
 
@@ -97,6 +94,30 @@ const banners = [
       brand: "La Roche-Posay",
     },
   },
+
+  
+  {
+    image: ceraVe,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "CeraVe",
+    },
+  },
+  {
+    image: hydroA,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Novelius Medical",
+    },
+  },
+  {
+    image: bio,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Bioderma",
+    },
+  },
+
 ];
 
 const HomePage = () => {
@@ -117,9 +138,9 @@ const HomePage = () => {
       }}
     >
       {isMobile ? (
-        <BannerSlider banners={banners.slice(3, 10)} />
+        <BannerSlider banners={banners.slice(3, 13)} />
       ) : (
-        <TripleBannerSlider banners={banners.slice(3, 10)} />
+        <TripleBannerSlider banners={banners.slice(3, 13)} />
       )}
 
       <PharmacyCategories />

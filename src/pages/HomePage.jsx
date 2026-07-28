@@ -22,7 +22,8 @@ import sok from "../assets/banners/sok.png";
 import hydroA from "../assets/banners/hydroA.png";
 import bio from "../assets/banners/bio.jpg";
 import kd from "../assets/banners/kd.jpg";
-
+import inn from "../assets/banners/Inn.png";
+import vichy from "../assets/banners/vichy20.png";
 const banners = [
   {
     image: drB,
@@ -31,22 +32,7 @@ const banners = [
       brand: "Dr. Luigi",
     },
   },
-  {
-    image: laRocheBanner,
-    alt: "Skincare proizvodi",
-    filters: {
-      brand: "La Roche-Posay",
-    },
-  },
-
-  {
-    image: ceraVeBanner,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "CeraVe",
-    },
-  },
-///////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
   {
     image: hydroA,
     alt: "Novo u ponudi",
@@ -56,10 +42,10 @@ const banners = [
   },
 
   {
-    image: bio,
+    image: vichy,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Bioderma",
+      brand: "Vichy",
     },
   },
 
@@ -72,35 +58,17 @@ const banners = [
   },
 
   {
-    image: sok,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Rabenhorst",
-    },
-  },
-
-  {
     image: kd,
     alt: "Novo u ponudi",
     filters: {
       brand: "Abela Pharm",
     },
   },
-
   {
-    image: laR,
+    image: novalac,
     alt: "Novo u ponudi",
     filters: {
-      brand: "La Roche-Posay",
-    },
-  },
-
-  
-  {
-    image: ceraVe,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "CeraVe",
+      productName: "5+1",
     },
   },
   {
@@ -111,13 +79,26 @@ const banners = [
     },
   },
   {
-    image: bio,
+    image: kd,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Bioderma",
+      brand: "Abela Pharm",
     },
   },
-
+  {
+    image: novalac,
+    alt: "Novo u ponudi",
+    filters: {
+      productName: "5+1",
+    },
+  },
+  {
+    image: vichy,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Vichy",
+    },
+  },
 ];
 
 const HomePage = () => {
@@ -138,9 +119,9 @@ const HomePage = () => {
       }}
     >
       {isMobile ? (
-        <BannerSlider banners={banners.slice(3, 13)} />
+        <BannerSlider banners={banners.slice(1, 11)} />
       ) : (
-        <TripleBannerSlider banners={banners.slice(3, 13)} />
+        <TripleBannerSlider banners={banners.slice(1, 11)} />
       )}
 
       <PharmacyCategories />
@@ -148,7 +129,7 @@ const HomePage = () => {
 
       {/* Prvi TripleBannerSlider - koristi prve 3 bannera */}
 
-      {!isMobile && <BannerSlider banners={banners.slice(0, 3)} />}
+      {!isMobile && <BannerSlider banners={banners.slice(0, 1)} />}
 
       {/* Drugi TripleBannerSlider - koristi sledeće 3 bannera (ako postoje)
      {banners.length > 3 && (

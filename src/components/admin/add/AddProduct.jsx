@@ -71,7 +71,6 @@ const [selectedSubcategories, setSelectedSubcategories] = useState([]);
       setForm((prev) => ({
         ...prev,
         [name]: checked,
-        ...(name === "naPopustu" && !checked ? { naAkciji: false } : {}),
       }));
     } else if (type === "file") {
       setForm((prev) => ({ ...prev, slika: files[0] }));
@@ -89,7 +88,6 @@ const [selectedSubcategories, setSelectedSubcategories] = useState([]);
     }
 
     if (
-      form.naPopustu &&
       form.naAkciji &&
       (form.akcijaPopustPovecani < 0 ||
         form.akcijaPopustPovecani > 100 ||
@@ -125,11 +123,11 @@ const newProduct = {
   naStanju: form.naStanju,
   naPopustu: form.naPopustu,
   popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
-  naAkciji: form.naPopustu && form.naAkciji,
+  naAkciji: form.naAkciji,
   akcijaOdKolicine:
-    form.naPopustu && form.naAkciji ? parseInt(form.akcijaOdKolicine) : 4,
+    form.naAkciji ? parseInt(form.akcijaOdKolicine) : 4,
   akcijaPopustPovecani:
-    form.naPopustu && form.naAkciji ? parseFloat(form.akcijaPopustPovecani) : 25,
+    form.naAkciji ? parseFloat(form.akcijaPopustPovecani) : 25,
   novo: form.novo,
   opis: form.opis,
   nacinUpotrebe: form.nacinUpotrebe,
@@ -293,14 +291,13 @@ const newProduct = {
           <input
             type="checkbox"
             name="naAkciji"
-            checked={form.naPopustu && form.naAkciji}
+            checked={form.naAkciji}
             onChange={handleChange}
-            disabled={!form.naPopustu}
           />
           Akcija na kolicinu
         </label>
 
-        {form.naPopustu && form.naAkciji && (
+        {form.naAkciji && (
           <>
             <input
               type="number"

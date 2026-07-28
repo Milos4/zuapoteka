@@ -88,7 +88,6 @@ const [selectedColors, setSelectedColors] = useState(
     setFormData((prev) => ({
       ...prev,
       [name]: val,
-      ...(name === "naPopustu" && !checked ? { naAkciji: false } : {}),
     }));
   };
 
@@ -124,10 +123,6 @@ const toggleColor = (color) => {
         // Ako je na popustu, obezbedi da bude broj
         updatedData.popustProcenat =
           parseFloat(updatedData.popustProcenat) || 0;
-      }
-
-      if (!updatedData.naPopustu) {
-        updatedData.naAkciji = false;
       }
 
       if (!updatedData.naAkciji) {
@@ -326,12 +321,11 @@ if (updatedData.kategorija?.toLowerCase() === "obuća") {
         <input
           type="checkbox"
           name="naAkciji"
-          checked={formData.naPopustu && (formData.naAkciji || false)}
+          checked={formData.naAkciji || false}
           onChange={handleChange}
-          disabled={!formData.naPopustu}
         />
 
-        {formData.naPopustu && formData.naAkciji && (
+        {formData.naAkciji && (
           <>
             <label>Veci popust od kolicine</label>
             <input

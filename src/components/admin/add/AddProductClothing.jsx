@@ -69,7 +69,6 @@ const AddProductClothing = () => {
       setForm(prev => ({
         ...prev,
         [name]: checked,
-        ...(name === "naPopustu" && !checked ? { naAkciji: false } : {}),
       }));
     } else if (type === "file") {
       setForm(prev => ({ ...prev, slika: files[0] }));
@@ -100,7 +99,6 @@ const toggleColor = (color) => {
     }
 
     if (
-      form.naPopustu &&
       form.naAkciji &&
       (form.akcijaPopustPovecani < 0 ||
         form.akcijaPopustPovecani > 100 ||
@@ -149,11 +147,11 @@ const toggleColor = (color) => {
         naStanju: form.naStanju,
         naPopustu: form.naPopustu,
         popustProcenat: form.naPopustu ? parseInt(form.popustProcenat) : 0,
-        naAkciji: form.naPopustu && form.naAkciji,
+        naAkciji: form.naAkciji,
         akcijaOdKolicine:
-          form.naPopustu && form.naAkciji ? parseInt(form.akcijaOdKolicine) : 4,
+          form.naAkciji ? parseInt(form.akcijaOdKolicine) : 4,
         akcijaPopustPovecani:
-          form.naPopustu && form.naAkciji ? parseFloat(form.akcijaPopustPovecani) : 25,
+          form.naAkciji ? parseFloat(form.akcijaPopustPovecani) : 25,
         novo: form.novo,
         opis: form.opis,
         slikaURL,
@@ -289,13 +287,12 @@ const toggleColor = (color) => {
           <input
             type="checkbox"
             name="naAkciji"
-            checked={form.naPopustu && form.naAkciji}
+            checked={form.naAkciji}
             onChange={handleChange}
-            disabled={!form.naPopustu}
           /> Akcija na kolicinu
         </label>
 
-        {form.naPopustu && form.naAkciji && (
+        {form.naAkciji && (
           <>
             <input type="number" name="akcijaOdKolicine" placeholder="Veci popust od kolicine" value={form.akcijaOdKolicine} onChange={handleChange} min={1} />
             <input type="number" name="akcijaPopustPovecani" placeholder="Novi popust od te kolicine %" value={form.akcijaPopustPovecani} onChange={handleChange} min={0} max={100} />

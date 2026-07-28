@@ -24,7 +24,7 @@ export const getProductDiscount = (item) => {
     item.akcijaPopustPovecani,
     DEFAULT_ACTION_DISCOUNT_FROM_THRESHOLD
   );
-  const actionDiscount = item.naAkciji && regularDiscount > 0
+  const actionDiscount = item.naAkciji
     ? itemQuantity >= actionThreshold
       ? actionThresholdDiscount
       : regularDiscount

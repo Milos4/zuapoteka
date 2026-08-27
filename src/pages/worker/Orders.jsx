@@ -42,10 +42,9 @@ const roundMoney = (value) => Math.round(Number(value || 0) * 100) / 100;
 const canDeleteOrder = (order) => (order.status || "").trim() === "Poručeno";
 
 const OrdersTabs = () => {
-const [showWeightModal, setShowWeightModal] = useState(false);
-const [weightValue, setWeightValue] = useState("");
-const [selectedOrder, setSelectedOrder] = useState(null);
-
+  const [showWeightModal, setShowWeightModal] = useState(false);
+  const [weightValue, setWeightValue] = useState("");
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const [activeMainTab, setActiveMainTab] = useState("DOSTAVA");
   const [activeStatusTab, setActiveStatusTab] = useState("Sve");
@@ -63,43 +62,41 @@ const [selectedOrder, setSelectedOrder] = useState(null);
   const [newProductCode, setNewProductCode] = useState("");
   const [newProductQuantity, setNewProductQuantity] = useState(1);
 
-const printOpremnica = async (order) => {
-  try {
-    const fn = httpsCallable(functions, "printEuroExpressLabel");
+  const printOpremnica = async (order) => {
+    try {
+      const fn = httpsCallable(functions, "printEuroExpressLabel");
 
-    const res = await fn({
-      refBroj: order.orderId,
-      printFormat: "DEFAULT", // ili "BC"
-    });
+      const res = await fn({
+        refBroj: order.orderId,
+        printFormat: "DEFAULT", // ili "BC"
+      });
 
-    const { base64, fileName, mimeType } = res.data;
+      const { base64, fileName, mimeType } = res.data;
 
-    // base64 → Blob
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
+      // base64 → Blob
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+
+      const blob = new Blob([byteArray], { type: mimeType });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      alert("Greška pri štampi opremnice");
     }
-    const byteArray = new Uint8Array(byteNumbers);
-
-    const blob = new Blob([byteArray], { type: mimeType });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    window.URL.revokeObjectURL(url);
-  } catch (err) {
-    console.error(err);
-    alert("Greška pri štampi opremnice");
-  }
-};
-
-
+  };
 
   /* FETCH */
   const fetchOrders = async (status) => {
@@ -113,8 +110,8 @@ const printOpremnica = async (order) => {
           "==",
           activeMainTab === "DOSTAVA"
             ? "Dostava na adresu"
-            : "Preuzimanje u apoteci"
-        )
+            : "Preuzimanje u apoteci",
+        ),
       );
       if (status !== "Sve") {
         constraints.push(where("status", "==", status));
@@ -140,7 +137,7 @@ const printOpremnica = async (order) => {
 
     await updateDoc(doc(db, "orders", order.id), { status: next });
     setOrders((prev) =>
-      prev.map((o) => (o.id === order.id ? { ...o, status: next } : o))
+      prev.map((o) => (o.id === order.id ? { ...o, status: next } : o)),
     );
   };
 
@@ -153,8 +150,8 @@ const printOpremnica = async (order) => {
   const updateItemQuantity = (itemId, quantity) => {
     setEditedItems((prev) =>
       prev.map((i) =>
-        i.id === itemId ? { ...i, quantity: Math.max(1, quantity) } : i
-      )
+        i.id === itemId ? { ...i, quantity: Math.max(1, quantity) } : i,
+      ),
     );
   };
 
@@ -166,7 +163,7 @@ const printOpremnica = async (order) => {
     try {
       await updateDoc(doc(db, "orders", orderId), { items: editedItems });
       setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, items: editedItems } : o))
+        prev.map((o) => (o.id === orderId ? { ...o, items: editedItems } : o)),
       );
       setEditingOrderId(null);
     } catch (err) {
@@ -182,7 +179,7 @@ const printOpremnica = async (order) => {
     }
 
     const confirmed = window.confirm(
-      `Da li sigurno zelis obrisati narudzbinu #${order.orderId || order.id}?`
+      `Da li sigurno zelis obrisati narudzbinu #${order.orderId || order.id}?`,
     );
 
     if (!confirmed) return;
@@ -217,7 +214,7 @@ const printOpremnica = async (order) => {
   const sendAllToCourier = async () => {
     if (
       !window.confirm(
-        "Ovo će poslati SVE pripremljene pošiljke kuriru. Nastaviti?"
+        "Ovo će poslati SVE pripremljene pošiljke kuriru. Nastaviti?",
       )
     )
       return;
@@ -238,9 +235,8 @@ const printOpremnica = async (order) => {
       const { subtotal, shipping, total } = calcTotals(order.items);
 
       if (order.deliveryMethod === "Dostava na adresu") {
-
-     const obveznikPlacanja = subtotal < 60 ? 1 : 0;
-      const nacinPlacanja = subtotal < 60 ? 0 : 1;
+        const obveznikPlacanja = 0;
+        const nacinPlacanja = 1;
         // Dostava → kreiraj payload i pošalji kuriru
         const payload = {
           referentniBroj: order.orderId,
@@ -250,8 +246,8 @@ const printOpremnica = async (order) => {
           brojPaketa: 1,
           vrednostPosiljke: total,
           //---------------------
-          obveznikPlacanja:obveznikPlacanja,
-         //---------------------
+          obveznikPlacanja: obveznikPlacanja,
+          //---------------------
           nacinPlacanja: nacinPlacanja,
           //---------------------
           primalacNaziv: `${order.userInfo.firstName} ${order.userInfo.lastName}`,
@@ -283,30 +279,30 @@ const printOpremnica = async (order) => {
         await updateDoc(doc(db, "orders", order.id), { status: "Priprema" });
         setOrders((prev) =>
           prev.map((o) =>
-            o.id === order.id ? { ...o, status: "Priprema" } : o
-          )
+            o.id === order.id ? { ...o, status: "Priprema" } : o,
+          ),
         );
       } else {
         await updateDoc(doc(db, "orders", order.id), {
-  status: "Pripremljeno",
-});
+          status: "Pripremljeno",
+        });
 
-const sendPickupEmail = httpsCallable(
-  functions,
-  "sendPickupPreparedEmail"
-);
+        const sendPickupEmail = httpsCallable(
+          functions,
+          "sendPickupPreparedEmail",
+        );
 
-if (order.userInfo?.email) {
-  await sendPickupEmail({
-    email: order.userInfo.email,
-    ime: order.userInfo.firstName,
-    orderId: order.orderId,
-  });
-}
+        if (order.userInfo?.email) {
+          await sendPickupEmail({
+            email: order.userInfo.email,
+            ime: order.userInfo.firstName,
+            orderId: order.orderId,
+          });
+        }
         setOrders((prev) =>
           prev.map((o) =>
-            o.id === order.id ? { ...o, status: "Pripremljeno" } : o
-          )
+            o.id === order.id ? { ...o, status: "Pripremljeno" } : o,
+          ),
         );
       }
     } catch (err) {
@@ -321,20 +317,20 @@ if (order.userInfo?.email) {
     orders
       .filter((o) => o.status === "Spremno za kurira")
       .forEach((o) =>
-        batch.update(doc(db, "orders", o.id), { status: "Završeno" })
+        batch.update(doc(db, "orders", o.id), { status: "Završeno" }),
       );
     await batch.commit();
     setOrders((prev) =>
       prev.map((o) =>
-        o.status === "Spremno za kurira" ? { ...o, status: "Završeno" } : o
-      )
+        o.status === "Spremno za kurira" ? { ...o, status: "Završeno" } : o,
+      ),
     );
   };
 
   /* CIJENE */
   const calcTotals = (items) => {
     const subtotal = roundMoney(getCartSubtotal(items));
-    const shipping = subtotal > 0 && subtotal < 60 ? 11.70 : 0;
+    const shipping = subtotal > 0 && subtotal < 60 ? 11.7 : 0;
     return { subtotal, shipping, total: roundMoney(subtotal + shipping) };
   };
 
@@ -467,9 +463,7 @@ if (order.userInfo?.email) {
                         const price = getDiscountedPrice(i);
                         return (
                           <tr key={i.id}>
-                            <td>{i.naziv}
-                             
-                            </td>
+                            <td>{i.naziv}</td>
 
                             <td>{price.toFixed(2)} KM</td>
                             <td>
@@ -480,7 +474,7 @@ if (order.userInfo?.email) {
                                 onChange={(e) =>
                                   updateItemQuantity(
                                     i.id,
-                                    Number(e.target.value)
+                                    Number(e.target.value),
                                   )
                                 }
                               />
@@ -539,8 +533,8 @@ if (order.userInfo?.email) {
                                 const snap = await getDocs(
                                   query(
                                     collection(db, "products"),
-                                    where("sifra", "==", newProductCode)
-                                  )
+                                    where("sifra", "==", newProductCode),
+                                  ),
                                 );
                                 if (snap.empty)
                                   return alert("Proizvod nije pronađen");
@@ -553,7 +547,8 @@ if (order.userInfo?.email) {
                                   naPopustu: product.naPopustu || false,
                                   popustProcenat: product.popustProcenat || 0,
                                   naAkciji: product.naAkciji || false,
-                                  akcijaOdKolicine: product.akcijaOdKolicine || 4,
+                                  akcijaOdKolicine:
+                                    product.akcijaOdKolicine || 4,
                                   akcijaPopustPovecani:
                                     product.akcijaPopustPovecani || 25,
                                   quantity: newProductQuantity,
@@ -564,7 +559,7 @@ if (order.userInfo?.email) {
                                   doc(db, "orders", editingOrderId),
                                   {
                                     items: updatedItems,
-                                  }
+                                  },
                                 );
 
                                 setEditedItems(updatedItems);
@@ -602,9 +597,10 @@ if (order.userInfo?.email) {
                       const price = getDiscountedPrice(i);
                       return (
                         <tr key={i.id}>
-                          <td>{i.naziv}
-                             {i.selectedSize ? ` (${i.selectedSize})` : ""}
-                             {i.selectedColor ? ` - ${i.selectedColor}` : ""}
+                          <td>
+                            {i.naziv}
+                            {i.selectedSize ? ` (${i.selectedSize})` : ""}
+                            {i.selectedColor ? ` - ${i.selectedColor}` : ""}
                           </td>
                           <td>{price.toFixed(2)} KM</td>
                           <td>{i.quantity}</td>
@@ -616,18 +612,19 @@ if (order.userInfo?.email) {
                 </table>
               )}
 
-         <div className="totals">
-  <p>Artikli: {subtotal.toFixed(2)} KM</p>
-  {order.deliveryMethod === "Dostava na adresu" && (
-    <p>Dostava: {shipping.toFixed(2)} KM</p>
-  )}
-  <p className="total">
-    Ukupno: 
-    {order.deliveryMethod === "Dostava na adresu"
-      ? (subtotal + shipping).toFixed(2)
-      : subtotal.toFixed(2)} KM
-  </p>
-</div>
+              <div className="totals">
+                <p>Artikli: {subtotal.toFixed(2)} KM</p>
+                {order.deliveryMethod === "Dostava na adresu" && (
+                  <p>Dostava: {shipping.toFixed(2)} KM</p>
+                )}
+                <p className="total">
+                  Ukupno:
+                  {order.deliveryMethod === "Dostava na adresu"
+                    ? (subtotal + shipping).toFixed(2)
+                    : subtotal.toFixed(2)}{" "}
+                  KM
+                </p>
+              </div>
               {/* ACTION BUTTONS */}
               {canDeleteOrder(order) && editingOrderId !== order.id ? (
                 <>
@@ -644,24 +641,24 @@ if (order.userInfo?.email) {
                   >
                     Uredi stavke
                   </button>
-           <button
-  className="next-status-btn"
-  onClick={() => {
-    if (order.deliveryMethod === "Dostava na adresu") {
-      // 🚚 Dostava → traži težinu
-      setSelectedOrder(order);
-      setWeightValue("");
-      setShowWeightModal(true);
-    } else {
-      // 🏪 Apoteka → direktno pripremljeno
-      prepareOrder(order);
-    }
-  }}
->
-  {order.deliveryMethod === "Dostava na adresu"
-    ? 'Pređi u "Pripremu"'
-    : 'Označi kao "Pripremljeno"'}
-</button>
+                  <button
+                    className="next-status-btn"
+                    onClick={() => {
+                      if (order.deliveryMethod === "Dostava na adresu") {
+                        // 🚚 Dostava → traži težinu
+                        setSelectedOrder(order);
+                        setWeightValue("");
+                        setShowWeightModal(true);
+                      } else {
+                        // 🏪 Apoteka → direktno pripremljeno
+                        prepareOrder(order);
+                      }
+                    }}
+                  >
+                    {order.deliveryMethod === "Dostava na adresu"
+                      ? 'Pređi u "Pripremu"'
+                      : 'Označi kao "Pripremljeno"'}
+                  </button>
                 </>
               ) : next ? (
                 <button
@@ -673,71 +670,70 @@ if (order.userInfo?.email) {
               ) : null}
 
               {order.status === "Priprema" &&
-  order.deliveryMethod === "Dostava na adresu" && (
-    <button
-      className="next-status-btn secondary"
-      onClick={() => printOpremnica(order)}
-    >
-      🖨️ Štampaj opremnicu
-    </button>
-)}
+                order.deliveryMethod === "Dostava na adresu" && (
+                  <button
+                    className="next-status-btn secondary"
+                    onClick={() => printOpremnica(order)}
+                  >
+                    🖨️ Štampaj opremnicu
+                  </button>
+                )}
             </div>
           );
         })
       )}
 
-{showWeightModal && (
-  <div className="weight-popup-overlay">
-    <div className="weight-popup-content">
-      <h2 className="weight-popup-title">Unos težine pošiljke</h2>
+      {showWeightModal && (
+        <div className="weight-popup-overlay">
+          <div className="weight-popup-content">
+            <h2 className="weight-popup-title">Unos težine pošiljke</h2>
 
-      <label className="weight-popup-label">
-        Težina (kg):
-        <input
-          type="number"
-          min="0.01"
-          step="0.01"
-          value={weightValue}
-          onChange={(e) => setWeightValue(e.target.value)}
-          className="weight-popup-input"
-        />
-      </label>
+            <label className="weight-popup-label">
+              Težina (kg):
+              <input
+                type="number"
+                min="0.01"
+                step="0.01"
+                value={weightValue}
+                onChange={(e) => setWeightValue(e.target.value)}
+                className="weight-popup-input"
+              />
+            </label>
 
-      <div className="weight-popup-buttons">
-        <button
-          className="weight-popup-btn confirm"
-          onClick={() => {
-            if (!weightValue || Number(weightValue) <= 0) {
-              alert("Morate unijeti validnu težinu");
-              return;
-            }
+            <div className="weight-popup-buttons">
+              <button
+                className="weight-popup-btn confirm"
+                onClick={() => {
+                  if (!weightValue || Number(weightValue) <= 0) {
+                    alert("Morate unijeti validnu težinu");
+                    return;
+                  }
 
-            prepareOrder({
-              ...selectedOrder,
-              packageWeight: Number(weightValue),
-            });
+                  prepareOrder({
+                    ...selectedOrder,
+                    packageWeight: Number(weightValue),
+                  });
 
-            setShowWeightModal(false);
-            setSelectedOrder(null);
-          }}
-        >
-          Potvrdi
-        </button>
+                  setShowWeightModal(false);
+                  setSelectedOrder(null);
+                }}
+              >
+                Potvrdi
+              </button>
 
-        <button
-          className="weight-popup-btn cancel"
-          onClick={() => {
-            setShowWeightModal(false);
-            setSelectedOrder(null);
-          }}
-        >
-          Otkaži
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+              <button
+                className="weight-popup-btn cancel"
+                onClick={() => {
+                  setShowWeightModal(false);
+                  setSelectedOrder(null);
+                }}
+              >
+                Otkaži
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

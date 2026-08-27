@@ -24,6 +24,11 @@ import bio from "../assets/banners/bio.jpg";
 import kd from "../assets/banners/kd.jpg";
 import inn from "../assets/banners/Inn.png";
 import vichy from "../assets/banners/vichy20.png";
+
+import e from "../assets/banners/Eucerin_1350x1080 (1).png";
+import pro from "../assets/banners/probielle.png";
+import slim from "../assets/banners/slim20.png";
+
 const banners = [
   {
     image: drB,
@@ -42,10 +47,17 @@ const banners = [
   },
 
   {
-    image: vichy,
+    image: e,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Vichy",
+      brand: "Eucerin",
+    },
+  },
+  {
+    image: pro,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Hemofarm",
     },
   },
 
@@ -65,10 +77,17 @@ const banners = [
     },
   },
   {
-    image: novalac,
+    image: pro,
     alt: "Novo u ponudi",
     filters: {
-      productName: "5+1",
+      brand: "Hemofarm",
+    },
+  },
+  {
+    image: e,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Eucerin",
     },
   },
   {
@@ -79,24 +98,10 @@ const banners = [
     },
   },
   {
-    image: kd,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Abela Pharm",
-    },
-  },
-  {
     image: novalac,
     alt: "Novo u ponudi",
     filters: {
       productName: "5+1",
-    },
-  },
-  {
-    image: vichy,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Vichy",
     },
   },
 ];

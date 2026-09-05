@@ -9,25 +9,16 @@ import TripleBannerSlider from "../components/TripleBannerSlider";
 import FeaturesSection from "../components/FeaturesSection";
 import BrandCarousel from "../components/BrandCarousel";
 import FreeShippingBanner from "../components/FreeShippingBanner";
-
-import laRocheBanner from "../assets/banners/LaRoche10.jpg";
-import vichyBanner from "../assets/banners/Vichy10.jpg";
-import ceraVeBanner from "../assets/banners/CeraVe10.jpg";
-import ceraVe from "../assets/banners/cerave.png";
-import laR from "../assets/banners/LaR.png";
 import novalac from "../assets/banners/NovalacPromocija5+1.png";
-import dr from "../assets/banners/DrLuigi.jpg";
 import drB from "../assets/banners/DrLuigiBanner.png";
-import sok from "../assets/banners/sok.png";
 import hydroA from "../assets/banners/hydroA.png";
-import bio from "../assets/banners/bio.jpg";
 import kd from "../assets/banners/kd.jpg";
-import inn from "../assets/banners/Inn.png";
-import vichy from "../assets/banners/vichy20.png";
 
 import e from "../assets/banners/Eucerin_1350x1080 (1).png";
 import pro from "../assets/banners/probielle.png";
-import slim from "../assets/banners/slim20.png";
+
+import e30 from "../assets/banners/ecurin30.png";
+import e25 from "../assets/banners/e25.png";
 
 const banners = [
   {
@@ -47,17 +38,17 @@ const banners = [
   },
 
   {
-    image: e,
+    image: e30,
     alt: "Novo u ponudi",
     filters: {
       brand: "Eucerin",
     },
   },
   {
-    image: pro,
+    image: e25,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Hemofarm",
+      brand: "Eucerin",
     },
   },
 
@@ -77,14 +68,14 @@ const banners = [
     },
   },
   {
-    image: pro,
+    image: e25,
     alt: "Novo u ponudi",
     filters: {
-      brand: "Hemofarm",
+      brand: "Eucerin",
     },
   },
   {
-    image: e,
+    image: e30,
     alt: "Novo u ponudi",
     filters: {
       brand: "Eucerin",

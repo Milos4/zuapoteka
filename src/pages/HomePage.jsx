@@ -17,8 +17,11 @@ import kd from "../assets/banners/kd.jpg";
 import e from "../assets/banners/Eucerin_1350x1080 (1).png";
 import pro from "../assets/banners/probielle.png";
 
-import e30 from "../assets/banners/ecurin30.png";
+import e30 from "../assets/banners/instagram eurecin.png";
 import e25 from "../assets/banners/e25.png";
+import ecurinz30 from "../assets/banners/ecurinz30.png";
+
+import untitledDesign from "../assets/banners/UntitledDesign.png";
 
 const banners = [
   {
@@ -30,33 +33,17 @@ const banners = [
   },
   ///////////////////////////////////////////////////////////////////////////////////////
   {
-    image: hydroA,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Novelius Medical",
-    },
-  },
-
-  {
-    image: e30,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Eucerin",
-    },
-  },
-  {
-    image: e25,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Eucerin",
-    },
-  },
-
-  {
     image: novalac,
     alt: "Novo u ponudi",
     filters: {
       productName: "5+1",
+    },
+  },
+  {
+    image: untitledDesign,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Novelius Medical",
     },
   },
 
@@ -68,21 +55,7 @@ const banners = [
     },
   },
   {
-    image: e25,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Eucerin",
-    },
-  },
-  {
-    image: e30,
-    alt: "Novo u ponudi",
-    filters: {
-      brand: "Eucerin",
-    },
-  },
-  {
-    image: hydroA,
+    image: untitledDesign,
     alt: "Novo u ponudi",
     filters: {
       brand: "Novelius Medical",
@@ -93,6 +66,13 @@ const banners = [
     alt: "Novo u ponudi",
     filters: {
       productName: "5+1",
+    },
+  },
+  {
+    image: kd,
+    alt: "Novo u ponudi",
+    filters: {
+      brand: "Abela Pharm",
     },
   },
 ];
@@ -117,7 +97,7 @@ const HomePage = () => {
       {isMobile ? (
         <BannerSlider banners={banners.slice(1, 11)} />
       ) : (
-        <TripleBannerSlider banners={banners.slice(1, 11)} />
+        <TripleBannerSlider banners={banners.slice(1, 7)} />
       )}
 
       <PharmacyCategories />
